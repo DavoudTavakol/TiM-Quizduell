@@ -1,7 +1,8 @@
 package com.tim.quiz_api.controller
 
-import com.fasterxml.jackson.databind.util.JSONPObject
-import lombok.Getter
+import com.tim.quiz_api.data.Question
+import com.tim.quiz_api.repository.QuestionRepo
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -14,8 +15,11 @@ Hier findet sich das API-Team wieder!
  */
 @RestController
 @RequestMapping("/questions")
-class QuestionController {
+class QuestionController @Autowired constructor(val questionRepo: QuestionRepo) {
 
     @GetMapping()
-    fun getAllQuestions() = "Hello World"
+    fun getAllQuestions() = questionRepo.findById("M3")
+
+    @GetMapping("/1")
+    fun getQuestion() = questionRepo.insert(Question(id = "M3", question = "Q!?", answer = "A1", points = 5))
 }

@@ -8,5 +8,28 @@
 
 <h1>Quiz - Admin Panel</h1>
 <h3>Nothing for you to see!</h3>
+<pre id="data">data</pre>
+
 </body>
+
+<script>
+    const url = "http://localhost:8085/questions";
+    const options = {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json;charset=UTF-8",
+        }
+    };
+
+    fetch(url, options)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            const element = document.getElementById("data");
+            element.innerHTML = JSON.stringify(data, null, 2);
+        });
+
+</script>
+
 </html>

@@ -1,14 +1,9 @@
 package com.tim.quiz_api.controller
 
-import com.mongodb.client.MongoClient
-import com.mongodb.client.MongoIterable
-import com.tim.quiz_api.data.MathQuestion
+
 import com.tim.quiz_api.data.Question
-import com.tim.quiz_api.repository.MathQuestionRepo
 import com.tim.quiz_api.repository.QuestionRepo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

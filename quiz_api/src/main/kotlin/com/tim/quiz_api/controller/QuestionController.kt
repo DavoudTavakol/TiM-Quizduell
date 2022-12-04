@@ -1,10 +1,16 @@
 package com.tim.quiz_api.controller
 
 
+import com.mongodb.client.MongoCollection
 import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.repository.QuestionRepo
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.insert
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.util.Optional
@@ -17,21 +23,23 @@ Hier findet sich das API-Team wieder!
  */
 @RestController
 @RequestMapping("/questions")
-class QuestionController @Autowired constructor(val questionRepo: QuestionRepo) {
+class QuestionController @Autowired constructor(var mongoTemplate: MongoTemplate) {
 
 
-    @GetMapping()
-    fun getAllQuestions(): MutableList<Question> {
-        return questionRepo.findAll()
+    @GetMapping("{collectionName}")
+    fun getAllQuestions(@PathVariable collectionName:String): List<Question> {
+        mongoTemplate.getCollection(collectionName)
+        return listOf()
     }
 
-    @GetMapping("createTestDoc")
-    fun createTestDoc(): MutableList<Question> {
+    @GetMapping("/create/{collectionName}")
+    fun createTestDoc(@PathVariable collectionName:String): MutableList<Question> {
         val questions = listOf(
-            Question("Test Question", "Test answer", 1, "Math", "Q1"),
-            Question("Test Question 2", "Test answer 2", 2, "Sport", "Q2")
+            Question("Test Question", "Test answer", 1,  "Q1"),
+            Question("Test Question 2", "Test answer 2", 2,  "Q2")
         )
-        return questionRepo.saveAll(questions)
+        mongoTemplate.insert(questions, collectionName)
+        return mutableListOf()
     }
 
     /*val mongoDb : MongoClient? = null

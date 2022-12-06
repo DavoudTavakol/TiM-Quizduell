@@ -1,19 +1,16 @@
 package com.tim.quiz_api.controller
 
 
-import com.mongodb.client.MongoCollection
+import com.mongodb.client.FindIterable
+import com.mongodb.client.MongoDatabase
 import com.tim.quiz_api.data.Question
-import com.tim.quiz_api.repository.QuestionRepo
 import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.insert
-import org.springframework.data.mongodb.core.query.Query
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.util.Optional
 
 /*
 
@@ -26,10 +23,11 @@ Hier findet sich das API-Team wieder!
 class QuestionController @Autowired constructor(var mongoTemplate: MongoTemplate) {
 
 
+    var db:MongoDatabase = mongoTemplate.db;
+
     @GetMapping("{collectionName}")
-    fun getAllQuestions(@PathVariable collectionName:String): List<Question> {
-        mongoTemplate.getCollection(collectionName)
-        return listOf()
+    fun getQuestionsByCategory(@PathVariable collectionName: String): List<Document> {
+        return db.getCollection(collectionName).find().toList()
     }
 
     @GetMapping("/create/{collectionName}")

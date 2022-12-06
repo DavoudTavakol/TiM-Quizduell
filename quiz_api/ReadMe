@@ -1,0 +1,32 @@
+
+Mit dem Program Postman,  man kann Requests and der Api schicken und die Responses im JSON format auslesen 
+
+
+## Create gameroom
+
+PostRequest : localhost:8085/game/create 
+RequestBody: {
+               "nickname" : "someone"
+             }
+             
+             
+## connect to gameroom
+
+PostRequest : localhost:8085/game/connect
+RequestBody: {
+                  "gameId": "f28e2",
+                  "player2": {
+                  "nickname": "somebody"
+                  }
+             }
+             
+## Submit answers
+
+PostRequest : localhost:8085/game/submitanswers
+RequestBody: {
+                   "gameId": "f28e2",
+                   "token" : "toki",
+                   "answers" : [true,false,false,false]
+             }
+             
+            

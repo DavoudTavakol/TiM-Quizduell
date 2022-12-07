@@ -1,5 +1,6 @@
 package com.tim.quiz_api.controller
 
+import com.mongodb.client.MongoDatabase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoOperations
 import org.springframework.data.mongodb.core.MongoTemplate
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController
 class CategoryController @Autowired constructor(val mongoTemplate: MongoTemplate) {
 
 
+    var db: MongoDatabase = mongoTemplate.db;
+
     @GetMapping("/all")
     fun getAllCategories(): ResponseEntity<List<String>> {
         return ResponseEntity.ok(mongoTemplate.collectionNames.toList())
@@ -22,9 +25,16 @@ class CategoryController @Autowired constructor(val mongoTemplate: MongoTemplate
 
 
     @GetMapping("/add/{collectionName}")
-    fun createCollection(@PathVariable collectionName:String): ResponseEntity.BodyBuilder {
-        mongoTemplate.createCollection(collectionName)
-        return ResponseEntity.ok()
+    //durch POST ersetzen
+    fun createCategory(@PathVariable collectionName:String): ResponseEntity<String> {
+        val category = db.listCollectionNames().find{ it==collectionName }
+         if(category != null){
+            return ResponseEntity.badRequest().body("Collection Already Exists")
+        }else{
+            db.createCollection(collectionName)
+            return ResponseEntity.ok("Category created")
+        }
+
     }
 
     /*@GetMapping("/createTestDoc")

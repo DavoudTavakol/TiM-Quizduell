@@ -43,6 +43,15 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:padding="10sp"
+                android:text="Rang"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:gravity="center_horizontal"
                 android:padding="10sp"
@@ -60,6 +69,15 @@
         </TableRow>
         <!-- Table Data -->
         <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center_horizontal"
+                android:padding="10sp"
+                android:text="1"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="0dp"

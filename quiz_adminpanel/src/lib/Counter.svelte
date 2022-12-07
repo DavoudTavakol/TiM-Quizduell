@@ -4,10 +4,19 @@
 	function add() {
 		count += 1;
 	}
+	function sub() {
+		count -= 1;
+	}
 </script>
 
-<div>
-	{count}
+<div class="flex font-mono w-full p-4 justify-around">
+	<button class="btn" on:click={sub}>-</button>
+	<span class="p-2">{count}</span>
+	<button class="btn" on:click={add}>+</button>
 </div>
 
-<button on:click={add}>Add</button>
+<style>
+	.btn {
+		@apply border rounded-full py-2 px-4;
+	}
+</style>

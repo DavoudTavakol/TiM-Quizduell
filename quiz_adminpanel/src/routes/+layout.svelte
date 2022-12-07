@@ -1,17 +1,9 @@
 <script>
-	import '../app.css';
-	let test = 'test';
+	import '@unocss/reset/tailwind.css';
 </script>
 
-<div>Navbar</div>
-<slot />
-<div>Footer</div>
+<main class="dark:bg-red-500">
+	<slot />
+</main>
 
-<h1 class=" btn">Hallo</h1>
-
-<style>
-	.btn {
-		@apply bg-green-500;
-		@apply text-red-500;
-	}
-</style>
+<style uno:preflights uno:safelist global></style>

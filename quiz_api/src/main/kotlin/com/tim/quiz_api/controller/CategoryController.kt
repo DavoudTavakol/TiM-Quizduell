@@ -1,29 +1,42 @@
 package com.tim.quiz_api.controller
 
-import com.mongodb.client.MongoDatabase
-import com.tim.quiz_api.data.CategoriesAndQuestions
-import com.tim.quiz_api.repository.CategoriesAndQuestionsRepo
+import com.tim.quiz_api.data.Category
+import com.tim.quiz_api.data.Question
+import com.tim.quiz_api.repository.CategoryRepo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+
+/*
+Aufgabe: Error Handling
+ */
+
 @RestController
 @RequestMapping("/category")
-class CategoryController @Autowired constructor(val categoriesAndQuestionsRepo: CategoriesAndQuestionsRepo) {
+class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) {
 
 
+
+    /*
+        Liefert alle Kategorie und Questions in der Collection categories zurück
+     */
     @GetMapping()
-    fun getAllCategories(): ResponseEntity<List<CategoriesAndQuestions>> {
-        return ResponseEntity.ok(categoriesAndQuestionsRepo.findAll())
+    fun getAllCategories(): ResponseEntity<List<Category>> {
+        return ResponseEntity.ok(categoryRepo.findAll())
     }
 
     @GetMapping("/insert")
-    fun insert(): ResponseEntity<CategoriesAndQuestions> {
-        return ResponseEntity.ok(categoriesAndQuestionsRepo.save(CategoriesAndQuestions(1L)))
+    fun insert(): ResponseEntity<Category> {
+        val testCategoryID = "942f3c05-bba2-47dc-8b37-11dc8847a1b5";
+        return ResponseEntity.ok(
+            categoryRepo.save(
+                Category(
+                    "UUID Test Category",
+                    listOf(Question("Question Title", listOf(), testCategoryID)),
+                    testCategoryID)))
     }
 
 

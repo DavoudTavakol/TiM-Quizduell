@@ -31,6 +31,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
     @GetMapping("/insert")
     fun insert(): ResponseEntity<Category> {
         val testCategoryID = "942f3c05-bba2-47dc-8b37-11dc8847a1b5";
+        //fügt man der Category bei einem save eine ID hinzu welche bereits existiert führt save einen update auf die collection aus, kein insert
         return ResponseEntity.ok(
             categoryRepo.save(
                 Category(

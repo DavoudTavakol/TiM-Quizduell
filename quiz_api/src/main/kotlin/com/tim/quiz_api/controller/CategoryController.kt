@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 
 /*
-Aufgabe: Error Handling
+Aufgabe: Error Handling (Rick)
  */
 
 @RestController

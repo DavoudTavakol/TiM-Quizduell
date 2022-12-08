@@ -9,7 +9,7 @@ import java.util.*
 
 /*
 https://www.baeldung.com/spring-boot-mongodb-auto-generated-field
-Aufgabe Funktion zum Auto-generieren der ID
+Aufgabe Funktion zum Auto-generieren der ID (Robert)
 
  */
 
@@ -18,6 +18,4 @@ class Category(
     val categoryName: String,
     val questions: List<Question>,
     @Id val id:String = UUID.randomUUID().toString(),
-) {
-
-}
+)

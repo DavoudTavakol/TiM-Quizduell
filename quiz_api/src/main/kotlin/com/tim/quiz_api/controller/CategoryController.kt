@@ -1,10 +1,10 @@
 package com.tim.quiz_api.controller
 
 import com.mongodb.client.MongoDatabase
+import com.tim.quiz_api.data.CategoriesAndQuestions
+import com.tim.quiz_api.repository.CategoriesAndQuestionsRepo
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.mongodb.core.MongoOperations
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.getCollectionName
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,18 +13,21 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/category")
-class CategoryController @Autowired constructor(val mongoTemplate: MongoTemplate) {
+class CategoryController @Autowired constructor(val categoriesAndQuestionsRepo: CategoriesAndQuestionsRepo) {
 
 
-    var db: MongoDatabase = mongoTemplate.db;
+    @GetMapping()
+    fun getAllCategories(): ResponseEntity<List<CategoriesAndQuestions>> {
+        return ResponseEntity.ok(categoriesAndQuestionsRepo.findAll())
+    }
 
-    @GetMapping("/all")
-    fun getAllCategories(): ResponseEntity<List<String>> {
-        return ResponseEntity.ok(mongoTemplate.collectionNames.toList())
+    @GetMapping("/insert")
+    fun insert(): ResponseEntity<CategoriesAndQuestions> {
+        return ResponseEntity.ok(categoriesAndQuestionsRepo.save(CategoriesAndQuestions(1L)))
     }
 
 
-    @GetMapping("/add/{collectionName}")
+   /* @GetMapping("/add/{collectionName}")
     //durch POST ersetzen
     fun createCategory(@PathVariable collectionName:String): ResponseEntity<String> {
         val category = db.listCollectionNames().find{ it==collectionName }
@@ -34,8 +37,7 @@ class CategoryController @Autowired constructor(val mongoTemplate: MongoTemplate
             db.createCollection(collectionName)
             return ResponseEntity.ok("Category created")
         }
-
-    }
+    }*/
 
     /*@GetMapping("/createTestDoc")
     fun createTestDoc(): MutableList<Category> {

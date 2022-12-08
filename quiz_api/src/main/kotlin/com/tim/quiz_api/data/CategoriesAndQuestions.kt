@@ -4,14 +4,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 
-
-
-
-data class Question(
-    val question: String,
-    val answer: String,
-    val points: Int,
-    @Id val id: String = ""
-) {
+@Document("categories")
+class CategoriesAndQuestions(@Id val id:Long) {
 
 }

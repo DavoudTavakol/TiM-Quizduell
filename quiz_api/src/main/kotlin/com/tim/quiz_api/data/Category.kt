@@ -14,7 +14,7 @@ Aufgabe Funktion zum Auto-generieren der ID (Robert)
 
 @Document("categories")
 class Category(
-    val categoryName: String,
-    val questions: List<Question>,
+    var categoryName: String,
+    var questions: List<Question>,
     @Id val id:String = UUID.randomUUID().toString(),
 )

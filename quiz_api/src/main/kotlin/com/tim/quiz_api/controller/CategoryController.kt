@@ -1,5 +1,6 @@
 package com.tim.quiz_api.controller
 
+import com.tim.quiz_api.controller.dto.CategoryAPI.CategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.data.Question
@@ -18,7 +19,6 @@ Aufgabe: Error Handling (Rick)
 @RestController
 @RequestMapping("/api/category", "application/json")
 class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) {
-
 
 
     /*
@@ -44,9 +44,32 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
         //Check if categoryName is not null or empty string
         if(!categoryName.isNullOrBlank()){
             //TODO also check if category with similar name already exists?
-            val savedCategory = categoryRepo.save(Category(category.categoryName, emptyListOfQuestions))
+            val savedCategory = categoryRepo.save(Category(categoryName, emptyListOfQuestions))
             //Returns a Status 201 Created
             return ResponseEntity<Category>(savedCategory, HttpStatus.CREATED)
+        }
+        //TODO find out how to customize error message
+        //Returns a Status 400 Bad Request
+        return ResponseEntity<Category>(null, HttpStatus.BAD_REQUEST)
+    }
+
+    /*
+        Updated eine bereits bestehende Category
+     */
+    @PutMapping(consumes= ["application/json"])
+    fun updateCategory(@RequestBody category: CategoryDto): ResponseEntity<Category> {
+        val newName = category.categoryName
+        val id = category.id
+        //request category from DB
+        val optionalCategory = categoryRepo.findById(id)
+        //Check if categoryName is not null or empty string and check if category is actually in DB
+        if(!newName.isNullOrBlank() && optionalCategory.isPresent){
+            val category = optionalCategory.get()
+            //change category name
+            category.categoryName = newName
+
+            //Returns a Status 200 OK
+            return ResponseEntity<Category>(categoryRepo.save(category), HttpStatus.OK)
         }
         //TODO find out how to customize error message
         //Returns a Status 400 Bad Request

@@ -1,6 +1,6 @@
 package com.tim.quiz_api.controller
 
-import com.tim.quiz_api.controller.dto.CreateCategoryDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.repository.CategoryRepo
@@ -33,7 +33,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
         → Deswegen habe ich diesen requestBody mit einer Klasse modelliert CreateCategoryDto
      */
     @PostMapping()
-    fun createCategory(@RequestBody category:CreateCategoryDto): ResponseEntity<Category> {
+    fun createCategory(@RequestBody category: CreateCategoryDto): ResponseEntity<Category> {
         val emptyListOfQuestions = listOf<Question>()
         val savedCategory = categoryRepo.save(Category(category.categoryName, emptyListOfQuestions))
         return ResponseEntity.ok(savedCategory)

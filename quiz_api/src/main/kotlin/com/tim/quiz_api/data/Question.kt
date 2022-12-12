@@ -9,7 +9,7 @@ data class Question(
     val question: String,
     val answer: List<Answer>,
     val categoryId: String,
-    val id:String = UUID.randomUUID().toString(),
+    val id:String? = UUID.randomUUID().toString(),
 ) {
 
 }

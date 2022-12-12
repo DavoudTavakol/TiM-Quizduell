@@ -10,7 +10,6 @@ import java.util.*
 /*
 https://www.baeldung.com/spring-boot-mongodb-auto-generated-field
 Aufgabe Funktion zum Auto-generieren der ID (Robert)
-
  */
 
 @Document("categories")

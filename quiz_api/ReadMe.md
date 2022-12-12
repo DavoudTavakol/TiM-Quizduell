@@ -59,7 +59,8 @@ RequestBody:
 <h1 id="cat-and-que-api">Category and Question API</h1>
 
 ## Create a Category
-Post-Request: 
+
+POST-Request: 
 ```
 localhost:8085/api/category
 ```
@@ -73,7 +74,7 @@ RequestBody:
 ```
 ## Get All Categories and Questions
 
-Get-Request:
+GET-Request:
 ```
 localhost:8085/api/category
 ```
@@ -81,4 +82,20 @@ localhost:8085/api/category
 RequestBody: 
 ```
 *EMPTY*
+```
+## Update Existing Category 
+*Updating Questions will be handled separately*
+
+PUT-Request:
+```
+localhost:8085/api/category
+```
+
+RequestBody:
+
+```json lines
+{
+    "id": "1234567",
+    "categoryName": "New Category Name"
+}
 ```

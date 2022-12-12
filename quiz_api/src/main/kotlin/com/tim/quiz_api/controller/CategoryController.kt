@@ -26,7 +26,8 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
      */
     @GetMapping()
     fun getAllCategories(): ResponseEntity<List<Category>> {
-        return ResponseEntity.ok(categoryRepo.findAll())
+        val categories = categoryRepo.findAll() as List<Category>
+        return ResponseEntity<List<Category>>(categories, HttpStatus.OK)
     }
 
     /*
@@ -47,6 +48,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
             //Returns a Status 201 Created
             return ResponseEntity<Category>(savedCategory, HttpStatus.CREATED)
         }
+        //TODO find out how to customize error message
         //Returns a Status 400 Bad Request
         return ResponseEntity<Category>(null, HttpStatus.BAD_REQUEST)
     }

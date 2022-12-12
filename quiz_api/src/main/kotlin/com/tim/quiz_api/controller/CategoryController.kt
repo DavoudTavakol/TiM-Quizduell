@@ -5,6 +5,8 @@ import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.repository.CategoryRepo
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -28,9 +30,11 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
     }
 
     /*
-        Erstellt ein NEUES Dokument in der "category" collection mit dem übergebenen Namen z.B.: {categoryName: "Geschichte"}
-        @RequestBody bedeutet wird extrahieren die Daten welche das FE uns im JSON Format ({categoryName: "Geschichte"}) im RequestBody mitgesendet hat
-        → Deswegen habe ich diesen requestBody mit einer Klasse modelliert CreateCategoryDto
+        Erstellt ein NEUES Dokument in der "category" collection mit dem übergebenen Namen
+        z.B.: {categoryName: "Geschichte"}
+
+        @RequestBody bedeutet wird mappen die Daten, welche der Client uns im JSON Format im RequestBody schickt,
+        zu einem CreateCategoryDto
      */
     @PostMapping(consumes= ["application/json"])
     fun createCategory(@RequestBody category: CreateCategoryDto): ResponseEntity<Category> {
@@ -38,10 +42,12 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
         val categoryName = category.categoryName
         //Check if categoryName is not null or empty string
         if(!categoryName.isNullOrBlank()){
-            //Maybe also check if category with similar name already exists?
+            //TODO also check if category with similar name already exists?
             val savedCategory = categoryRepo.save(Category(category.categoryName, emptyListOfQuestions))
-            return ResponseEntity.ok().body(savedCategory)
+            //Returns a Status 201 Created
+            return ResponseEntity<Category>(savedCategory, HttpStatus.CREATED)
         }
-        return ResponseEntity.badRequest().body(null)
+        //Returns a Status 400 Bad Request
+        return ResponseEntity<Category>(null, HttpStatus.BAD_REQUEST)
     }
 }

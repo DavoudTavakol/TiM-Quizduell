@@ -32,11 +32,16 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
         @RequestBody bedeutet wird extrahieren die Daten welche das FE uns im JSON Format ({categoryName: "Geschichte"}) im RequestBody mitgesendet hat
         → Deswegen habe ich diesen requestBody mit einer Klasse modelliert CreateCategoryDto
      */
-    @PostMapping()
+    @PostMapping(consumes= ["application/json"])
     fun createCategory(@RequestBody category: CreateCategoryDto): ResponseEntity<Category> {
         val emptyListOfQuestions = listOf<Question>()
-        val savedCategory = categoryRepo.save(Category(category.categoryName, emptyListOfQuestions))
-        return ResponseEntity.ok(savedCategory)
+        val categoryName = category.categoryName
+        //Check if categoryName is not null or empty string
+        if(!categoryName.isNullOrBlank()){
+            //Maybe also check if category with similar name already exists?
+            val savedCategory = categoryRepo.save(Category(category.categoryName, emptyListOfQuestions))
+            return ResponseEntity.ok().body(savedCategory)
+        }
+        return ResponseEntity.badRequest().body(null)
     }
-
 }

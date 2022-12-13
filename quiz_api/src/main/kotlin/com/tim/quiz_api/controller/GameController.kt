@@ -54,7 +54,6 @@ class GameController @Autowired constructor(val categoryRepo: CategoryRepo, priv
             ResponseEntity<Game> {
         return ResponseEntity.ok(gameService?.submitAnswers(request.gameId, request.nickname, request.answers))
     }
-
     @GetMapping("/categories")
     fun getAllCategories(): ResponseEntity<MutableList<String>> {
         val categories = categoryRepo.findAll() as List<Category>
@@ -66,5 +65,4 @@ class GameController @Autowired constructor(val categoryRepo: CategoryRepo, priv
         }
         return ResponseEntity<MutableList<String>>(namesList, HttpStatus.OK)
     }
-
 }

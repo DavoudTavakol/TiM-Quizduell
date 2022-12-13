@@ -11,7 +11,7 @@ ___
 ___
 <h1 id="game-api">Game API</h1>
 
-## Get possible Catergory names (List<String>)
+## Get possible Catergory names (List of Strings)
 
 GetRequest : 
 ```

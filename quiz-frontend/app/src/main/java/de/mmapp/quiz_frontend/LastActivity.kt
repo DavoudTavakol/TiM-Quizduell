@@ -11,18 +11,29 @@ class LastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.highscore_screen)
 
+        //  Gewinner anzeige
+        val winner = findViewById<TextView>(R.id.whoWon)
+        winner.setText("'Nickname' hat gewonnen");
+
         // Punkte anzeige
         val points = findViewById<TextView>(R.id.myPoints)
-        points.setText("Punkte: xyz")
+        points.setText("Punkte: 'Zahl'")
 
         // "Highscore" Tabelle anzeige
         // 3 Spalten:
         // eine Spalte mit Rang, eine mit den "Nickname" und eine mit die erreichte Punktzahl
         // ...
 
-        // "Erneut spielen"
-        val button = findViewById<Button>(R.id.btn)
-        button.setOnClickListener {
+        //"Erneut spielen"
+        val buttonNewGame = findViewById<Button>(R.id.btn1)
+        buttonNewGame.setOnClickListener {
+            //val intent = Intent(this, //Kategorien Activity)
+            //startActivity(intent)
+        }
+
+        // "Haputmenue"
+        val buttonMenu = findViewById<Button>(R.id.btn2)
+        buttonMenu.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

@@ -11,6 +11,14 @@ ___
 ___
 <h1 id="game-api">Game API</h1>
 
+## Get possible Catergory names (List<String>)
+
+GetRequest : 
+```
+localhost:8085/game/categories 
+```
+
+
 ## Create gameroom
 
 PostRequest : 

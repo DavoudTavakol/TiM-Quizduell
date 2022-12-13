@@ -2,6 +2,7 @@ package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.CategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.repository.CategoryRepo
@@ -74,5 +75,10 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
         //TODO find out how to customize error message
         //Returns a Status 400 Bad Request
         return ResponseEntity<Category>(null, HttpStatus.BAD_REQUEST)
+    }
+
+    @PostMapping("/test")
+    fun createQuestion(@RequestBody question:QuestionDto){
+        println(question.answers)
     }
 }

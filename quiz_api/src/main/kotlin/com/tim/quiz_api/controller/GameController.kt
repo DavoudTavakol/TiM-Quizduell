@@ -1,14 +1,14 @@
 package com.tim.quiz_api.controller
 
 import com.mongodb.client.MongoDatabase
-import com.tim.quiz_api.controller.dto.ConnectRequest
-import com.tim.quiz_api.controller.dto.SubmitRequest
+import com.tim.quiz_api.controller.dto.*
 import com.tim.quiz_api.data.Game
 import com.tim.quiz_api.data.Player
 import com.tim.quiz_api.service.GameService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -23,9 +23,9 @@ class GameController @Autowired constructor(var mongoTemplate: MongoTemplate,pri
 
 
     @PostMapping("/create")
-    fun createGame(@RequestBody player1 : Player) :
+    fun createGame(@RequestBody startRequest: StartRequest ) :
             ResponseEntity<Game> {
-        return ResponseEntity.ok(gameService?.createGame(player1))
+        return ResponseEntity.ok(gameService?.createGame(startRequest))
     }
 
     @PostMapping("/connect")
@@ -34,10 +34,21 @@ class GameController @Autowired constructor(var mongoTemplate: MongoTemplate,pri
         return ResponseEntity.ok(gameService?.connectToGame(request.gameId, request.player2))
     }
 
+    @PostMapping("/ready")
+    fun setReady(@RequestBody request : ReadyRequest) :
+            ResponseEntity<List<Player>> {
+        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId))
+    }
+
+    @PostMapping("/check")
+    fun checkPlayer(@RequestBody checkRequest: CheckRequest) : ResponseEntity<Boolean> {
+        return ResponseEntity.ok(gameService?.isPlayerReady(checkRequest.gameId, checkRequest.nickname))
+    }
+
     @PostMapping("/submitanswers")
     fun submitAnswers(@RequestBody request : SubmitRequest ):
             ResponseEntity<Game> {
-        return ResponseEntity.ok(gameService?.gameResult(request.gameId, request.token, request.answers))
+        return ResponseEntity.ok(gameService?.submitAnswers(request.gameId, request.nickname, request.answers))
     }
 
 }

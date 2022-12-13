@@ -21,24 +21,21 @@ Hier findet sich das API-Team wieder!
 @RestController
 @RequestMapping("/questions")
 class QuestionController @Autowired constructor(var mongoTemplate: MongoTemplate) {
-
-
     var db:MongoDatabase = mongoTemplate.db;
 
     @GetMapping("{collectionName}")
     fun getQuestionsByCategory(@PathVariable collectionName: String): List<Document> {
         return db.getCollection(collectionName).find().toList()
     }
-
-    @GetMapping("/create/{collectionName}")
+    /*@GetMapping("/create/{collectionName}")
     fun createTestDoc(@PathVariable collectionName:String): MutableList<Question> {
         val questions = listOf(
-            Question("Test Question", "Test answer", 1,  "Q1"),
-            Question("Test Question 2", "Test answer 2", 2,  "Q2")
+            //Question("Test Question", "Test answer", 1,  "Q1"),
+            //Question("Test Question 2", "Test answer 2", 2,  "Q2")
         )
         mongoTemplate.insert(questions, collectionName)
         return mutableListOf()
-    }
+    }*/
 
     /*val mongoDb : MongoClient? = null
     @GetMapping("/allmath")

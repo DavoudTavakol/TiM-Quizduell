@@ -1,7 +1,6 @@
 package com.tim.quiz_api.repository
 
-import com.tim.quiz_api.data.Question
+import com.tim.quiz_api.data.Category
 import org.springframework.data.mongodb.repository.MongoRepository
 
-interface QuestionRepo :MongoRepository<Question, String> {
-}
+interface CategoryRepo : MongoRepository<Category, String>

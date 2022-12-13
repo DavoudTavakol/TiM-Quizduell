@@ -28,7 +28,7 @@ RequestBody:
 ````
              
              
-## connect to gameroom
+## Connect to gameroom
 
 PostRequest : 
 ```

@@ -20,7 +20,10 @@ localhost:8085/game/create
 RequestBody: 
 ````json lines
 {
-  "nickname" : "someone"
+"player1":{
+    "nickname" : "someone"
+},
+"categories" : ["cat1", "cat2", "cat3"]
 }
 ````
              
@@ -34,12 +37,47 @@ localhost:8085/game/connect
 RequestBody: 
 ```json lines
 {
-  "gameId": "f28e2",
+  "gameId": "778bb",
   "player2": {
     "nickname": "somebody"
   }
 }
 ```
+         
+## Ready to Start Request
+(Own nickname + gameId)
+
+PostRequest : 
+```
+localhost:8085/game/ready
+```
+RequestBody: 
+```json lines
+{
+    "gameId": "778bb",
+    "nickname" : "somebody"
+    
+}
+```
+
+## Check if opponent is ready
+(Wird jeder sekunde angerufen bis opponent isReady, Max = 20 sekunden danach ist das gameroom nicht mehr gültig, zurück zum Menu)
+"Start Game" Clickbar nur wenn opponent isReady 
+(Own nickname + gameId)
+
+PostRequest : 
+```
+localhost:8085/game/ready
+```
+RequestBody: 
+```json lines
+{
+    "gameId": "778bb",
+    "nickname" : "somebody"
+    
+}
+```
+
              
 ## Submit answers
 
@@ -50,9 +88,18 @@ localhost:8085/game/submitanswers
 RequestBody: 
 ```json lines
 {
-  "gameId": "f28e2",
-  "token" : "toki",
-  "answers" : [true,false,false,false]
+    "gameId": "778bb",
+    "nickname": "somebody",
+    "answers": [
+        {
+            "answer":"blablab",
+            "isAnswerCorrect": true
+        },
+        {
+            "answer":"blablab2",
+            "isAnswerCorrect": false
+        }
+    ]
 }
 ```
 

@@ -10,10 +10,11 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/willkommenEins"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Willkommen Spieler1! \nLeite die Game ID an deinen Mitspieler weiter."
+        android:text="Willkommen 'Nickname1'! \nLeite die Game ID an deinen Mitspieler weiter."
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -10,10 +10,11 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/willkommenZwei"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Willkommen Spieler2!"
+        android:text="Willkommen 'Nickname2'!"
         android:textSize="35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -21,12 +22,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/spEinsWahlKategorien"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Spieler1 wählt gerade die Kategorien.
-        Bitte habe noch einen Moment Geduld,
-        es geht gleich los!"
+        android:text="'Nickname1' wählt gerade die Kategorien. Bitte habe noch einen Moment Geduld, es geht gleich los!"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

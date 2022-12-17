@@ -258,3 +258,30 @@ Response:
 ```json lines
 200 OK
 ```
+
+## COUNT ALL QUESTIONS
+DELETE-Request:
+```
+
+```
+RequestBody:
+```json lines
+
+```
+Response:
+```json lines
+
+```
+## COUNT ALL CATEGORIES
+DELETE-Request:
+```
+
+```
+RequestBody:
+```json lines
+
+```
+Response:
+```json lines
+
+```

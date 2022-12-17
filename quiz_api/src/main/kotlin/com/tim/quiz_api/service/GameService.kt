@@ -2,10 +2,8 @@ package com.tim.quiz_api.service
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tim.quiz_api.data.Game
-import com.tim.quiz_api.data.GameStatus
-import com.tim.quiz_api.data.Player
-import com.tim.quiz_api.data.Question
+import com.tim.quiz_api.controller.dto.StartRequest
+import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.GameRepo
 import lombok.AllArgsConstructor
 import org.springframework.stereotype.Service
@@ -15,19 +13,18 @@ import java.util.*
 @AllArgsConstructor
 class GameService {
 
-    fun createGame(player : Player): Game {
+    fun createGame(startRequest: StartRequest): Game {
         var game : Game = Game(
             gameId = UUID.randomUUID().toString().substring(0,5),
-            player1 = player,
+            player1 = startRequest.player1,
             player2 = Player(""),
+            startRequest.categories,
             mutableListOf<Question>(),
             GameStatus.NEW,
-            "",
             answers1 = listOf(),
             answers2 = listOf()
             )
         GameRepo.games.put(game.gameId,game)
-        game.token = "toki"
 
         return game
 
@@ -39,7 +36,6 @@ class GameService {
         if (game != null) {
             game.player2 = player2
             game.gameStatus = GameStatus.IN_PROGRESS
-            game.token = ""
         }
 
         return game
@@ -47,26 +43,44 @@ class GameService {
 
     }
 
-    fun gameResult(gameId : String , token : String ,answers : List<Boolean > ) : Game? {
+    fun submitAnswers(gameId : String , nickname : String ,answers : List<Answer> ) : Game? {
 
         var game : Game? = GameRepo.getGame(gameId)
-
-
         if (game != null) {
 
-            if (token != "") {
+            if (nickname == game.player1.nickname) {
                 game.answers1 = answers
-            } else {
+            } else if (nickname == game.player2.nickname){
                 game.answers2 = answers
                 game.gameStatus = GameStatus.FINISHED
 
             }
-
-
-           // game.token = token
-           // game.answers1 = answers
-
         }
         return  game
     }
+
+    fun isPlayerReady(gameId: String, nickname: String): Boolean {
+        var game : Game? = GameRepo.getGame(gameId)
+
+        if(game!!.player1.nickname == nickname){
+            return game!!.player2.isReady
+        } else if (game!!.player2.nickname == nickname) {
+            return game!!.player1.isReady
+        } else {
+            return false
+        }
+    }
+
+    fun setReady(nickname : String, gameId: String): List<Player> {
+        var game : Game? = GameRepo.getGame(gameId)
+
+        if (game!!.player1.nickname == nickname){
+            game.player1.isReady = true
+        } else if (game!!.player2.nickname == nickname){
+            game.player2.isReady = true
+        }
+
+        return listOf(game.player1, game.player2)
+    }
+
 }

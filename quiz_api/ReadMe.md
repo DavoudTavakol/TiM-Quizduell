@@ -113,11 +113,32 @@ RequestBody:
 
 <h1 id="cat-and-que-api">Category and Question API</h1>
 
-## CREATE a Category (DONE)
+#### Roadmap Category API
+
+- [X] Create a Category
+- [X] Read all categories (without Questions)
+- [X] Update Category (name)
+- [X] Read one Category (with Questions)
+- [X] Delete Category
+- [ ] Count All Categories
+
+#### Roadmap Question API
+
+- [ ] Create Questions (multiple)
+- [ ] Read all questions
+- [ ] Update question
+- [ ] Delete Question
+- [ ] Read Question
+- [ ] Count All Questions
+
+
+
+
+## CREATE a Category
 
 POST-Request: 
 ```
-localhost:8085/api/category
+localhost:8085/api/category/create
 ```
 
 RequestBody:
@@ -127,7 +148,7 @@ RequestBody:
     "categoryName": "Test Test Test"
 }
 ```
-## READ All Categories (DOING)
+## READ All Categories 
 
 GET-Request:
 ```
@@ -152,12 +173,12 @@ Response:
 ]
 ```
 
-## UPDATE Existing Category (DOING)
+## UPDATE Existing Category 
 *Updating Questions will be handled separately*
 
 PUT-Request:
 ```
-localhost:8085/api/category
+localhost:8085/api/category/update
 ```
 
 RequestBody:
@@ -170,7 +191,7 @@ RequestBody:
 ```
 
 
-## Read Category (DOING)
+## Read Category
 GET-Request:
 ```
 localhost:8085/api/category/{categoryId}
@@ -312,6 +333,33 @@ RequestBody:
 Response:
 ```json lines
 200 OK
+```
+
+## Read Question
+POST-Request:
+```
+localhost:8085/api/question
+```
+RequestBody:
+```json lines
+{
+  id: "1234567",
+  categoryId: "9876543"
+}
+```
+Response:
+```json lines
+ {
+  id: "1234567",
+  question: "Question Text",
+  answers: [
+    {
+      answer: "Answer Text",
+      isCorrectAnswer: false
+    }
+  ],
+  categoryId: "9876543"
+}
 ```
 
 ## COUNT ALL QUESTIONS

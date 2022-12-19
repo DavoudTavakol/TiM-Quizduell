@@ -41,18 +41,10 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, 
     fun createCategory(@RequestBody category: CreateCategoryDto): ResponseEntity<Category> {
         val categoryName = category.categoryName
         val questions:List<QuestionDto> = category.questions
-        //Check if categoryName is not null or empty string
-        if(!categoryName.isNullOrBlank()){
-            var category = categoryRepo.save(Category(categoryName, listOf()))
-            //Returns a Status 201 Create
-            return if(questions.isNotEmpty()){
-                category.questions = DtoMapper.questionsDtoToQuestions(questions, category.id)
-                ResponseEntity(categoryRepo.save(category), HttpStatus.CREATED)
-            }else{
-                ResponseEntity(category, HttpStatus.CREATED)
-            }
+        val savedCategory = categoryService.createCategory(categoryName, questions)
+        if(savedCategory != null){
+            return ResponseEntity(savedCategory, HttpStatus.CREATED)
         }
-        //Returns a Status 400 Bad Request
         return ResponseEntity(null, HttpStatus.BAD_REQUEST)
     }
 
@@ -64,7 +56,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, 
         val newName = category.categoryName
         val id = category.id
         //request category from DB
-        val category = categoryRepo.findByIdOrNull(id)
+        val category = categoryService.getCategoryById(id)
         //Check if categoryName is not null or empty string and check if category is actually in DB
         if(category != null){
             //change category name

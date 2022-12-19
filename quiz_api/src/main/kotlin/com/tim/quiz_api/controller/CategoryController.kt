@@ -68,7 +68,6 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
             //Returns a Status 200 OK
             return ResponseEntity(categoryRepo.save(category), HttpStatus.OK)
         }
-        //TODO find out how to customize error message
         //Returns a Status 400 Bad Request
         return ResponseEntity(null, HttpStatus.BAD_REQUEST)
     }

@@ -6,6 +6,7 @@ import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.repository.CategoryRepo
+import com.tim.quiz_api.service.CategoryService
 import com.tim.quiz_api.util.DtoMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/category")
-class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) {
+class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, val categoryService: CategoryService) {
 
 
     /*
@@ -25,9 +26,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
      */
     @GetMapping()
     fun getAllCategories(): ResponseEntity<List<CategoryDto>> {
-        val categoriesAndQuestions = categoryRepo.findAll()
-        //Map to CategoryMinDto
-        val categories = categoriesAndQuestions.map { CategoryDto(it.id, it.categoryName) }
+        val categories = categoryService.getAllCategories()
         return ResponseEntity(categories, HttpStatus.OK)
     }
 
@@ -84,7 +83,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
 
     @GetMapping("{id}")
     fun findCategoryById(@PathVariable id:String): ResponseEntity<Category> {
-        val category = categoryRepo.findByIdOrNull(id)
+        val category = categoryService.getCategoryById(id)
         return if(category != null){
             ResponseEntity(category, HttpStatus.OK)
         }else{
@@ -98,7 +97,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
      */
     @DeleteMapping("{id}")
     fun deleteCategory(@PathVariable id:String):ResponseEntity<Category>{
-        val category = categoryRepo.findByIdOrNull(id)
+        val category = categoryService.getCategoryById(id)
         if(category != null){
             categoryRepo.deleteById(id)
             return  return ResponseEntity(null, HttpStatus.NO_CONTENT)

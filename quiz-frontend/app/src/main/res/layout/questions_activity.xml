@@ -19,9 +19,11 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/round"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -30,8 +32,10 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
+                android:id="@+id/question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:padding="20dp"
                 android:text="Das ist eine Testfrage. Welche Antwort ist richtig?"
                 tools:ignore="HardcodedText">
@@ -49,6 +53,7 @@
         android:useDefaultMargins="true">
 
         <Button
+            android:id="@+id/answer1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight="0.5"
@@ -56,6 +61,7 @@
             android:text="Antwort 1" />
 
         <Button
+            android:id="@+id/answer2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight="0.5"
@@ -63,6 +69,7 @@
             android:text="Antwort 2" />
 
         <Button
+            android:id="@+id/answer3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight="0.5"
@@ -70,6 +77,7 @@
             android:text="Antwort 3" />
 
         <Button
+            android:id="@+id/answer4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_columnWeight="0.5"

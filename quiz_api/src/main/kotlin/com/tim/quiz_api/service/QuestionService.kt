@@ -23,4 +23,5 @@ class QuestionService @Autowired constructor(val categoryRepo: CategoryRepo) {
     fun getAnswerByByQuestion(questionId:String, categoryId:String){
 
     }
+
 }

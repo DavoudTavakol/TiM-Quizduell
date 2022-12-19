@@ -145,7 +145,18 @@ RequestBody:
 
 ```json lines
 {
-    "categoryName": "Test Test Test"
+  "categoryName": "Allgemeinwissen",
+  "questions": [{
+    "question": "Wer war während des 2. Weltkriegs US-Präsident?",
+    "answers": [{
+      "answer": "Roosevelt",
+      "isAnswerCorrect": true
+    },
+      {
+        "answer": "Washington",
+        "isAnswerCorrect": false
+      }]
+  }]
 }
 ```
 ## READ All Categories 

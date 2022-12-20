@@ -1,10 +1,10 @@
 <script>
 	import SidebarElement from '$lib/SidebarElement.svelte';
 
-	let sidebarElements = [{ title: 'Home' }, { title: 'Kotlin', id: 222 }];
+	export let categories;
 
 	function addCategory() {
-		sidebarElements = [...sidebarElements, { title: 'CC', id: Math.random() * 10000 }];
+		console.log('add category');
 	}
 </script>
 
@@ -12,8 +12,9 @@
 	<div class="border-r flex flex-col h-screen py-6 px-2 w-19 items-center">
 		<img src="https://pocketbase.io/images/logo.svg" alt="logo" class="mb-8" />
 		<div class="flex flex-col flex-1 gap-4 overflow-scroll scrollbar-hide">
-			{#each sidebarElements as element}
-				<SidebarElement title={element.title} id={element.id} />
+			<SidebarElement title="Home" />
+			{#each categories as element}
+				<SidebarElement title={element.categoryName} id={element.id} />
 			{/each}
 		</div>
 

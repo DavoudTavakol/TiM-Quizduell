@@ -18,6 +18,6 @@
 	{#if title === 'Home'}
 		<div class="m-auto text-2xl i-carbon-home" />
 	{:else}
-		<span class="m-auto">{title}</span>
+		<div class="m-auto text-2xl i-carbon-folder" />
 	{/if}
 </a>

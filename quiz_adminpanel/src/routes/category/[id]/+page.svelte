@@ -1,8 +1,11 @@
 <script>
 	import { page } from '$app/stores';
-	let { id } = $page.params;
+
+	$: id = $page.params.id;
 </script>
 
 <main>
-	{id}
+	<span>Wir sind aud der Kategorie mit ID: {id}</span>
+
+	<span>ToDO: Data Fetsch und Table View</span>
 </main>

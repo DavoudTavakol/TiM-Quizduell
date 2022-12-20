@@ -6,6 +6,9 @@
 	import '../app.css';
 	import { onMount } from 'svelte';
 
+	export let data;
+	let { categories } = data;
+
 	onMount(() => {
 		if (window.localStorage.getItem('logedIn') === 'true') {
 			$logedIn = true;
@@ -16,7 +19,7 @@
 <main>
 	{#if $logedIn}
 		<section class="flex">
-			<Sidebar />
+			<Sidebar {categories} />
 			<slot />
 		</section>
 	{:else}

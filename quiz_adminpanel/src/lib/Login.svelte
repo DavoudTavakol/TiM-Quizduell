@@ -7,8 +7,8 @@
 	function handleLogin() {
 		if (username === 'admin' && password === 'admin') {
 			$logedIn = true;
+			localStorage.setItem('logedIn', true);
 		}
-		console.log($logedIn);
 	}
 </script>
 
@@ -21,7 +21,7 @@
 		>&nbsp and Password:&nbsp<span class="font-semibold underline">admin</span>
 	</div>
 
-	<h1 class="font-bold text-2xl">Login</h1>
+	<img src="https://pocketbase.io/images/logo.svg" alt="logo" />
 	<h2 class="mt-10 mb-5">Admin sign in</h2>
 
 	<form action="login" method="POST" class="w-[30%]" on:submit|preventDefault={handleLogin}>

@@ -4,10 +4,17 @@
 	import { logedIn } from '$lib/store.js';
 	import Sidebar from '$lib/Sidebar.svelte';
 	import '../app.css';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		if (window.localStorage.getItem('logedIn') === 'true') {
+			$logedIn = true;
+		}
+	});
 </script>
 
 <main>
-	{#if true}
+	{#if $logedIn}
 		<section class="flex">
 			<Sidebar />
 			<slot />

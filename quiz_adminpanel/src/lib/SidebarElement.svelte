@@ -1,19 +1,18 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
 	import tippy from 'svelte-tippy';
-
-	const dispatch = createEventDispatcher();
+	import { page } from '$app/stores';
 
 	export let title;
-	export let selected;
-	export let index;
+	export let id = null;
+
+	$: link = id ? `/category/${id}` : '/';
+	$: active = $page.url.pathname === link;
 </script>
 
-<button
-	class="border-black rounded-xl cursor-pointer flex h-11 w-11 "
-	class:border-2={selected === index}
-	class:hover:bg-gray-200={selected !== index}
-	on:click={() => dispatch('select', index)}
+<a
+	href={link}
+	class="border-black rounded-xl cursor-pointer flex min-h-11 w-11"
+	class:border-2={active}
 	use:tippy={{ theme: 'own', content: title, placement: 'right', duration: 0 }}
 >
 	{#if title === 'Home'}
@@ -21,4 +20,4 @@
 	{:else}
 		<span class="m-auto">{title}</span>
 	{/if}
-</button>
+</a>

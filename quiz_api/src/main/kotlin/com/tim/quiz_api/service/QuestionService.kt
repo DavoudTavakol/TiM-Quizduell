@@ -15,4 +15,13 @@ class QuestionService @Autowired constructor(val categoryRepo: CategoryRepo) {
     fun getRandomQuestionsLimit(categoryIds:List<String>, limit:Int): List<Question>{
         return listOf<Question>()
     }
+
+    fun getQuestionsById(questionId:String, categoryId:String){
+
+    }
+
+    fun getAnswerByByQuestion(questionId:String, categoryId:String){
+
+    }
+
 }

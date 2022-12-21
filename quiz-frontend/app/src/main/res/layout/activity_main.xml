@@ -73,7 +73,8 @@
         android:layout_gravity="center"
         android:hint="Game ID"
         android:textSize="20dp"
-        android:inputType="number" />
+        android:inputType="number"
+        android:maxLength="6" />
 
     <Button
         android:id="@+id/spielBeitreten"

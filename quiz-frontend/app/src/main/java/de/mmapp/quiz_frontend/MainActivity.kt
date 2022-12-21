@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,12 +18,18 @@ class MainActivity : AppCompatActivity() {
         val eingabeE = findViewById<EditText>(R.id.nicknameEins)
         val eingabeZ = findViewById<EditText>(R.id.nicknameZwei)
 
+        //TODO Button disabeln, wenn Feld leer
         buttonNewGame.setOnClickListener {
             setContentView(R.layout.gameid_screen)
             var nicknameEins = findViewById<TextView>(R.id.willkommenEins)
             val eingabeEins = eingabeE.text.toString()
+            //check if the EditText has values or not
+            if(eingabeEins.trim().length>0) {
+
+            }else{
+                Toast.makeText(applicationContext, "Please enter a nickname! ", Toast.LENGTH_SHORT).show()
+            }
             nicknameEins.setText("Willkommen " + eingabeEins + "!\nLeite die Game ID an deinen Mitspieler weiter.")
-            //Button disabeln
         }
 
         // "Spiel beitreten"

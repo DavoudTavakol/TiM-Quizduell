@@ -1,62 +1,116 @@
 package de.mmapp.quiz_frontend
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-
-// global for nickname
-var nick = ""
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //"Neues Spiel"
+        // Neues Spiel
         val buttonNewGame = findViewById<Button>(R.id.neuesSpiel)
         val eingabeE = findViewById<EditText>(R.id.nicknameEins)
-        val eingabeZ = findViewById<EditText>(R.id.nicknameZwei)
 
-        // test run
-        buttonNewGame.setOnClickListener{
-            nick = eingabeE.text.toString()
+        eingabeE.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            // TODO when ready, change from "LastActivity" to "QuestionActivity"
-            val intent = Intent(this, LastActivity::class.java)
-            startActivity(intent)
-        }
-
-        /*
-        //TODO Button disabeln, wenn Feld leer
-        buttonNewGame.setOnClickListener {
-            setContentView(R.layout.gameid_screen)
-            var nicknameEins = findViewById<TextView>(R.id.willkommenEins)
-            val eingabeEins = eingabeE.text.toString()
-            //check if the EditText has values or not
-            if(eingabeEins.trim().length>0) {
-
-            }else{
-                Toast.makeText(applicationContext, "Please enter a nickname! ", Toast.LENGTH_SHORT).show()
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if (s.isNotEmpty()) {
+                    buttonNewGame.isEnabled = true
+                    buttonNewGame.setOnClickListener {
+                        val nick = eingabeE.text.toString()
+                        // TODO when ready, change from "LastActivity" to "QuestionActivity"
+                        val intent = Intent(this@MainActivity, LastActivity::class.java)
+                        intent.putExtra("nickname", nick)
+                        startActivity(intent)
+                    }
+                } else {
+                    buttonNewGame.isEnabled = false
+                    Toast.makeText(applicationContext, "Du musst einen Nicknamen eingeben! ", Toast.LENGTH_SHORT).show()
+                }
             }
-            nicknameEins.setText("Willkommen " + eingabeEins + "!\nLeite die Game ID an deinen Mitspieler weiter.")
-        }
-         */
+        })
 
-        // "Spiel beitreten"
-        val buttonMenu = findViewById<Button>(R.id.spielBeitreten)
-        buttonMenu.setOnClickListener {
+        // Spiel beitreten
+        val buttonJoinGame = findViewById<Button>(R.id.spielBeitreten)
+        val eingabeZ = findViewById<EditText>(R.id.nicknameZwei)
+        val eingabeID = findViewById<EditText>(R.id.gameID)
+        var boolID = false
+        var boolNick = false
+        // TODO Nickname 1
+        // val textZ = findViewById<TextView>(R.id.spEinsWahlKategorien)
+
+        fun waitingScreen(){
             setContentView(R.layout.waiting_screen)
             var nicknameZwei = findViewById<TextView>(R.id.willkommenZwei)
             val eingabeZwei = eingabeZ.text.toString()
-            nicknameZwei.setText("Willkommen " + eingabeZwei)
+            nicknameZwei.text = "Willkommen " + eingabeZwei
+            //TODO QuestionsActivity starten
             //TODO Nickname 1 auch noch einbinden
-            //something.setText(string + "wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
-            //TODO Button disablen und nur wenn BEIDE Felder ausgefüllt sind, dann klickbar
+            //textZ.setText(Nickname1 + "wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
         }
+
+        fun update (){
+            if(boolID && boolNick){
+                buttonJoinGame.isEnabled = true
+                buttonJoinGame.setOnClickListener {
+                    waitingScreen()
+                }
+            } else {
+                buttonJoinGame.isEnabled = false
+            }
+        }
+
+        eingabeZ.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if (s.isNotEmpty()) {
+                    boolNick = true
+                    update()
+                } else {
+                    boolNick = false
+                    update()
+                    Toast.makeText(applicationContext, "Du musst einen Nicknamen eingeben! ", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        eingabeID.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if (s.length == 6) {
+                    boolID = true
+                    update()
+                } else {
+                    boolID = false
+                    update()
+                    Toast.makeText(applicationContext, "Du musst eine Game ID eingeben! ", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 }
+
 

@@ -17,6 +17,7 @@ class LastActivity : AppCompatActivity() {
         // display winner
         // for test run: instead of winner just players nickname
         val winner = findViewById<TextView>(R.id.whoWon)
+        val nick = intent.getStringExtra("nickname")
         winner.setText(nick);
         // TODO show real nickname of winner
         // who was previously written in main screen

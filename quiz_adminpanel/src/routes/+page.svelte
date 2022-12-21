@@ -1,5 +1,9 @@
+<script>
+	import Navbar from '$lib/Navbar.svelte';
+</script>
+
 <main class="h-full w-full py-10 px-8">
-	<h1 class="text-lg mb-5">Home</h1>
+	<Navbar title="Home" />
 	<div class="flex flex-col">
 		<section class="flex text-xl w-full px-10">
 			<div class="rounded flex bg-gray-100 m-2 w-full p-10 justify-between items-center">

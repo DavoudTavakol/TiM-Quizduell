@@ -1,7 +1,8 @@
 <script>
 	import '@unocss/reset/tailwind.css';
 	import Login from '$lib/Login.svelte';
-	import { logedIn } from '$lib/store.js';
+	import Overlay from '$lib/Overlay.svelte';
+	import { logedIn, overlayOpen } from '$lib/store.js';
 	import Sidebar from '$lib/Sidebar.svelte';
 	import '../app.css';
 	import { onMount } from 'svelte';
@@ -18,8 +19,11 @@
 
 <main>
 	{#if $logedIn}
-		<section class="flex">
+		<section class="flex relative">
 			<Sidebar {categories} />
+			{#if $overlayOpen}
+				<Overlay />
+			{/if}
 			<slot />
 		</section>
 	{:else}

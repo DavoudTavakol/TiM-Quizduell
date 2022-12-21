@@ -1,4 +1,5 @@
 <script>
+	import { overlayOpen } from '$lib/store.js';
 	export let title;
 
 	let words = title.split('/');
@@ -15,11 +16,16 @@
 				{words[1]}
 			</span>
 		</h1>
-		<button class="text-lg i-carbon-renew" />
+		<button class="text-lg i-ri-settings-4-line" />
+		<button class="text-lg i-ri-refresh-line" />
 	</section>
 
 	<section>
-		<button class="bg-white border-black rounded font-semibold border-2 text-sm py-2 px-6">
+		<button
+			class="bg-white border-black rounded flex font-semibold border-2 text-sm py-2 px-6 gap-2 items-center"
+			on:click={() => ($overlayOpen = true)}
+		>
+			<div class="i-ri-add-line" />
 			New Question
 		</button>
 	</section>

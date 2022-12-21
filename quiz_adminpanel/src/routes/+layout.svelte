@@ -19,7 +19,7 @@
 
 <main>
 	{#if $logedIn}
-		<section class="flex relative">
+		<section class="flex relative overflow-x-hidden">
 			<Sidebar {categories} />
 			{#if $overlayOpen}
 				<Overlay />

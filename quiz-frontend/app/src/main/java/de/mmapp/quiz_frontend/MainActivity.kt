@@ -1,5 +1,6 @@
 package de.mmapp.quiz_frontend
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -7,6 +8,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 
+// global for nickname
+var nick = ""
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +21,16 @@ class MainActivity : AppCompatActivity() {
         val eingabeE = findViewById<EditText>(R.id.nicknameEins)
         val eingabeZ = findViewById<EditText>(R.id.nicknameZwei)
 
+        // test run
+        buttonNewGame.setOnClickListener{
+            nick = eingabeE.text.toString()
+
+            // TODO when ready, change from "LastActivity" to "QuestionActivity"
+            val intent = Intent(this, LastActivity::class.java)
+            startActivity(intent)
+        }
+
+        /*
         //TODO Button disabeln, wenn Feld leer
         buttonNewGame.setOnClickListener {
             setContentView(R.layout.gameid_screen)
@@ -31,6 +44,7 @@ class MainActivity : AppCompatActivity() {
             }
             nicknameEins.setText("Willkommen " + eingabeEins + "!\nLeite die Game ID an deinen Mitspieler weiter.")
         }
+         */
 
         // "Spiel beitreten"
         val buttonMenu = findViewById<Button>(R.id.spielBeitreten)

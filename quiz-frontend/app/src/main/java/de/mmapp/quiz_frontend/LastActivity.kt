@@ -5,6 +5,7 @@ package de.mmapp.quiz_frontend
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,7 +17,7 @@ class LastActivity : AppCompatActivity() {
         // display winner
         // for test run: instead of winner just players nickname
         val winner = findViewById<TextView>(R.id.whoWon)
-        winner.setText("'Nickname' hat gewonnen");
+        winner.setText(nick);
         // TODO show real nickname of winner
         // who was previously written in main screen
 
@@ -31,8 +32,11 @@ class LastActivity : AppCompatActivity() {
         val rank = findViewById<TextView>(R.id.rank)
         val name = findViewById<TextView>(R.id.name)
         val highscore = findViewById<TextView>(R.id.points)
+
+        val row = findViewById<TableRow>(R.id.tableRow)
         // TODO show table with real content in real order
         // *add new row of content when other player finished game and order it
+        // !just 10 rows in the table(?)
 
         //"Erneut spielen"
         // for test run: instead of "Kategorien"-Screen use "Fragen"-Screen

@@ -1,7 +1,8 @@
 package com.tim.quiz_api.service
 
-import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.util.DtoMapper
@@ -27,9 +28,9 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
         return categoryRepo.findByIdOrNull(id)
     }
 
-    fun createCategory(categoryName: String, questions: List<QuestionDto>): Category? {
+    fun createCategory(categoryName: String, questions: List<QuestionMinDto>): Category? {
         if (categoryName.isNotEmpty() && categoryName.isNotBlank()) {
-            var category = categoryRepo.save(Category(categoryName, listOf()))
+            var category = categoryRepo.save(Category(categoryName, mutableListOf()))
             return if (questions.isNotEmpty()) {
                 category.questions = DtoMapper.questionsDtoToQuestions(questions, category.id)
                 categoryRepo.save(category)

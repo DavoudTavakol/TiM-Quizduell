@@ -257,31 +257,22 @@ Response:
 *EMPTY*
 ```
 
-## CREATE Questions (multiple)
+## CREATE Question
 POST-Request:
 ```
-localhost:8085/api/questions
+localhost:8085/api/questions/create
 ```
 RequestBody:
 ```json lines
 {
-  categoryId: "1231234",
-  questions: [
-    {
-      question: "Question Text",
-      answers: [
-        {
-          answer: "Answer Text",
-          isCorrectAnswer: false
-        }
-      ]
-    }
-  ]
+  "question": "Hallo",
+  "answer": [],
+  "categoryId": "54800863-0db5-472e-8799-4c6ee439b665"
 }
 ```
 Response:
 ```json lines
-200 OK
+201 Created
 ```
 
 ## READ Questions
@@ -295,30 +286,27 @@ RequestBody:
 ```
 Response:
 ```json lines
-[
-  {
-    id: "1234567",
-    question: "Question Text",
-    answers: [
-      {
-        answer: "Answer Text",
-        isCorrectAnswer: false
-      }
-    ],
-    categoryId: "9876543"
-  },
-  {
-    id: "6622222",
-    question: "Question Text 2",
-    answers: [
-      {
-        answer: "Answer Text",
-        isCorrectAnswer: false
-      }
-    ],
-    categoryId: "9876543"
-  }
-]
+{
+  "categoryName": "Schätzfragen",
+  "questions": [
+    {
+      "question": "Wie viele Weihnachtsbäume werden in Deutschland pro Jahr verkauft?",
+      "answer": [
+        {
+          "answer": "Etwa 30 Millionen",
+          "isAnswerCorrect": true
+        },
+        {
+          "answer": "Etwa 10 Millionen",
+          "isAnswerCorrect": false
+        }
+      ],
+      "categoryId": "54800863-0db5-472e-8799-4c6ee439b665",
+      "id": "12d38f34-be51-4909-8c04-a43440f497d1"
+    }
+  ],
+  "countQuestions": 3
+}
 ```
 
 ## UPDATE Question
@@ -328,16 +316,26 @@ localhost:8085/api/questions
 ```
 RequestBody:
 ```json lines
- {
-  id: "1234567",
-  question: "Question Text",
-  answers: [
+{
+  "categoryName": "Schätzfragen",
+  "questions": [
     {
-      answer: "Answer Text",
-      isCorrectAnswer: false
-    }
+      "question": "Wie viele Weihnachtsbäume werden in Deutschland pro Jahr verkauft?",
+      "answer": [
+        {
+          "answer": "Etwa 30 Millionen",
+          "isAnswerCorrect": true
+        },
+        {
+          "answer": "Etwa 10 Millionen",
+          "isAnswerCorrect": false
+        }
+      ],
+      "categoryId": "54800863-0db5-472e-8799-4c6ee439b665",
+      "id": "12d38f34-be51-4909-8c04-a43440f497d1"
+    },
   ],
-  categoryId: "9876543"
+  "countQuestions": 1
 }
 ```
 Response:

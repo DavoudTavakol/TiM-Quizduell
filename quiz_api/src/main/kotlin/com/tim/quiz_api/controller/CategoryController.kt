@@ -2,8 +2,9 @@ package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.CategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
-import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.service.CategoryService
@@ -40,7 +41,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, 
     @PostMapping("/create")
     fun createCategory(@RequestBody category: CreateCategoryDto): ResponseEntity<Category> {
         val categoryName = category.categoryName
-        val questions:List<QuestionDto> = category.questions
+        val questions:List<QuestionMinDto> = category.questions
         val savedCategory = categoryService.createCategory(categoryName, questions)
         if(savedCategory != null){
             return ResponseEntity(savedCategory, HttpStatus.CREATED)

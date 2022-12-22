@@ -1,6 +1,7 @@
 <script>
 	import { overlayOpen } from '$lib/store.js';
 	import { fly } from 'svelte/transition';
+	import InputText from '$lib/InputText.svelte';
 
 	function handleClose() {
 		overlayOpen.set(false);
@@ -23,70 +24,15 @@
 			<h1 class="text-lg py-6 px-8">Add new <span class="font-semibold">Question</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<div class="rounded flex flex-col bg-gray-200 mb-6 py-2 px-4 gap-2">
-						<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">
-							<div class="i-ri-text" />
-							Question</label
-						>
-						<input
-							class="bg-transparent focus:outline-none"
-							type="textarea"
-							name="username"
-							id="username"
-						/>
-					</div>
+					<InputText label={'Question'} class="i-ri-text" />
 
-					<div class="rounded flex flex-col bg-gray-200 mb-6 py-2 px-4 gap-2">
-						<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">
-							<div class="i-ri-text" />
-							Answer A</label
-						>
-						<input
-							class="bg-transparent focus:outline-none"
-							type="textarea"
-							name="username"
-							id="username"
-						/>
-					</div>
+					<InputText label={'Answer A'} class="i-ri-text" />
 
-					<div class="rounded flex flex-col bg-gray-200 mb-6 py-2 px-4 gap-2">
-						<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">
-							<div class="i-ri-text" />
-							Answer B</label
-						>
-						<input
-							class="bg-transparent focus:outline-none"
-							type="textarea"
-							name="username"
-							id="username"
-						/>
-					</div>
+					<InputText label={'Answer B'} class="i-ri-text" />
 
-					<div class="rounded flex flex-col bg-gray-200 mb-6 py-2 px-4 gap-2">
-						<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">
-							<div class="i-ri-text" />
-							Answer C</label
-						>
-						<input
-							class="bg-transparent focus:outline-none"
-							type="textarea"
-							name="username"
-							id="username"
-						/>
-					</div>
+					<InputText label={'Answer C'} class="i-ri-text" />
 
-					<div class="rounded flex flex-col bg-gray-200 mb-6 py-2 px-4 gap-2">
-						<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">
-							<div class="i-ri-text" />
-							Answer D</label
-						>
-						<input
-							class="bg-transparent focus:outline-none"
-							type="textarea"
-							name="username"
-							id="username"
-						/>
-					</div>
+					<InputText label={'Answer D'} class="i-ri-text" />
 
 					<div class="rounded flex bg-gray-200 mb-6 py-2 px-4 gap-2  justify-around">
 						<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">

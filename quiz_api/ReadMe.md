@@ -120,16 +120,14 @@ RequestBody:
 - [X] Update Category (name)
 - [X] Read one Category (with Questions)
 - [X] Delete Category
-- [ ] Count All Categories
 
 #### Roadmap Question API
 
-- [ ] Create Questions (multiple)
-- [ ] Read all questions
+- [X] Create Question
+- [X] Read all questions
 - [ ] Update question
 - [ ] Delete Question
 - [ ] Read Question
-- [ ] Count All Questions
 
 
 
@@ -387,29 +385,3 @@ Response:
 }
 ```
 
-## COUNT ALL QUESTIONS
-DELETE-Request:
-```
-
-```
-RequestBody:
-```json lines
-
-```
-Response:
-```json lines
-
-```
-## COUNT ALL CATEGORIES
-DELETE-Request:
-```
-
-```
-RequestBody:
-```json lines
-
-```
-Response:
-```json lines
-
-```

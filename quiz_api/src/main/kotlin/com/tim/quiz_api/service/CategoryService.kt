@@ -1,14 +1,12 @@
 package com.tim.quiz_api.service
 
-import com.tim.quiz_api.controller.dto.CategoryAPI.CategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.util.DtoMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,9 +15,9 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
     /*
         Returns CategoryDto (CategoryName and ID) without Questions
      */
-    fun getAllCategories(): List<CategoryDto> {
+    fun getAllCategories(): List<CategoryMinDto> {
         val categoriesAndQuestions = categoryRepo.findAll()
-        return categoriesAndQuestions.map { CategoryDto(it.id, it.categoryName) }
+        return categoriesAndQuestions.map { CategoryMinDto(it.id, it.categoryName) }
     }
 
     /*

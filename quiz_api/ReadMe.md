@@ -172,16 +172,23 @@ RequestBody:
 ```
 Response:
 ```json lines
-[
-  {
-    "categoryName": "Fragen zum Thema Programmieren in Kotlin",
-    "id": "942f3c05-bba2-47dc-8b37-11dc8847a1b5"
-  },
-  {
-    "categoryName": "Fragen zum Thema Mathematik",
-    "id": "11dc8847a1b5-bba2-47dc-8b37-47dc"
-  }
-]
+{
+  "categories": [
+    {
+      "id": "54800863-0db5-472e-8799-4c6ee439b665",
+      "categoryName": "Schätzfragen"
+    },
+    {
+      "id": "c13be76d-ffce-4a91-b3df-9c66fe7d3fa5",
+      "categoryName": "Allgemeinwissen"
+    },
+    {
+      "id": "5cd67945-ed50-47fd-a476-fddc125bae76",
+      "categoryName": "Allgemeinwissen 2"
+    }
+  ],
+  "countCategories": 3
+}
 ```
 
 ## UPDATE Existing Category 
@@ -218,7 +225,16 @@ Response:
   "questions": [
     {
       "question": "Question Title",
-      "answer": [],
+      "answer": [
+        {
+          answer: "Answer Text 1",
+          isCorrectAnswer: true
+        },
+        {
+          answer: "Answer Text 2",
+          isCorrectAnswer: false
+        }
+      ],
       "categoryId": "942f3c05-bba2-47dc-8b37-11dc8847a1b5",
       "id": "0f8e484d-e3e6-442b-95e6-2ca6c0a59e7b"
     }

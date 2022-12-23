@@ -50,8 +50,8 @@ class LastActivity : AppCompatActivity() {
         // for test run: instead of "Kategorien"-Screen use "Fragen"-Screen
         val buttonNewGame = findViewById<Button>(R.id.btn1)
         buttonNewGame.setOnClickListener {
-            //val intent = Intent(this, //Kategorien Activity)
-            //startActivity(intent)
+            val intent = Intent(this, Question::class.java)
+            startActivity(intent)
         }
         // TODO create intent to "Kategorie" screen for p1 and to waiting screen for p2
 

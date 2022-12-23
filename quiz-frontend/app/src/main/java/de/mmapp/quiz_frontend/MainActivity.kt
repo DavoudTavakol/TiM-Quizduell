@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                     buttonNewGame.setOnClickListener {
                         val nick = eingabeE.text.toString()
                         // TODO when ready, change from "LastActivity" to "QuestionActivity"
-                        val intent = Intent(this@MainActivity, LastActivity::class.java)
+                        val intent = Intent(this@MainActivity, Question::class.java)
                         intent.putExtra("nickname", nick)
                         startActivity(intent)
                     }

@@ -9,6 +9,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import de.mmapp.quiz_frontend.models.Game
 import kotlinx.coroutines.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -74,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         // TODO Nickname 1
         // val textZ = findViewById<TextView>(R.id.spEinsWahlKategorien)
 
-        fun waitingScreen(){
+        fun waitingScreen(nickname1 : String){
             setContentView(R.layout.waiting_screen)
             var nicknameZwei = findViewById<TextView>(R.id.willkommenZwei)
             val eingabeZwei = eingabeZ.text.toString()
@@ -88,7 +91,18 @@ class MainActivity : AppCompatActivity() {
             if(boolID && boolNick){
                 buttonJoinGame.isEnabled = true
                 buttonJoinGame.setOnClickListener {
-                    waitingScreen()
+
+                    var game : Game
+                    GlobalScope.launch(Dispatchers.Main) {
+                        game = connectToGameRequest("mee", "942536")
+                        println(game)
+                        waitingScreen(game.player1.nickname)
+
+
+                    }
+
+
+
                 }
             } else {
                 buttonJoinGame.isEnabled = false
@@ -157,12 +171,12 @@ class MainActivity : AppCompatActivity() {
 
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val data : String = response.body!!.string()
-            gameId = data.substring(11,17)
+            val mapper = jacksonObjectMapper()
 
-            println("=============")
-
-            // gameId = data.subs
+            var game: Game = mapper.readValue(response.body.string())
+            println(game)
+            println(game.gameId)
+            gameId = game.gameId
 
         }
 
@@ -173,7 +187,48 @@ class MainActivity : AppCompatActivity() {
     }.await()
 
 
+    private suspend fun connectToGameRequest(nickname : String, gameId : String): Game = GlobalScope.async(Dispatchers.IO) {
+
+        val jsonBody :String = """
+             {
+                 "gameId": "$gameId",
+                 "player2" : {
+                    "nickname" : "$nickname"
+                 }
+             }
+             
+         """.trimIndent()
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8085/game/connect")
+            .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+            .build()
+
+        var game : Game
+
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val mapper = jacksonObjectMapper()
+
+            game = mapper.readValue(response.body.string())
+
+
+
+        }
+
+
+        return@async game
+
+
+    }.await()
+
+
+
 
 }
+
+
 
 

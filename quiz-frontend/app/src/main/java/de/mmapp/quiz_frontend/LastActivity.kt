@@ -5,7 +5,6 @@ package de.mmapp.quiz_frontend
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -50,7 +49,7 @@ class LastActivity : AppCompatActivity() {
         // for test run: instead of "Kategorien"-Screen use "Fragen"-Screen
         val buttonNewGame = findViewById<Button>(R.id.btn1)
         buttonNewGame.setOnClickListener {
-            val intent = Intent(this, Question::class.java)
+            val intent = Intent(this, QuestionActivity::class.java)
             startActivity(intent)
         }
         // TODO create intent to "Kategorie" screen for p1 and to waiting screen for p2

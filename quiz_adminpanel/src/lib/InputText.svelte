@@ -9,11 +9,22 @@
 		<div class={$$props.class} />
 		<span>{label}</span>
 	</label>
-	<input
-		class="bg-transparent focus:outline-none"
-		type="text"
-		name="username"
-		id="username"
-		bind:value
-	/>
+
+	{#if type === 'password'}
+		<input
+			class="bg-transparent focus:outline-none"
+			type="password"
+			name="username"
+			id="username"
+			bind:value
+		/>
+	{:else}
+		<input
+			class="bg-transparent focus:outline-none"
+			type="text"
+			name="username"
+			id="username"
+			bind:value
+		/>
+	{/if}
 </div>

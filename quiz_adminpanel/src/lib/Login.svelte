@@ -27,7 +27,7 @@
 
 	<form action="login" method="POST" class="w-[30%]" on:submit|preventDefault={handleLogin}>
 		<InputText label="Username" bind:value={username} />
-		<InputText label="Password" bind:value={password} />
+		<InputText label="Password" bind:value={password} type={'password'} />
 
 		<button
 			class="bg-black rounded flex font-bold text-sm text-white w-full p-4 transition-all gap-3 duration-250 items-center justify-center"

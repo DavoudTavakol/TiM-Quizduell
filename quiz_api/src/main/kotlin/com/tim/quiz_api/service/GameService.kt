@@ -1,7 +1,5 @@
 package com.tim.quiz_api.service
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.tim.quiz_api.controller.dto.StartRequest
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.GameRepo
@@ -21,8 +19,6 @@ class GameService {
             startRequest.categories,
             mutableListOf<Question>(),
             GameStatus.NEW,
-            answers1 = listOf(),
-            answers2 = listOf()
             )
         GameRepo.games.put(game.gameId,game)
 
@@ -43,18 +39,24 @@ class GameService {
 
     }
 
-    fun submitAnswers(gameId : String , nickname : String ,answers : List<Answer> ) : Game? {
+    fun submitAnswers(gameId : String , nickname : String ,answers : List<Answer>, time : Float ) : Game? {
 
         var game : Game? = GameRepo.getGame(gameId)
         if (game != null) {
 
-            if (nickname == game.player1.nickname) {
-                game.answers1 = answers
-            } else if (nickname == game.player2.nickname){
-                game.answers2 = answers
-                game.gameStatus = GameStatus.FINISHED
+            var score = getScore(answers, time)
 
+            if (nickname == game.player1.nickname) {
+                game.player1.answers = answers
+                game.player1.score = score
+                game.player1.time = time
+            } else if (nickname == game.player2.nickname){
+                game.player2.answers = answers
+                game.player2.score = score
+                game.player2.time = time
+                game.gameStatus = GameStatus.FINISHED
             }
+
         }
         return  game
     }
@@ -81,6 +83,29 @@ class GameService {
         }
 
         return listOf(game.player1, game.player2)
+    }
+
+    fun getScore(answers : List<Answer>, timeNeeded : Float): Int{
+        var correctAnswers = getCorrectAnswerCount(answers)
+        return calculateScore(correctAnswers, timeNeeded)
+    }
+
+    fun getCorrectAnswerCount(answers : List<Answer>): Int{
+        var correctAnswers = 0
+        for (answer in answers){
+            if(answer.isAnswerCorrect) correctAnswers+=1
+        }
+
+        return correctAnswers
+    }
+
+    fun calculateScore(correctAnswers : Int = 0, timeNeeded : Float = 60.0f): Int{
+
+        if(correctAnswers == 0) return 0
+
+        if(correctAnswers == 10) return ((60 - timeNeeded) * 10 + 200).toInt()
+
+        return ((60 - timeNeeded) / (10 - correctAnswers) * 10 + correctAnswers * 10).toInt()
     }
 
 }

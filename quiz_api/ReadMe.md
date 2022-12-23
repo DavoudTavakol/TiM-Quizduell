@@ -4,6 +4,7 @@
 ## Inhaltsverzeichnis:
 
 - [Game API](#game-api)
+- [Highscore](#highscore)
 - [Category and Questions API](#cat-and-que-api)
 ___
 
@@ -110,6 +111,37 @@ RequestBody:
     ]
 }
 ```
+
+<h1 id="highscore">Highscores</h1>
+
+## Get Top Ten (DESC)
+POST-Request:
+```
+localhost:8085/api/highscore/getTopTen
+```
+RequestBody:
+```json lines
+*EMPTY*
+```
+Response:
+```json lines
+ {
+  [
+    {
+        "score": 63,
+        "nickname": "name",
+        "id": "63a5b5c8fa8a3f8a9a85e680"
+    },
+    {
+        "score": 55,
+        "nickname": "postman",
+        "id": "6dad676a-90b4-451d-88d3-89c82e768066"
+    },
+    ...
+]
+}
+```
+
 
 <h1 id="cat-and-que-api">Category and Question API</h1>
 

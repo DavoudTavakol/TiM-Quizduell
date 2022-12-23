@@ -1,14 +1,12 @@
 package com.tim.quiz_api.controller
 
-import com.mongodb.client.MongoDatabase
 import com.tim.quiz_api.controller.dto.*
-import com.tim.quiz_api.data.Category
-import com.tim.quiz_api.data.Game
-import com.tim.quiz_api.data.Player
+import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.service.GameService
+import com.tim.quiz_api.service.HighscoreService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,9 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/game")
-class GameController @Autowired constructor(val categoryRepo: CategoryRepo, private final val gameService: GameService
+class GameController @Autowired constructor(val categoryRepo: CategoryRepo, val highscoreService : HighscoreService, private final val gameService: GameService
 ) {
-
 
     @PostMapping("/create")
     fun createGame(@RequestBody startRequest: StartRequest ) :
@@ -52,8 +49,17 @@ class GameController @Autowired constructor(val categoryRepo: CategoryRepo, priv
     @PostMapping("/submitanswers")
     fun submitAnswers(@RequestBody request : SubmitRequest ):
             ResponseEntity<Game> {
-        return ResponseEntity.ok(gameService?.submitAnswers(request.gameId, request.nickname, request.answers))
+
+        var game = gameService?.submitAnswers(request.gameId, request.nickname, request.answers, request.time)
+
+        if(game != null && game.gameStatus === GameStatus.FINISHED){
+            highscoreService.updateHighscore(game.player1.score, game.player1.nickname)
+            highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
+        }
+
+        return ResponseEntity.ok(game)
     }
+
     @GetMapping("/categories")
     fun getAllCategories(): ResponseEntity<MutableList<String>> {
         val categories = categoryRepo.findAll() as List<Category>

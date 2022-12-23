@@ -1,3 +1,5 @@
 package com.tim.quiz_api.controller.dto.CategoryAPI
 
-data class CategoryDto (val id:String, val categoryName:String)
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
+
+data class CategoryDto (val categories: List<CategoryMinDto>, val countCategories:Int)

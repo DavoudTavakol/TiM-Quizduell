@@ -106,7 +106,9 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     boolID = false
                     update()
-                    Toast.makeText(applicationContext, "Du musst eine Game ID eingeben! ", Toast.LENGTH_SHORT).show()
+                    if (s.isEmpty()) {
+                        Toast.makeText(applicationContext, "Du musst eine 6-stellige Game ID eingeben! ", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })

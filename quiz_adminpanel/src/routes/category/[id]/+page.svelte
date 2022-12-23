@@ -26,7 +26,12 @@
 										<span>ID</span>
 									</div>
 								</th>
-								<th class="table-header"> Question </th>
+								<th class="table-header">
+									<div class="flex gap-2 items-center">
+										<div class="i-ri-question-line" />
+										<span>Question</span>
+									</div>
+								</th>
 								<th class="table-header"> A </th>
 								<th class="table-header"> B </th>
 								<th class="table-header"> C </th>

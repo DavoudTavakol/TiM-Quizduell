@@ -1,4 +1,5 @@
 <script>
+	import InputText from '$lib/InputText.svelte';
 	import { logedIn } from '$lib/store.js';
 
 	let username = '';
@@ -25,27 +26,8 @@
 	<h2 class="mt-10 mb-5">Admin sign in</h2>
 
 	<form action="login" method="POST" class="w-[30%]" on:submit|preventDefault={handleLogin}>
-		<div class="rounded flex flex-col bg-gray-200 mb-6 py-2 px-4 gap-2">
-			<label class="text-xs text-gray-500" for="username">Username</label>
-			<input
-				class="bg-transparent focus:outline-none"
-				type="text"
-				name="username"
-				id="username"
-				bind:value={username}
-			/>
-		</div>
-
-		<div class="rounded flex flex-col bg-gray-200 mb-10 py-2 px-4 gap-2">
-			<label class="text-xs text-gray-500" for="username">Password</label>
-			<input
-				class="bg-transparent focus:outline-none"
-				bind:value={password}
-				type="password"
-				name="password"
-				id="password"
-			/>
-		</div>
+		<InputText label="Username" bind:value={username} />
+		<InputText label="Password" bind:value={password} />
 
 		<button
 			class="bg-black rounded flex font-bold text-sm text-white w-full p-4 transition-all gap-3 duration-250 items-center justify-center"

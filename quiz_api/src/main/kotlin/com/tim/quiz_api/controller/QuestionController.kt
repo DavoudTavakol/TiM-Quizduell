@@ -1,14 +1,18 @@
 package com.tim.quiz_api.controller
 
 
-import com.mongodb.client.FindIterable
 import com.mongodb.client.MongoDatabase
+import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
 import com.tim.quiz_api.data.Question
-import org.bson.Document
+import com.tim.quiz_api.service.QuestionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -19,14 +23,22 @@ sondern um eine Schnittstelle zu Kennzeichnen
 Hier findet sich das API-Team wieder!
  */
 @RestController
-@RequestMapping("/questions")
-class QuestionController @Autowired constructor(var mongoTemplate: MongoTemplate) {
+@RequestMapping("api/questions")
+class QuestionController @Autowired constructor(var mongoTemplate: MongoTemplate, val questionService: QuestionService,) {
     var db:MongoDatabase = mongoTemplate.db;
 
-    @GetMapping("{collectionName}")
-    fun getQuestionsByCategory(@PathVariable collectionName: String): List<Document> {
-        return db.getCollection(collectionName).find().toList()
+    @GetMapping("{categoryId}")
+    fun getQuestionsByCategory(@PathVariable categoryId: String): QuestionListDto? {
+        return questionService.getQuestionsByCategoryId(categoryId)
     }
+
+    @PostMapping("/create")
+    fun createQuestionInCategory(@RequestBody question: Question): ResponseEntity<Nothing> {
+        println(question)
+        questionService.createQuestionInCategory(question)
+        return ResponseEntity(null, HttpStatus.CREATED)
+    }
+
     /*@GetMapping("/create/{collectionName}")
     fun createTestDoc(@PathVariable collectionName:String): MutableList<Question> {
         val questions = listOf(

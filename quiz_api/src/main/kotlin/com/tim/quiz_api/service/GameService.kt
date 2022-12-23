@@ -1,7 +1,5 @@
 package com.tim.quiz_api.service
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.tim.quiz_api.controller.dto.StartRequest
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.GameRepo
@@ -21,8 +19,6 @@ class GameService {
             startRequest.categories,
             mutableListOf<Question>(),
             GameStatus.NEW,
-            answers1 = listOf(),
-            answers2 = listOf()
             )
         GameRepo.games.put(game.gameId,game)
 
@@ -51,13 +47,13 @@ class GameService {
             var score = getScore(answers, time)
 
             if (nickname == game.player1.nickname) {
-                game.answers1 = answers
-                game.score1 = score
-                game.time1 = time
+                game.player1.answers = answers
+                game.player1.score = score
+                game.player1.time = time
             } else if (nickname == game.player2.nickname){
-                game.answers2 = answers
-                game.score2 = score
-                game.time2 = time
+                game.player2.answers = answers
+                game.player2.score = score
+                game.player2.time = time
                 game.gameStatus = GameStatus.FINISHED
             }
 
@@ -91,7 +87,7 @@ class GameService {
 
     fun getScore(answers : List<Answer>, timeNeeded : Float): Int{
         var correctAnswers = getCorrectAnswerCount(answers)
-        return calculateScore(correctAnswers.toFloat(), timeNeeded)
+        return calculateScore(correctAnswers, timeNeeded)
     }
 
     fun getCorrectAnswerCount(answers : List<Answer>): Int{
@@ -103,9 +99,9 @@ class GameService {
         return correctAnswers
     }
 
-    fun calculateScore(correctAnswers : Float = 0.0f, timeNeeded : Float = 60.0f): Int{
+    fun calculateScore(correctAnswers : Int = 0, timeNeeded : Float = 60.0f): Int{
 
-        if(correctAnswers == 0.0f) return 0
+        if(correctAnswers == 0) return 0
 
         if(correctAnswers == 10) return ((60 - timeNeeded) * 10 + 200).toInt()
 

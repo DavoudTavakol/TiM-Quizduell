@@ -1,14 +1,12 @@
 package com.tim.quiz_api.controller
 
-import com.mongodb.client.MongoDatabase
 import com.tim.quiz_api.controller.dto.*
-import com.tim.quiz_api.data.Category
-import com.tim.quiz_api.data.Game
-import com.tim.quiz_api.data.Player
+import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.service.GameService
+import com.tim.quiz_api.service.HighscoreService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/game")
-class GameController @Autowired constructor(val categoryRepo: CategoryRepo, val highscoreRepo : HighscoreRepo, private final val gameService: GameService
+class GameController @Autowired constructor(val categoryRepo: CategoryRepo, val highscoreService : HighscoreService, private final val gameService: GameService
 ) {
 
     @PostMapping("/create")
@@ -54,39 +52,12 @@ class GameController @Autowired constructor(val categoryRepo: CategoryRepo, val 
 
         var game = gameService?.submitAnswers(request.gameId, request.nickname, request.answers, request.time)
 
-        if(game.gameStatus == GameStatus.FINISHED){
-            var highscoreList = highscoreRepo.findAll(Sort.by(Sort.Direction.DEC, "score")) as List<Score>
-            updateHighscore(highscoreList, game.score1, game.player1.nickname)
-            updateHighscore(highscoreList, game.score2, game.player2.nickname)
+        if(game != null && game.gameStatus === GameStatus.FINISHED){
+            highscoreService.updateHighscore(game.player1.score, game.player1.nickname)
+            highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
         }
 
         return ResponseEntity.ok(game)
-    }
-
-    fun updateHighscore(highscoreList: List<Score>, score: Int, nickname: String){
-        if(score < highscoreList[highscoreList.size - 1].score)return
-
-        if(highscoreList.size < 10){
-            val scoreData = Score(score, nickname)
-            highscoreRepo.save(scoreData)
-            return
-        }
-
-        for(highscore in highscoreList){
-            if(highscore < score){
-                highscore.nickname = nickname
-                highscore.score = score
-                highscoreRepo.save(highscore)
-                return
-            }
-        }
-
-    }
-
-    @GetMapping("/highscores")
-    fun getHighscoreList(): ResponseEntity<List<Score>>{
-        val highscores = highscoreRepo.findAll(Sort.by(Sort.Direction.DEC, "score")) as List<Score>
-        return ResponseEntity<List<Score>>(highscores, HttpStatus.OK)
     }
 
     @GetMapping("/categories")

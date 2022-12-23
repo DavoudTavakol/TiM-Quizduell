@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.util.*
 
-
+@Document("highscores")
 data class Score(
     val score : Int,
     val nickname : String,

@@ -18,9 +18,6 @@ class GameRepo() {
                  listOf<String>(),
                  mutableListOf<Question>(),
                  gameStatus = GameStatus.NEW,
-                 answers1 = listOf(),
-                 answers2 = listOf(),
-
              ))
 
 

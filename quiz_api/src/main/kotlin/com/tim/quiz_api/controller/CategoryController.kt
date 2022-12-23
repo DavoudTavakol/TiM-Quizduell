@@ -2,14 +2,13 @@ package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.CategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
-import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
 import com.tim.quiz_api.data.Category
-import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.service.CategoryService
-import com.tim.quiz_api.util.DtoMapper
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -25,8 +24,10 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, 
         Liefert alle Kategorie ohne Fragen aus der Collection "categories" zurück
      */
     @GetMapping()
-    fun getAllCategories(): ResponseEntity<List<CategoryDto>> {
-        val categories = categoryService.getAllCategories()
+    fun getAllCategories(): ResponseEntity<CategoryDto> {
+        val categoriesMinDto = categoryService.getAllCategories()
+        val numberOfCategories = categoriesMinDto.count()
+        val categories = CategoryDto(categoriesMinDto, numberOfCategories)
         return ResponseEntity(categories, HttpStatus.OK)
     }
 
@@ -40,7 +41,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, 
     @PostMapping("/create")
     fun createCategory(@RequestBody category: CreateCategoryDto): ResponseEntity<Category> {
         val categoryName = category.categoryName
-        val questions:List<QuestionDto> = category.questions
+        val questions:List<QuestionMinDto> = category.questions
         val savedCategory = categoryService.createCategory(categoryName, questions)
         if(savedCategory != null){
             return ResponseEntity(savedCategory, HttpStatus.CREATED)
@@ -52,7 +53,7 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, 
         Updated eine bereits bestehende Category
      */
     @PutMapping("/update")
-    fun updateCategory(@RequestBody category: CategoryDto): ResponseEntity<Category> {
+    fun updateCategory(@RequestBody category: CategoryMinDto): ResponseEntity<Category> {
         val newName = category.categoryName
         val id = category.id
         //request category from DB

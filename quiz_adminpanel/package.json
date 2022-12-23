@@ -15,19 +15,20 @@
 		"@iconify-json/twemoji": "^1.1.7",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
-		"@unocss/preset-icons": "^0.47.5",
-		"@unocss/preset-uno": "^0.47.5",
-		"@unocss/transformer-directives": "^0.47.5",
-		"@unocss/transformer-variant-group": "^0.47.5",
-		"prettier": "^2.8.0",
-		"prettier-plugin-svelte": "^2.8.1",
-		"svelte": "^3.53.1",
-		"unocss": "^0.47.5",
-		"vite": "^3.2.4"
+		"@unocss/preset-icons": "^0.48.0",
+		"@unocss/preset-uno": "^0.48.0",
+		"@unocss/transformer-directives": "^0.48.0",
+		"@unocss/transformer-variant-group": "^0.48.0",
+		"prettier": "^2.8.1",
+		"prettier-plugin-svelte": "^2.9.0",
+		"svelte": "^3.55.0",
+		"unocss": "^0.48.0",
+		"vite": "^4.0.3"
 	},
 	"type": "module",
 	"dependencies": {
-		"@unocss/reset": "^0.47.5",
+		"@iconify-json/ri": "^1.1.4",
+		"@unocss/reset": "^0.48.0",
 		"svelte-tippy": "^1.3.2",
 		"tippy.js": "^6.3.7"
 	}

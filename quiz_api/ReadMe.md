@@ -120,16 +120,14 @@ RequestBody:
 - [X] Update Category (name)
 - [X] Read one Category (with Questions)
 - [X] Delete Category
-- [ ] Count All Categories
 
 #### Roadmap Question API
 
-- [ ] Create Questions (multiple)
-- [ ] Read all questions
+- [X] Create Question
+- [X] Read all questions
 - [ ] Update question
 - [ ] Delete Question
 - [ ] Read Question
-- [ ] Count All Questions
 
 
 
@@ -172,16 +170,23 @@ RequestBody:
 ```
 Response:
 ```json lines
-[
-  {
-    "categoryName": "Fragen zum Thema Programmieren in Kotlin",
-    "id": "942f3c05-bba2-47dc-8b37-11dc8847a1b5"
-  },
-  {
-    "categoryName": "Fragen zum Thema Mathematik",
-    "id": "11dc8847a1b5-bba2-47dc-8b37-47dc"
-  }
-]
+{
+  "categories": [
+    {
+      "id": "54800863-0db5-472e-8799-4c6ee439b665",
+      "categoryName": "Schätzfragen"
+    },
+    {
+      "id": "c13be76d-ffce-4a91-b3df-9c66fe7d3fa5",
+      "categoryName": "Allgemeinwissen"
+    },
+    {
+      "id": "5cd67945-ed50-47fd-a476-fddc125bae76",
+      "categoryName": "Allgemeinwissen 2"
+    }
+  ],
+  "countCategories": 3
+}
 ```
 
 ## UPDATE Existing Category 
@@ -218,7 +223,16 @@ Response:
   "questions": [
     {
       "question": "Question Title",
-      "answer": [],
+      "answer": [
+        {
+          answer: "Answer Text 1",
+          isCorrectAnswer: true
+        },
+        {
+          answer: "Answer Text 2",
+          isCorrectAnswer: false
+        }
+      ],
       "categoryId": "942f3c05-bba2-47dc-8b37-11dc8847a1b5",
       "id": "0f8e484d-e3e6-442b-95e6-2ca6c0a59e7b"
     }
@@ -241,31 +255,22 @@ Response:
 *EMPTY*
 ```
 
-## CREATE Questions (multiple)
+## CREATE Question
 POST-Request:
 ```
-localhost:8085/api/questions
+localhost:8085/api/questions/create
 ```
 RequestBody:
 ```json lines
 {
-  categoryId: "1231234",
-  questions: [
-    {
-      question: "Question Text",
-      answers: [
-        {
-          answer: "Answer Text",
-          isCorrectAnswer: false
-        }
-      ]
-    }
-  ]
+  "question": "Hallo",
+  "answer": [],
+  "categoryId": "54800863-0db5-472e-8799-4c6ee439b665"
 }
 ```
 Response:
 ```json lines
-200 OK
+201 Created
 ```
 
 ## READ Questions
@@ -279,30 +284,27 @@ RequestBody:
 ```
 Response:
 ```json lines
-[
-  {
-    id: "1234567",
-    question: "Question Text",
-    answers: [
-      {
-        answer: "Answer Text",
-        isCorrectAnswer: false
-      }
-    ],
-    categoryId: "9876543"
-  },
-  {
-    id: "6622222",
-    question: "Question Text 2",
-    answers: [
-      {
-        answer: "Answer Text",
-        isCorrectAnswer: false
-      }
-    ],
-    categoryId: "9876543"
-  }
-]
+{
+  "categoryName": "Schätzfragen",
+  "questions": [
+    {
+      "question": "Wie viele Weihnachtsbäume werden in Deutschland pro Jahr verkauft?",
+      "answer": [
+        {
+          "answer": "Etwa 30 Millionen",
+          "isAnswerCorrect": true
+        },
+        {
+          "answer": "Etwa 10 Millionen",
+          "isAnswerCorrect": false
+        }
+      ],
+      "categoryId": "54800863-0db5-472e-8799-4c6ee439b665",
+      "id": "12d38f34-be51-4909-8c04-a43440f497d1"
+    }
+  ],
+  "countQuestions": 3
+}
 ```
 
 ## UPDATE Question
@@ -312,16 +314,26 @@ localhost:8085/api/questions
 ```
 RequestBody:
 ```json lines
- {
-  id: "1234567",
-  question: "Question Text",
-  answers: [
+{
+  "categoryName": "Schätzfragen",
+  "questions": [
     {
-      answer: "Answer Text",
-      isCorrectAnswer: false
-    }
+      "question": "Wie viele Weihnachtsbäume werden in Deutschland pro Jahr verkauft?",
+      "answer": [
+        {
+          "answer": "Etwa 30 Millionen",
+          "isAnswerCorrect": true
+        },
+        {
+          "answer": "Etwa 10 Millionen",
+          "isAnswerCorrect": false
+        }
+      ],
+      "categoryId": "54800863-0db5-472e-8799-4c6ee439b665",
+      "id": "12d38f34-be51-4909-8c04-a43440f497d1"
+    },
   ],
-  categoryId: "9876543"
+  "countQuestions": 1
 }
 ```
 Response:
@@ -373,29 +385,3 @@ Response:
 }
 ```
 
-## COUNT ALL QUESTIONS
-DELETE-Request:
-```
-
-```
-RequestBody:
-```json lines
-
-```
-Response:
-```json lines
-
-```
-## COUNT ALL CATEGORIES
-DELETE-Request:
-```
-
-```
-RequestBody:
-```json lines
-
-```
-Response:
-```json lines
-
-```

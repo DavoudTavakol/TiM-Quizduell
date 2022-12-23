@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(
                 s: CharSequence, start: Int,
-                before: Int, count: Int
+                before: Int, counJot: Int
             ) {
                 if (s.isNotEmpty()) {
                     buttonNewGame.isEnabled = true

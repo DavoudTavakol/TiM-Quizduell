@@ -81,10 +81,11 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.waiting_screen)
             var nicknameZwei = findViewById<TextView>(R.id.willkommenZwei)
             val eingabeZwei = eingabeZ.text.toString()
+            var textZ = findViewById<TextView>(R.id.spEinsWahlKategorien)
             nicknameZwei.text = "Willkommen " + eingabeZwei
             //TODO QuestionsActivity starten
             //TODO Nickname 1 auch noch einbinden
-            //textZ.setText(Nickname1 + "wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
+            textZ.setText(nickname1 + "wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
         }
 
         fun update (){
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
                     var game : Game
                     GlobalScope.launch(Dispatchers.Main) {
-                        game = connectToGameRequest("mee", "942536")
+                        game = connectToGameRequest("mee", "735115")
                         println(game)
                         waitingScreen(game.player1.nickname)
 

@@ -29,10 +29,7 @@ localhost:8085/game/create
 RequestBody: 
 ````json lines
 {
-"player1":{
     "nickname" : "someone"
-},
-"categories" : ["cat1", "cat2", "cat3"]
 }
 ````
              
@@ -64,7 +61,8 @@ RequestBody:
 ```json lines
 {
     "gameId": "778bb",
-    "nickname" : "somebody"
+    "nickname" : "somebody",
+    "categories" : ["cat1", "cat2", "cat3"]
     
 }
 ```

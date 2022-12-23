@@ -25,7 +25,7 @@
             android:name=".QuestionActivity"
             android:exported="true" />
         <activity
-            android:name=".Categories"
+            android:name=".CategoriesActivity"
             android:exported="true" />
     </application>
 

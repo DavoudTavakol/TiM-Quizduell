@@ -11,8 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import de.mmapp.quiz_frontend.CategoriesActivity.Companion.checkIfReady
 import de.mmapp.quiz_frontend.models.Game
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -48,13 +51,14 @@ class MainActivity : AppCompatActivity() {
                         GlobalScope.launch(Dispatchers.Main) {
 
                             // Post Request to Start Game
-                            gameid = createGameRequest("mo")
+                            gameid = createGameRequest(eingabeE.text.toString())
                             println(gameid)
 
                             var categories : ArrayList<String> = getCategories() as ArrayList<String>
-                            val intent = Intent(this@MainActivity, Categories::class.java)
+                            val intent = Intent(this@MainActivity, CategoriesActivity::class.java)
 
                             // Send gameId and Categories List to Categories Activity
+                            intent.putExtra("nickname",nick!!)
                             intent.putExtra("gameId", gameid)
                             intent.putStringArrayListExtra("categories", categories)
 
@@ -86,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         // TODO Nickname 1
         // val textZ = findViewById<TextView>(R.id.spEinsWahlKategorien)
 
-        fun waitingScreen(nickname1 : String){
+        fun waitingScreen(game : Game){
             setContentView(R.layout.waiting_screen)
             var nicknameZwei = findViewById<TextView>(R.id.willkommenZwei)
             val eingabeZwei = eingabeZ.text.toString()
@@ -94,7 +98,28 @@ class MainActivity : AppCompatActivity() {
             nicknameZwei.text = "Willkommen " + eingabeZwei
             //TODO QuestionsActivity starten
             //TODO Nickname 1 auch noch einbinden
-            textZ.setText(nickname1 + "wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
+            textZ.setText(game.player1.nickname + " wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
+
+
+            GlobalScope.launch(){
+                (1..30).asFlow() // a flow of requests
+                    .map { request -> checkIfReady(game.gameId,game.player2.nickname) }
+                    .collect { response ->
+
+                        println(response)
+                        if (response == "true"){
+                            val intent = Intent(this@MainActivity, QuestionActivity::class.java)
+                            startActivity(intent)
+                            this.cancel()
+
+                        }
+                    }
+
+
+            }
+
+
+
         }
 
         fun update (){
@@ -104,11 +129,11 @@ class MainActivity : AppCompatActivity() {
 
                     var game : Game
                     GlobalScope.launch(Dispatchers.Main) {
-                        game = connectToGameRequest("mee", "735115")
+                        game = connectToGameRequest(eingabeZ.text.toString(),eingabeID.text.toString())
                         println(game)
 
 
-                        waitingScreen(game.player1.nickname)
+                        waitingScreen(game)
 
 
                     }

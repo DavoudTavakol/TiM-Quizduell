@@ -46,10 +46,19 @@ class MainActivity : AppCompatActivity() {
                         var gameid: String = ""
 
                         GlobalScope.launch(Dispatchers.Main) {
+
+                            // Post Request to Start Game
                             gameid = createGameRequest("mo")
                             println(gameid)
+
+                            var categories : ArrayList<String> = getCategories() as ArrayList<String>
                             val intent = Intent(this@MainActivity, Categories::class.java)
+
+                            // Send gameId and Categories List to Categories Activity
                             intent.putExtra("gameId", gameid)
+                            intent.putStringArrayListExtra("categories", categories)
+
+                            println(categories)
                             startActivity(intent)
                         }
 
@@ -97,6 +106,8 @@ class MainActivity : AppCompatActivity() {
                     GlobalScope.launch(Dispatchers.Main) {
                         game = connectToGameRequest("mee", "735115")
                         println(game)
+
+
                         waitingScreen(game.player1.nickname)
 
 
@@ -154,6 +165,9 @@ class MainActivity : AppCompatActivity() {
 
      suspend fun createGameRequest(nickname : String): String = GlobalScope.async(Dispatchers.IO) {
 
+
+       // Request Body , See Documentation
+
         val jsonBody :String = """
              {
                  "nickname" : "$nickname"
@@ -174,6 +188,7 @@ class MainActivity : AppCompatActivity() {
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
             val mapper = jacksonObjectMapper()
 
+           // Parse the JSON String into a Game instance (accessibility through game. )
             var game: Game = mapper.readValue(response.body.string())
             println(game)
             println(game.gameId)
@@ -223,6 +238,27 @@ class MainActivity : AppCompatActivity() {
         return@async game
 
 
+    }.await()
+
+
+    private suspend fun getCategories() : List<String> = GlobalScope.async(Dispatchers.IO) {
+
+        var categories : List<String> = listOf()
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8085/game/categories")
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val mapper = jacksonObjectMapper()
+
+            categories = mapper.readValue(response.body.string())
+
+
+        }
+
+        return@async categories
     }.await()
 
 

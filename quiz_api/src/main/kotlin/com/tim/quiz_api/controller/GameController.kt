@@ -1,8 +1,10 @@
 package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.*
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.CategoryRepo
+import com.tim.quiz_api.service.CategoryService
 import com.tim.quiz_api.service.GameService
 import com.tim.quiz_api.service.HighscoreService
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,12 +20,18 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/game")
-class GameController @Autowired constructor(val categoryRepo: CategoryRepo, val highscoreService : HighscoreService, private final val gameService: GameService
-) {
+class GameController @Autowired constructor(
+    val categoryRepo: CategoryRepo,
+    val highscoreService : HighscoreService,
+    private val gameService: GameService,
+
+    ) {
 
     @PostMapping("/create")
     fun createGame(@RequestBody player: Player ) :
             ResponseEntity<Game> {
+
+
         return ResponseEntity.ok(gameService?.createGame(player))
     }
 

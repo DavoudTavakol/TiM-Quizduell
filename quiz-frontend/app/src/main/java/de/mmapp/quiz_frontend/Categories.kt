@@ -1,6 +1,7 @@
 package de.mmapp.quiz_frontend
 
 import android.os.Bundle
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.Deferred
@@ -17,9 +18,17 @@ class Categories : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.gameid_screen)
+
+
+        // Get the gameId and Categories from MainActivity
         val id = intent.getStringExtra("gameId")
+        val categories = intent.getStringArrayListExtra("categories")
+
+        // TO DO : Build the Checkbox list
+
         var gameId = findViewById<TextView>(R.id.gameId)
         gameId.text = id
+        println(categories)
 
 
     }

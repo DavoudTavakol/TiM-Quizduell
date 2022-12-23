@@ -13,6 +13,8 @@ import java.util.*
 class GameService {
 
     fun createGame(player: Player): Game {
+
+
         var game : Game = Game(
             gameId = RandomStringUtils.randomNumeric(6).toString(),
             player1 = player,

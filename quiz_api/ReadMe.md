@@ -400,7 +400,10 @@ docker run -p 8080:8080 -p 9990:9990 -it wildfly
 ```
 Dockerfile:
 ```
-...
+FROM quay.io/wildfly/wildfly
+RUN /opt/jboss/wildfly/bin/add-user.sh timadmin timadmin123 --silent
+#copy deployment
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
 ```
 
 ## CREATE WAR-FILE AND DEPLOYMENT (TODO)
@@ -409,6 +412,9 @@ Momentan nur auf Deployment-Branch möglich!
 Generate WAR-File:
 ```
 Gradle > quiz_api > Tasks > build > run bootWar
+
+WAR-FILE found in
+build > libs > quiz_api-0.0.1-SNAPSHOT.war
 ```
 Start Wildfly Appserver:
 ```

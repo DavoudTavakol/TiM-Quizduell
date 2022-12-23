@@ -9,6 +9,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.*
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import okio.IOException
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,9 +37,26 @@ class MainActivity : AppCompatActivity() {
                     buttonNewGame.setOnClickListener {
                         val nick = eingabeE.text.toString()
                         // TODO when ready, change from "LastActivity" to "QuestionActivity"
-                        val intent = Intent(this@MainActivity, Question::class.java)
-                        intent.putExtra("nickname", nick)
-                        startActivity(intent)
+
+                        //setContentView(R.layout.gameid_screen)
+
+                        var gameid: String = ""
+
+                        GlobalScope.launch(Dispatchers.Main) {
+                            gameid = createGameRequest("mo")
+                            println(gameid)
+                            val intent = Intent(this@MainActivity, Categories::class.java)
+                            intent.putExtra("gameId", gameid)
+                            startActivity(intent)
+                        }
+
+
+
+                        print(gameid)
+
+
+
+
                     }
                 } else {
                     buttonNewGame.isEnabled = false
@@ -113,6 +135,45 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+
+     suspend fun createGameRequest(nickname : String): String = GlobalScope.async(Dispatchers.IO) {
+
+        val jsonBody :String = """
+             {
+                 "nickname" : "$nickname"
+             }
+             
+         """.trimIndent()
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8085/game/create")
+            .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+            .build()
+
+        var gameId : String = ""
+
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val data : String = response.body!!.string()
+            gameId = data.substring(11,17)
+
+            println("=============")
+
+            // gameId = data.subs
+
+        }
+
+
+        return@async gameId
+
+
+    }.await()
+
+
+
 }
 
 

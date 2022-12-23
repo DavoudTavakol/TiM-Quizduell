@@ -1,22 +1,23 @@
 package com.tim.quiz_api.service
 
-import com.tim.quiz_api.controller.dto.StartRequest
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.GameRepo
 import lombok.AllArgsConstructor
 import org.springframework.stereotype.Service
+import org.apache.commons.lang3.RandomStringUtils
+
 import java.util.*
 
 @Service
 @AllArgsConstructor
 class GameService {
 
-    fun createGame(startRequest: StartRequest): Game {
+    fun createGame(player: Player): Game {
         var game : Game = Game(
-            gameId = UUID.randomUUID().toString().substring(0,5),
-            player1 = startRequest.player1,
+            gameId = RandomStringUtils.randomNumeric(6).toString(),
+            player1 = player,
             player2 = Player(""),
-            startRequest.categories,
+            listOf<String>(),
             mutableListOf<Question>(),
             GameStatus.NEW,
             )
@@ -25,6 +26,8 @@ class GameService {
         return game
 
     }
+
+
 
     fun connectToGame(gameId : String, player2 : Player): Game? {
 
@@ -73,11 +76,12 @@ class GameService {
         }
     }
 
-    fun setReady(nickname : String, gameId: String): List<Player> {
+    fun setReady(nickname : String, gameId: String, categories : List<String>): List<Player> {
         var game : Game? = GameRepo.getGame(gameId)
 
         if (game!!.player1.nickname == nickname){
             game.player1.isReady = true
+            game.categories = categories
         } else if (game!!.player2.nickname == nickname){
             game.player2.isReady = true
         }

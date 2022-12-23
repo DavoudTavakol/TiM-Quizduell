@@ -22,11 +22,9 @@ class GameController @Autowired constructor(val categoryRepo: CategoryRepo, val 
 ) {
 
     @PostMapping("/create")
-    fun createGame(@RequestBody startRequest: StartRequest ) :
+    fun createGame(@RequestBody player: Player ) :
             ResponseEntity<Game> {
-
-
-        return ResponseEntity.ok(gameService?.createGame(startRequest))
+        return ResponseEntity.ok(gameService?.createGame(player))
     }
 
     @PostMapping("/connect")
@@ -38,7 +36,7 @@ class GameController @Autowired constructor(val categoryRepo: CategoryRepo, val 
     @PostMapping("/ready")
     fun setReady(@RequestBody request : ReadyRequest) :
             ResponseEntity<List<Player>> {
-        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId))
+        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories))
     }
 
     @PostMapping("/check")

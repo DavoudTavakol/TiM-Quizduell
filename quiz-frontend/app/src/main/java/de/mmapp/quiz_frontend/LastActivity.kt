@@ -18,9 +18,7 @@ class LastActivity : AppCompatActivity() {
         // for test run: instead of winner just players nickname
         val winner = findViewById<TextView>(R.id.whoWon)
         val nick = intent.getStringExtra("nickname")
-        winner.setText(nick);
-        // TODO show real nickname of winner
-        // who was previously written in main screen
+        winner.setText(nick)
 
         // display your points
         val points = findViewById<TextView>(R.id.myPoints)
@@ -30,6 +28,14 @@ class LastActivity : AppCompatActivity() {
         // display highscore table
         // 3 columns:
         // one column with rank, one with the "nickname" and one with the achieved score
+
+        // test run
+        val score = findViewById<TextView>(R.id.scoreBoard)
+        score.setText("\n" + "1: " + "nick: " + "points" + "\n"
+                + "2: " + "nick: " + "points" + "\n"
+                + "3: " + "nick: " + "points" + "\n")
+
+        /*
         val rank = findViewById<TextView>(R.id.rank)
         val name = findViewById<TextView>(R.id.name)
         val highscore = findViewById<TextView>(R.id.points)
@@ -37,16 +43,17 @@ class LastActivity : AppCompatActivity() {
         val row = findViewById<TableRow>(R.id.tableRow)
         // TODO show table with real content in real order
         // *add new row of content when other player finished game and order it
-        // !just 10 rows in the table(?)
+        // !just 5 rows in the table(?)
+        */
 
         //"Erneut spielen"
         // for test run: instead of "Kategorien"-Screen use "Fragen"-Screen
         val buttonNewGame = findViewById<Button>(R.id.btn1)
         buttonNewGame.setOnClickListener {
-            //val intent = Intent(this, //Kategorien Activity)
-            //startActivity(intent)
+            val intent = Intent(this, Question::class.java)
+            startActivity(intent)
         }
-        // TODO create intent to "Kategorie" screen of p1 and to waiting screen for p2
+        // TODO create intent to "Kategorie" screen for p1 and to waiting screen for p2
 
         // "Hauptmenue"
         val buttonMenu = findViewById<Button>(R.id.btn2)

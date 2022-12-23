@@ -25,14 +25,14 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(
                 s: CharSequence, start: Int,
-                before: Int, count: Int
+                before: Int, counJot: Int
             ) {
                 if (s.isNotEmpty()) {
                     buttonNewGame.isEnabled = true
                     buttonNewGame.setOnClickListener {
                         val nick = eingabeE.text.toString()
                         // TODO when ready, change from "LastActivity" to "QuestionActivity"
-                        val intent = Intent(this@MainActivity, LastActivity::class.java)
+                        val intent = Intent(this@MainActivity, Question::class.java)
                         intent.putExtra("nickname", nick)
                         startActivity(intent)
                     }
@@ -106,7 +106,9 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     boolID = false
                     update()
-                    Toast.makeText(applicationContext, "Du musst eine Game ID eingeben! ", Toast.LENGTH_SHORT).show()
+                    if (s.isEmpty()) {
+                        Toast.makeText(applicationContext, "Du musst eine 6-stellige Game ID eingeben! ", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })

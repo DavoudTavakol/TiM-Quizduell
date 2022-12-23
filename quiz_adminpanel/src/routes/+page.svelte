@@ -1,43 +1,44 @@
 <script>
-	import '../app.css';
-	import '../lib/Categorys.svelte';
-	import Categorys from '../lib/Categorys.svelte';
-
-	let sidebarElements = [{ title: 'HA' }, { title: 'B' }];
-
-	function addCategory() {
-		sidebarElements = [...sidebarElements, { title: 'CC' }];
-	}
+	import Navbar from '$lib/Navbar.svelte';
 </script>
 
-<main>
-	<div id='wrapper' class="h-screen bg-gray-700 w-screen flex">
-		<div
-			id="sidebarwrapper"
-			class="flex flex-col h-screen w-min content-between justify-between bg-gray-800 text-white"
-		>
-			<div
-				id="sidebar"
-				class="flex flex-col space-y-4 flex-1 p-5 float-left overflow-scroll scrollbar-hide "
-			>
-				{#each sidebarElements as element}
-					<div
-						id="sidebarelement"
-						class="rounded-xl flex bg-gray-700 min-h-16 w-16 items-center justify-center  border-black border-2"
-					>
-						<span id="category">{element.title}</span>
-					</div>
-				{/each}
+<main class="h-full w-full py-10 px-8">
+	<Navbar title="Home" />
+	<div class="flex flex-col">
+		<section class="flex text-xl w-full px-10">
+			<div class="rounded flex bg-gray-100 m-2 w-full p-10 justify-between items-center">
+				<section>
+					<h2>Backend</h2>
+					<span class="text-xs text-gray-500">Running on: https://localhost:8080</span>
+				</section>
+
+				<span class="flex h-3 w-3 relative">
+					<span
+						class="rounded-full h-full bg-green-300 w-full opacity-75 animate-ping absolute inline-flex"
+					/>
+					<span class="rounded-full bg-green-400 h-3 w-3 relative inline-flex" />
+				</span>
 			</div>
-			<div id="addcategory" class="p-5 border-black border-t-4">
-				<button
-					class="rounded-xl flex bg-gray-600 h-16 w-16 items-center justify-center border-black border-2"
-					on:click={addCategory}
-				>
-					<div class="i-twemoji-plus text-3xl" />
-				</button>
+
+			<div class="rounded flex bg-gray-100 m-2 w-full p-10 justify-between items-center">
+				<section>
+					<h2>Database</h2>
+					<span class="text-xs text-gray-500">Running on: https://mongodb:atlas.com</span>
+				</section>
+
+				<span class="flex h-3 w-3 relative">
+					<span
+						class="rounded-full h-full bg-green-300 w-full opacity-75 animate-ping absolute inline-flex"
+					/>
+					<span class="rounded-full bg-green-400 h-3 w-3 relative inline-flex" />
+				</span>
 			</div>
-		</div>
-		<Categorys />
+		</section>
+
+		<section class="flex text-xl w-full px-10">
+			<div class="rounded flex bg-gray-100 m-2 w-full p-10 justify-between items-center">
+				<span class="text-base">We Currently have 150 questions in 10 Categorys</span>
+			</div>
+		</section>
 	</div>
 </main>

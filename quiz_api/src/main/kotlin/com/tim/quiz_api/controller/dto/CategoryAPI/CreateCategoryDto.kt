@@ -1,3 +1,5 @@
 package com.tim.quiz_api.controller.dto.CategoryAPI
 
-data class CreateCategoryDto(val categoryName:String)
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
+
+data class CreateCategoryDto(val categoryName:String, val questions:List<QuestionMinDto> = mutableListOf())

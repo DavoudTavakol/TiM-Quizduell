@@ -45,7 +45,8 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Neues Spiel" />
+        android:text="Neues Spiel"
+        android:enabled="false"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,19 +69,22 @@
         android:maxLength="15" />
 
     <EditText
+        android:id="@+id/gameID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="Game ID"
+        android:hint="Game ID (6-stellig)"
         android:textSize="20dp"
-        android:inputType="number" />
+        android:inputType="number"
+        android:maxLength="6" />
 
     <Button
         android:id="@+id/spielBeitreten"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Spiel beitreten" />
+        android:text="Spiel beitreten"
+        android:enabled="false" />
 
 
 </LinearLayout>

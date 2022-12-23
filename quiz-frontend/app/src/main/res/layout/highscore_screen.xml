@@ -42,13 +42,21 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- test run -->
+    <TextView
+        android:id="@+id/scoreBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <!-- TODO for highscore table create blank layout(?) -->
+    <!--
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="40dp"
         android:background="@android:color/white">
 
-        <!-- Table Heading -->
         <TableRow>
 
             <TextView
@@ -78,8 +86,9 @@
                 android:text="Punkte"
                 android:textSize="14sp" />
         </TableRow>
-        <!-- Table Data -->
-        <TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow">
 
             <TextView
                 android:id="@+id/rank"
@@ -112,6 +121,7 @@
                 android:textSize="12sp" />
         </TableRow>
     </TableLayout>
+    -->
 
     <Button
         android:id="@+id/btn1"

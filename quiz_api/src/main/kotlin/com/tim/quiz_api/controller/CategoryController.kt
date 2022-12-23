@@ -2,33 +2,33 @@ package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.CategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
-import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
 import com.tim.quiz_api.data.Category
-import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.repository.CategoryRepo
+import com.tim.quiz_api.service.CategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 
-/*
-Aufgabe: Error Handling (Rick)
- */
 
 @RestController
-@RequestMapping("/api/category", "application/json")
-class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) {
+@RequestMapping("/api/category")
+class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, val categoryService: CategoryService) {
 
 
     /*
-        Liefert alle Kategorie und dazugehörige Questions aus der Collection "categories" zurück
+        Liefert alle Kategorie ohne Fragen aus der Collection "categories" zurück
      */
     @GetMapping()
-    fun getAllCategories(): ResponseEntity<List<Category>> {
-        val categories = categoryRepo.findAll() as List<Category>
-        return ResponseEntity<List<Category>>(categories, HttpStatus.OK)
+    fun getAllCategories(): ResponseEntity<CategoryDto> {
+        val categoriesMinDto = categoryService.getAllCategories()
+        val numberOfCategories = categoriesMinDto.count()
+        val categories = CategoryDto(categoriesMinDto, numberOfCategories)
+        return ResponseEntity(categories, HttpStatus.OK)
     }
 
     /*
@@ -38,47 +38,64 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo) 
         @RequestBody bedeutet wird mappen die Daten, welche der Client uns im JSON Format im RequestBody schickt,
         zu einem CreateCategoryDto
      */
-    @PostMapping(consumes= ["application/json"])
+    @PostMapping("/create")
     fun createCategory(@RequestBody category: CreateCategoryDto): ResponseEntity<Category> {
-        val emptyListOfQuestions = listOf<Question>()
         val categoryName = category.categoryName
-        //Check if categoryName is not null or empty string
-        if(!categoryName.isNullOrBlank()){
-            //TODO also check if category with similar name already exists?
-            val savedCategory = categoryRepo.save(Category(categoryName, emptyListOfQuestions))
-            //Returns a Status 201 Created
-            return ResponseEntity<Category>(savedCategory, HttpStatus.CREATED)
+        val questions:List<QuestionMinDto> = category.questions
+        val savedCategory = categoryService.createCategory(categoryName, questions)
+        if(savedCategory != null){
+            return ResponseEntity(savedCategory, HttpStatus.CREATED)
         }
-        //TODO find out how to customize error message
-        //Returns a Status 400 Bad Request
-        return ResponseEntity<Category>(null, HttpStatus.BAD_REQUEST)
+        return ResponseEntity(null, HttpStatus.BAD_REQUEST)
     }
 
     /*
         Updated eine bereits bestehende Category
      */
-    @PutMapping(consumes= ["application/json"])
-    fun updateCategory(@RequestBody category: CategoryDto): ResponseEntity<Category> {
+    @PutMapping("/update")
+    fun updateCategory(@RequestBody category: CategoryMinDto): ResponseEntity<Category> {
         val newName = category.categoryName
         val id = category.id
         //request category from DB
-        val optionalCategory = categoryRepo.findById(id)
+        val category = categoryService.getCategoryById(id)
         //Check if categoryName is not null or empty string and check if category is actually in DB
-        if(!newName.isNullOrBlank() && optionalCategory.isPresent){
-            val category = optionalCategory.get()
+        if(category != null){
             //change category name
             category.categoryName = newName
-
             //Returns a Status 200 OK
-            return ResponseEntity<Category>(categoryRepo.save(category), HttpStatus.OK)
+            return ResponseEntity(categoryRepo.save(category), HttpStatus.OK)
         }
-        //TODO find out how to customize error message
         //Returns a Status 400 Bad Request
-        return ResponseEntity<Category>(null, HttpStatus.BAD_REQUEST)
+        return ResponseEntity(null, HttpStatus.BAD_REQUEST)
     }
 
-    @PostMapping("/test")
-    fun createQuestion(@RequestBody question:QuestionDto){
-        println(question.answers)
+
+    /*
+        Liefert eine Kategorie und deren Fragen zurück
+     */
+
+    @GetMapping("{id}")
+    fun findCategoryById(@PathVariable id:String): ResponseEntity<Category> {
+        val category = categoryService.getCategoryById(id)
+        return if(category != null){
+            ResponseEntity(category, HttpStatus.OK)
+        }else{
+            ResponseEntity(null, HttpStatus.NOT_FOUND)
+        }
+    }
+
+
+    /*
+        Löscht eine Kategorie und alle Fragen zur Kategorie
+     */
+    @DeleteMapping("{id}")
+    fun deleteCategory(@PathVariable id:String):ResponseEntity<Category>{
+        val category = categoryService.getCategoryById(id)
+        if(category != null){
+            categoryRepo.deleteById(id)
+            return  return ResponseEntity(null, HttpStatus.NO_CONTENT)
+        }else{
+            return ResponseEntity(null, HttpStatus.NOT_FOUND)
+        }
     }
 }

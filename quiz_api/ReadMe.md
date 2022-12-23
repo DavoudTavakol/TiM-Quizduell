@@ -385,3 +385,41 @@ Response:
 }
 ```
 
+## BUILD DOCKER LOCAL (TODO)
+Prerequisites: Docker + WSL2
+
+Create Image:
+```
+Navigate to dockerfile
+r-click > open Powershellwindow
+docker build -t wildfly ./
+```
+Run Image:
+```
+docker run -p 8080:8080 -p 9990:9990 -it wildfly
+```
+Dockerfile:
+```
+...
+```
+
+## CREATE WAR-FILE AND DEPLOYMENT (TODO)
+Momentan nur auf Deployment-Branch möglich!
+
+Generate WAR-File:
+```
+Gradle > quiz_api > Tasks > build > run bootWar
+```
+Start Wildfly Appserver:
+```
+localhost:8080 > click "Administration Console"
+oder
+localhost:9990
+
+USER:   timadmin
+PW:     timadmin123
+```
+Deployment:
+```
+Deployments > Add > Upload Deployment >
+Choose a file or drag it here > myapp.war > next > finish

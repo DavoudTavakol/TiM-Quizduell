@@ -8,12 +8,17 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import de.mmapp.quiz_frontend.models.Game
 
 
 class QuestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.questions_activity)
+
+
+        val game = intent.getParcelableExtra<Game>("game")
+        println(game!!.questionList)
 
         val card = findViewById<CardView>(R.id.card)
         card.setCardBackgroundColor(Color.rgb(240, 240, 240))

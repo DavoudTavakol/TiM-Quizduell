@@ -78,17 +78,18 @@ class GameService {
         }
     }
 
-    fun setReady(nickname : String, gameId: String, categories : List<String>): List<Player> {
+    fun setReady(nickname : String, gameId: String, categories : List<String>, questionList : List<Question>): Game {
         var game : Game? = GameRepo.getGame(gameId)
 
         if (game!!.player1.nickname == nickname){
             game.player1.isReady = true
             game.categories = categories
+            game.questionList = questionList
         } else if (game!!.player2.nickname == nickname){
             game.player2.isReady = true
         }
 
-        return listOf(game.player1, game.player2)
+        return game
     }
 
     fun getScore(answers : List<Answer>, timeNeeded : Float): Int{

@@ -1,8 +1,11 @@
 package de.mmapp.quiz_frontend.models
 
+import android.os.Parcelable
 import de.mmapp.quiz_frontend.models.Answer
+import kotlinx.parcelize.Parcelize
 
-data class Player(var nickname : String){
+@Parcelize
+data class Player(var nickname : String) : Parcelable {
 
     var isReady : Boolean = false
     var answers: List<Answer> = listOf<Answer>()

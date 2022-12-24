@@ -21,8 +21,7 @@ class QuestionService @Autowired constructor(val categoryRepo: CategoryRepo, val
             val categoryName = category.categoryName
             val questions = category.questions
             val count = questions.count()
-            val questionDto = QuestionListDto(categoryName, questions, count)
-            return questionDto
+            return QuestionListDto(categoryName, questions, count)
         }
         return null
     }

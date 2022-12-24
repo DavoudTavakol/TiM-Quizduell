@@ -100,8 +100,15 @@ class MainActivity : AppCompatActivity() {
             //TODO Nickname 1 auch noch einbinden
             textZ.setText(game.player1.nickname + " wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
 
+            // Polling : Asking the server every second if the other player is ready.
+            // checkIfReady is a static method of the class CategoriesActivity
 
+            var newGame : Game
             GlobalScope.launch(){
+
+                newGame = setReady(game.player2.nickname,game.gameId)
+
+
                 (1..30).asFlow() // a flow of requests
                     .map { request -> checkIfReady(game.gameId,game.player2.nickname) }
                     .collect { response ->
@@ -109,6 +116,8 @@ class MainActivity : AppCompatActivity() {
                         println(response)
                         if (response == "true"){
                             val intent = Intent(this@MainActivity, QuestionActivity::class.java)
+
+                            intent.putExtra("game",newGame)
                             startActivity(intent)
                             this.cancel()
 
@@ -131,7 +140,6 @@ class MainActivity : AppCompatActivity() {
                     GlobalScope.launch(Dispatchers.Main) {
                         game = connectToGameRequest(eingabeZ.text.toString(),eingabeID.text.toString())
                         println(game)
-
 
                         waitingScreen(game)
 
@@ -265,6 +273,45 @@ class MainActivity : AppCompatActivity() {
 
     }.await()
 
+
+
+    companion object {
+         suspend fun setReady(nickname : String, gameId : String): Game = GlobalScope.async(Dispatchers.IO) {
+
+            val jsonBody :String = """
+             {
+                 "gameId": "$gameId",
+                 "nickname":"$nickname",
+                 "categories" : []
+             }
+             
+         """.trimIndent()
+
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url("http://10.0.2.2:8085/game/ready")
+                .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
+
+            var game : Game
+
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                val mapper = jacksonObjectMapper()
+
+                game = mapper.readValue(response.body.string())
+
+
+
+            }
+
+
+            return@async game
+
+
+        }.await()
+    }
 
     private suspend fun getCategories() : List<String> = GlobalScope.async(Dispatchers.IO) {
 

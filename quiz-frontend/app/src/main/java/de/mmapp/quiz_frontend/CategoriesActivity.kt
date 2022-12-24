@@ -48,6 +48,10 @@ class CategoriesActivity : AppCompatActivity() {
         startButton.setOnClickListener() {
 
             GlobalScope.launch(){
+
+                val game = MainActivity.setReady(nickname!!,id!!)
+
+               // Check is the Player2 is Ready
                 (1..30).asFlow() // a flow of requests
                     .map { request -> checkIfReady(id!!,nickname!!) }
                     .collect { response ->
@@ -55,7 +59,9 @@ class CategoriesActivity : AppCompatActivity() {
                         println(response)
                         if (response == "true"){
                             val intent = Intent(this@CategoriesActivity, QuestionActivity::class.java)
+                            intent.putExtra("game",game)
                             startActivity(intent)
+
                             this.cancel()
 
                         }

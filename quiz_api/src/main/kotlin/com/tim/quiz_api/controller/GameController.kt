@@ -7,6 +7,7 @@ import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.service.CategoryService
 import com.tim.quiz_api.service.GameService
 import com.tim.quiz_api.service.HighscoreService
+import com.tim.quiz_api.service.QuestionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -24,6 +25,7 @@ class GameController @Autowired constructor(
     val categoryRepo: CategoryRepo,
     val highscoreService : HighscoreService,
     private val gameService: GameService,
+    private val questionService: QuestionService
 
     ) {
 
@@ -43,8 +45,10 @@ class GameController @Autowired constructor(
 
     @PostMapping("/ready")
     fun setReady(@RequestBody request : ReadyRequest) :
-            ResponseEntity<List<Player>> {
-        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories))
+            ResponseEntity<Game> {
+        val questions = questionService.getQuestionsByCategoryId("54800863-0db5-472e-8799-4c6ee439b665")
+        println(questions!!.questions)
+        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories, questions!!.questions))
     }
 
     @PostMapping("/check")

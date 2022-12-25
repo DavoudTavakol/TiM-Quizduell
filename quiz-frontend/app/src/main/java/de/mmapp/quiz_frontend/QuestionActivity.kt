@@ -15,8 +15,8 @@ import de.mmapp.quiz_frontend.models.Question
 
 class QuestionActivity : AppCompatActivity() {
 
-    var questionCount : Int = 0
-    var answerList : MutableList<Answer> = mutableListOf()
+    private var questionCount : Int = 0
+    private var answerList : MutableList<Answer> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class QuestionActivity : AppCompatActivity() {
         println(game!!.questionList)
 
 
-        // Init of Question and answers
+        // Init Question and answers
         setQuestionNumber()
         setQuestion(game.questionList.get(0).question)
         setAnswers(game.questionList)
@@ -90,24 +90,27 @@ class QuestionActivity : AppCompatActivity() {
             answerList.add( questionList[questionCount].answer[0])
 
             // Update UI
+            questionCount++
+            setQuestionNumber()
+
             setQuestion(questionList[questionCount].question)
             answer1.text = questionList[questionCount].answer[0].answer
             answer2.text = questionList[questionCount].answer[1].answer
 
-            questionCount++
-            setQuestionNumber()
+
         }
 
         answer2.setOnClickListener(){
 
             answerList.add( questionList[questionCount].answer[1])
 
+            questionCount++
+            setQuestionNumber()
 
             setQuestion(questionList[questionCount].question)
             answer1.text = questionList[questionCount].answer[0].answer
             answer2.text = questionList[questionCount].answer[1].answer
-            questionCount++
-            setQuestionNumber()
+
         }
 
         val answer3 = findViewById<Button>(R.id.answer3)
@@ -117,7 +120,6 @@ class QuestionActivity : AppCompatActivity() {
     }
 
     private fun setQuestionNumber() {
-        // ToDo get round
         val numberView = findViewById<TextView>(R.id.number)
         var questionNumber : Int = questionCount + 1
         numberView.text = "Frage Nummer: $questionNumber "

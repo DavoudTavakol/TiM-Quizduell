@@ -11,6 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Quizfrontend"
         android:usesCleartextTraffic="true">
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

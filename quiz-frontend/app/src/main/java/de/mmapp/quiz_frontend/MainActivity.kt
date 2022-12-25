@@ -22,6 +22,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
 
 class MainActivity : AppCompatActivity() {
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -50,20 +51,27 @@ class MainActivity : AppCompatActivity() {
 
                         GlobalScope.launch(Dispatchers.Main) {
 
-                            // Post Request to Start Game
-                            gameid = createGameRequest(eingabeE.text.toString())
-                            println(gameid)
+                            try {
+                                gameid = createGameRequest(eingabeE.text.toString())
+                                println(gameid)
 
-                            var categories : ArrayList<String> = getCategories() as ArrayList<String>
-                            val intent = Intent(this@MainActivity, CategoriesActivity::class.java)
+                                var categories : ArrayList<String> = getCategories() as ArrayList<String>
+                                val intent = Intent(this@MainActivity, CategoriesActivity::class.java)
 
-                            // Send gameId and Categories List to Categories Activity
-                            intent.putExtra("nickname",nick!!)
-                            intent.putExtra("gameId", gameid)
-                            intent.putStringArrayListExtra("categories", categories)
+                                // Send gameId and Categories List to Categories Activity
+                                intent.putExtra("nickname",nick)
+                                intent.putExtra("gameId", gameid)
+                                intent.putStringArrayListExtra("categories", categories)
 
-                            println(categories)
-                            startActivity(intent)
+                                println(categories)
+                                startActivity(intent)
+                            } catch (e : IOException)  {
+                                Toast.makeText(this@MainActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
+
+                            }
+
+
+
                         }
 
 
@@ -76,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     buttonNewGame.isEnabled = false
+
                     Toast.makeText(applicationContext, "Du musst einen Nicknamen eingeben! ", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -103,8 +112,12 @@ class MainActivity : AppCompatActivity() {
             // Polling : Asking the server every second if the other player is ready.
             // checkIfReady is a static method of the class CategoriesActivity
 
+
             var newGame : Game
             GlobalScope.launch(){
+
+
+
 
                 newGame = setReady(game.player2.nickname,game.gameId)
 
@@ -137,11 +150,19 @@ class MainActivity : AppCompatActivity() {
                 buttonJoinGame.setOnClickListener {
 
                     var game : Game
-                    GlobalScope.launch(Dispatchers.Main) {
-                        game = connectToGameRequest(eingabeZ.text.toString(),eingabeID.text.toString())
-                        println(game)
 
-                        waitingScreen(game)
+                    GlobalScope.launch(Dispatchers.Main) {
+
+                       try {
+                           game = connectToGameRequest(eingabeZ.text.toString(),eingabeID.text.toString())
+                           println(game)
+
+                           waitingScreen(game)
+                       } catch (e : IOException) {
+                           Toast.makeText(this@MainActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
+
+                       }
+
 
 
                     }

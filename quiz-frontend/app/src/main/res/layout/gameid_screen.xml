@@ -20,7 +20,13 @@ tools:context=".CategoriesActivity">
         app:titleCentered="true"
         app:titleTextColor="@color/white"
         app:title="@string/app_name"
+        android:background="@color/black"
         />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/gold" />
 
 </com.google.android.material.appbar.AppBarLayout>
 
@@ -42,9 +48,12 @@ tools:context=".CategoriesActivity">
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/white"
+            />
 
         <TextView
+            android:textColor="@color/white"
             android:id ="@+id/gameId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,6 +64,7 @@ tools:context=".CategoriesActivity">
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         <TextView
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,30 +78,37 @@ tools:context=".CategoriesActivity">
         <CheckBox android:id="@+id/Alle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="ALLE KATEGORIEN"/>
 
         <CheckBox android:id="@+id/no1"
             android:layout_width="wrap_content"
+            android:textColor="@color/white"
             android:layout_height="wrap_content"/>
 
         <CheckBox android:id="@+id/no2"
             android:layout_width="wrap_content"
+            android:textColor="@color/white"
             android:layout_height="wrap_content" />
 
         <CheckBox android:id="@+id/no3"
             android:layout_width="wrap_content"
+            android:textColor="@color/white"
             android:layout_height="wrap_content" />
 
         <CheckBox android:id="@+id/no4"
             android:layout_width="wrap_content"
+            android:textColor="@color/white"
             android:layout_height="wrap_content" />
 
         <CheckBox android:id="@+id/no5"
             android:layout_width="wrap_content"
+            android:textColor="@color/white"
             android:layout_height="wrap_content" />
 
         <CheckBox android:id="@+id/no6"
             android:layout_width="wrap_content"
+            android:textColor="@color/white"
             android:layout_height="wrap_content" />
 
 

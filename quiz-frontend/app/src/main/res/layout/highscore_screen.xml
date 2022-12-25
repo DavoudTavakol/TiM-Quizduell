@@ -22,7 +22,14 @@ tools:context=".LastActivity">
         app:titleCentered="true"
         app:titleTextColor="@color/white"
         app:title="@string/app_name"
+        android:background="@color/black"
+
         />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/gold" />
 
 </com.google.android.material.appbar.AppBarLayout>
 

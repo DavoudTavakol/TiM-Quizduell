@@ -83,7 +83,6 @@
                 android:id="@+id/nicknameEins"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:maxLength="15"
                 />
 
@@ -94,7 +93,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Neues Spiel"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
                 android:textColor="@color/text_color_selector"
                 android:enabled="false" />
 
@@ -104,6 +104,7 @@
                 android:layout_gravity="center"
                 android:text="Über Game-ID beitreten"
                 android:textSize="20dp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -131,7 +132,6 @@
                 android:id="@+id/nicknameZwei"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:maxLength="15"
                 />
 
@@ -156,27 +156,21 @@
                 android:id="@+id/gameID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:inputType="number"
                 android:maxLength="6"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                android:backgroundTint="@color/button_selector"
                 android:id="@+id/spielBeitreten"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Spiel beitreten"
+                android:layout_marginTop="20dp"
                 android:textColor="@color/text_color_selector"
-                android:backgroundTint="@color/button_selector"
-
                 android:enabled="false" />
-
-
-
-
-
 
 
 

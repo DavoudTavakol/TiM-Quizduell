@@ -1,16 +1,22 @@
 package de.mmapp.quiz_frontend
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import de.mmapp.quiz_frontend.models.Answer
 import de.mmapp.quiz_frontend.models.Game
 import de.mmapp.quiz_frontend.models.Question
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar
+import okio.ByteString.Companion.encodeUtf8
 
 
 class QuestionActivity : AppCompatActivity() {
@@ -42,19 +48,75 @@ class QuestionActivity : AppCompatActivity() {
 
 
 
-
+       // 863116
 
         // start progress bar
-        var i = 10
 
-        val myProgressBar: ProgressBar = findViewById<ProgressBar>(R.id.progressbar)
-        myProgressBar.progress = i
+        var i : Int = 59
+        val myProgressBar: MaterialProgressBar = findViewById<MaterialProgressBar>(R.id.progressbar)
+        val timeView = findViewById<TextView>(R.id.gameTimer)
+        myProgressBar.progress = 99
 
-        var myCountDownTimer: CountDownTimer = object : CountDownTimer(30000, 1000) {
+       // val colList = ColorStateList.valueOf(170)
+
+       // myProgressBar.progressTintList = colList
+
+
+
+        var isFirst : Boolean = true
+        myProgressBar.setOnClickListener {
+
+            if (isFirst){
+                var myCountDownTimer: CountDownTimer =  object : CountDownTimer(10000, 1000) {
+
+                    override fun onTick(millisUntilFinished: Long) {
+                    }
+
+                    override fun onFinish() {
+                        var x = myProgressBar.progress
+                        timeView.text = x.toString()
+                        myProgressBar.progress = 100
+
+                    }
+                }.start()
+
+                isFirst = false;
+            } else {
+                println("clicked")
+                myProgressBar.progress += 1
+
+            }
+
+
+        }
+
+
+        422195
+
+
+        var myCountDownTimer: CountDownTimer = object : CountDownTimer(60000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
+
                 i--
-                myProgressBar.progress = i * (30000 / 1000)
+                if(myProgressBar.progress > 4 && i >= 10){
+                    myProgressBar.progress -= 2
+                    timeView.text = ":$i"
+
+                } else if (i in 0..10){
+                    timeView.text = "$i"
+                    timeView.setTextColor(Color.RED)
+                    myProgressBar.supportProgressTintList = ColorStateList.valueOf(Color.RED)
+                } else {
+                    timeView.text = ""
+                    myProgressBar.progress -= 2
+                    myProgressBar.progress -= 2
+
+
+                }
+                //myProgressBar.progress = i * (30000 / 1000)
+                //println("this is a tick ${myProgressBar.progress}")
+
             }
 
             override fun onFinish() {
@@ -63,6 +125,7 @@ class QuestionActivity : AppCompatActivity() {
                 println(answerList)
             }
         }.start()
+        myCountDownTimer
 
 
     }

@@ -8,6 +8,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".QuestionActivity">
 
+
 <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
@@ -31,9 +32,7 @@ tools:context=".QuestionActivity">
 
 </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -46,9 +45,9 @@ tools:context=".QuestionActivity">
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -71,8 +70,7 @@ tools:context=".QuestionActivity">
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="20dp"
-                    android:text="Das ist eine Testfrage. Welche Antwort ist richtig?"
-                    tools:ignore="HardcodedText">
+                    >
 
                 </TextView>
             </LinearLayout>
@@ -117,17 +115,50 @@ tools:context=".QuestionActivity">
                 android:layout_columnWeight="0.5"
                 android:layout_gravity="center"
                 android:text="Antwort 4" />
+
         </GridLayout>
 
-        <ProgressBar
-            android:id="@+id/progressbar"
-            style="@android:style/Widget.ProgressBar.Horizontal"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bottom_header_relativelayout"
-            android:layout_marginTop="20dp"
-            android:max="100"
-            android:progress="100" />
+            android:layout_height="match_parent">
+
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:id="@+id/progressbar"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+                android:layout_width="400dp"
+                android:layout_height="400dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="26dp"
+                android:indeterminate="false"
+                android:progress="99"
+                android:progressTint="@android:color/holo_green_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.523"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                app:mpb_progressStyle="circular"
+                app:mpb_showProgressBackground="true"
+                app:mpb_determinateCircularProgressStyle="normal"/>
+
+            <TextView
+                android:id="@+id/gameTimer"
+                android:layout_width="123dp"
+                android:layout_height="107dp"
+                android:layout_marginTop="132dp"
+                android:text=":59"
+                android:textAllCaps="true"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="#F4F0F0"
+                android:textSize="88sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/progressbar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </LinearLayout>
 

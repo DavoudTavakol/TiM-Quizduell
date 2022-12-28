@@ -155,9 +155,10 @@ Response:
 
 - [X] Create Question
 - [X] Read all questions
-- [ ] Update question
+- [X] Update question
 - [ ] Delete Question
-- [ ] Read Question
+- [X] Read Question
+- [ ] Read Random Questions By Multiple Categories 
 
 
 
@@ -344,26 +345,21 @@ localhost:8085/api/questions
 ```
 RequestBody:
 ```json lines
+
 {
-  "categoryName": "Schätzfragen",
-  "questions": [
+  "question": "Wie viele Weihnachtsbäume werden in Deutschland pro Jahr verkauft?",
+  "answer": [
     {
-      "question": "Wie viele Weihnachtsbäume werden in Deutschland pro Jahr verkauft?",
-      "answer": [
-        {
-          "answer": "Etwa 30 Millionen",
-          "isAnswerCorrect": true
-        },
-        {
-          "answer": "Etwa 10 Millionen",
-          "isAnswerCorrect": false
-        }
-      ],
-      "categoryId": "54800863-0db5-472e-8799-4c6ee439b665",
-      "id": "12d38f34-be51-4909-8c04-a43440f497d1"
+      "answer": "Etwa 30 Millionen",
+      "isAnswerCorrect": true
     },
+    {
+      "answer": "Etwa 10 Millionen",
+      "isAnswerCorrect": false
+    }
   ],
-  "countQuestions": 1
+  "categoryId": "54800863-0db5-472e-8799-4c6ee439b665",
+  "id": "12d38f34-be51-4909-8c04-a43440f497d1"
 }
 ```
 Response:

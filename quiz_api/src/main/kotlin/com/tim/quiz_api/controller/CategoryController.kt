@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/category")
-class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, val categoryService: CategoryService) {
+class CategoryController @Autowired constructor(
+    val categoryRepo: CategoryRepo,
+    val categoryService: CategoryService) {
 
 
     /*

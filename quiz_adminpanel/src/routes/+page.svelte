@@ -1,6 +1,8 @@
 <script>
 	import Navbar from '$lib/Navbar.svelte';
+	
 </script>
+
 
 <main class="h-full w-full py-10 px-8">
 	<Navbar title="Home" />

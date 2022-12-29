@@ -1,12 +1,13 @@
 <script>
-	import { overlayCategoryOpen } from '$lib/store.js';
+	import { confirmModalOpen } from '$lib/store.js';
 	import { fly } from 'svelte/transition';
 	import InputText from '$lib/InputText.svelte';
 	import { clickOutside } from '$lib/clickOutside.js';
 
 	function handleClose() {
-		overlayCategoryOpen.set(false);
+		confirmModalOpen.set(true);
 	}
+
 </script>
 
 <div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">

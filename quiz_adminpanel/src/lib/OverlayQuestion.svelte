@@ -1,11 +1,11 @@
 <script>
-	import { overlayQuestionOpen } from '$lib/store.js';
+	import { confirmModalOpen } from '$lib/store.js';
 	import { fly } from 'svelte/transition';
 	import InputText from '$lib/InputText.svelte';
 	import { clickOutside } from '$lib/clickOutside.js';
 
 	function handleClose() {
-		overlayQuestionOpen.set(false);
+		confirmModalOpen.set(true);
 	}
 </script>
 

@@ -84,6 +84,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="15"
+                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 />
 
             <com.google.android.material.button.MaterialButton
@@ -133,6 +136,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="15"
+                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 />
 
 
@@ -159,6 +165,9 @@
                 android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:inputType="number"
+                android:maxLines="1"
+                android:lines="1"
+                android:singleLine="true"
                 android:maxLength="6"/>
 
             <com.google.android.material.button.MaterialButton

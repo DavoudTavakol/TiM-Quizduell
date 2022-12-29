@@ -2,6 +2,7 @@
 	import { overlayQuestionOpen } from '$lib/store.js';
 	import { fly } from 'svelte/transition';
 	import InputText from '$lib/InputText.svelte';
+	import { clickOutside } from '$lib/clickOutside.js';
 
 	function handleClose() {
 		overlayQuestionOpen.set(false);
@@ -10,6 +11,8 @@
 
 <div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">
 	<div
+		use:clickOutside
+		on:click_outside={handleClose}
 		class="bg-white h-full m-auto right-0 w-175 absolute"
 		transition:fly={{ x: 700, duration: 300 }}
 	>

@@ -1,5 +1,6 @@
 package com.tim.quiz_api.service
 
+import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
@@ -14,11 +15,10 @@ import org.springframework.stereotype.Service
 class CategoryService @Autowired constructor(private val categoryRepo: CategoryRepo) {
 
     /*
-        Returns CategoryDto (CategoryName and ID) without Questions
+        Returns a List of CategoryMinDTOS (CategoryName and ID) without Questions
      */
     fun getAllCategories(): List<CategoryMinDto> {
-        val categoriesAndQuestions = categoryRepo.findAll()
-        return categoriesAndQuestions.map { CategoryMinDto(it.id, it.categoryName) }
+        return DtoMapper.categoriesToCategoryMinDTOs(categoryRepo.findAll())
     }
 
     /*
@@ -28,16 +28,34 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
         return categoryRepo.findByIdOrNull(id)
     }
 
-    fun createCategory(categoryName: String, questions: List<QuestionMinDto>): Category? {
-        if (categoryName.isNotEmpty() && categoryName.isNotBlank()) {
-            var category = categoryRepo.save(Category(categoryName, mutableListOf()))
-            return if (questions.isNotEmpty()) {
-                category.questions = DtoMapper.questionsDtoToQuestions(questions, category.id)
-                categoryRepo.save(category)
-            } else {
-                category
-            }
-        }
-        return null
+    fun saveCategory(createCategory: CreateCategoryDto): Category {
+        /*
+            Create basic category object, at this point ID is already set to a random UUID.
+            It is important for the UUID to be set before we save a list of questions,
+            because questions depend on the categoryID as a foreign key
+         */
+        val category = Category(createCategory.categoryName, mutableListOf())
+        //set questions of category to mapped questions list, if the provided list is not empty
+        category.questions =
+            if(createCategory.questions.isNotEmpty())
+            DtoMapper.questionsDTOtoQuestions(createCategory.questions, category.id)
+            else category.questions
+        //save category object to database
+        return categoryRepo.save(category)
+    }
+
+    /*
+        Checks if categoryName is set and then proceeds to save category
+        If category Name is blank
+     */
+
+    fun isValidCategoryName(categoryName:String):Boolean{
+        if(categoryName.isNullOrEmpty() || categoryExists(categoryName)) return false
+        return true
+    }
+
+    private fun categoryExists(categoryName: String): Boolean {
+        return categoryRepo.existsByCategoryName(categoryName)
     }
 }
+

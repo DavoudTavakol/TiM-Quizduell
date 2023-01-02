@@ -1,5 +1,5 @@
 <script>
-	import { overlayOpen } from '$lib/store.js';
+	import { overlayQuestionOpen } from '$lib/store.js';
 	export let title;
 
 	let words = title.split('/');
@@ -23,7 +23,7 @@
 	<section>
 		<button
 			class="bg-white border-black rounded flex font-semibold border-2 text-sm py-2 px-6 gap-2 items-center"
-			on:click={() => ($overlayOpen = true)}
+			on:click={() => ($overlayQuestionOpen = true)}
 		>
 			<div class="i-ri-add-line" />
 			New Question

@@ -1,11 +1,11 @@
 <script>
 	import SidebarElement from '$lib/SidebarElement.svelte';
-	import { overlayOpen } from '$lib/store.js';
+	import { overlayCategoryOpen } from '$lib/store.js';
 
 	export let categories;
 
 	function addCategory() {
-		$overlayOpen = true;
+		$overlayCategoryOpen = true;
 		console.log('add category');
 	}
 </script>

@@ -6,19 +6,28 @@ import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
 import com.tim.quiz_api.data.Category
+import com.tim.quiz_api.exceptions.CategoryException
+import com.tim.quiz_api.exceptions.exceptionDTO.CustomExceptionDTO
 import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.service.CategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-
+import java.time.LocalDateTime
 
 
 @RestController
 @RequestMapping("/api/category")
-class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, val categoryService: CategoryService) {
+class CategoryController @Autowired constructor(
+    val categoryRepo: CategoryRepo,
+    val categoryService: CategoryService) {
 
+
+    @GetMapping("/test")
+    fun test(): ResponseEntity<Category?> {
+        return ResponseEntity(null, HttpStatus.OK)
+    }
 
     /*
         Liefert alle Kategorie ohne Fragen aus der Collection "categories" zurück
@@ -40,13 +49,11 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, 
      */
     @PostMapping("/create")
     fun createCategory(@RequestBody category: CreateCategoryDto): ResponseEntity<Category> {
-        val categoryName = category.categoryName
-        val questions:List<QuestionMinDto> = category.questions
-        val savedCategory = categoryService.createCategory(categoryName, questions)
-        if(savedCategory != null){
+        if(categoryService.isValidCategoryName(category.categoryName)){
+            val savedCategory = categoryService.saveCategory(category)
             return ResponseEntity(savedCategory, HttpStatus.CREATED)
         }
-        return ResponseEntity(null, HttpStatus.BAD_REQUEST)
+        throw CategoryException("Invalid Category Name")
     }
 
     /*
@@ -97,5 +104,11 @@ class CategoryController @Autowired constructor(val categoryRepo: CategoryRepo, 
         }else{
             return ResponseEntity(null, HttpStatus.NOT_FOUND)
         }
+    }
+
+    @ExceptionHandler(CategoryException::class)
+    fun handleInvalidCategoryNameException(exception: CategoryException): ResponseEntity<CustomExceptionDTO> {
+        val exception = CustomExceptionDTO(exception.msg, LocalDateTime.now(), HttpStatus.BAD_REQUEST.value())
+        return ResponseEntity(exception, HttpStatus.BAD_REQUEST)
     }
 }

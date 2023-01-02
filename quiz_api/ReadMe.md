@@ -4,6 +4,7 @@
 ## Inhaltsverzeichnis:
 
 - [Game API](#game-api)
+- [Highscore](#highscore)
 - [Category and Questions API](#cat-and-que-api)
 ___
 
@@ -28,10 +29,7 @@ localhost:8085/game/create
 RequestBody: 
 ````json lines
 {
-"player1":{
     "nickname" : "someone"
-},
-"categories" : ["cat1", "cat2", "cat3"]
 }
 ````
              
@@ -63,7 +61,8 @@ RequestBody:
 ```json lines
 {
     "gameId": "778bb",
-    "nickname" : "somebody"
+    "nickname" : "somebody",
+    "categories" : ["cat1", "cat2", "cat3"]
     
 }
 ```
@@ -111,6 +110,37 @@ RequestBody:
 }
 ```
 
+<h1 id="highscore">Highscores</h1>
+
+## Get Top Ten (DESC)
+POST-Request:
+```
+localhost:8085/api/highscore/getTopTen
+```
+RequestBody:
+```json lines
+*EMPTY*
+```
+Response:
+```json lines
+ {
+  [
+    {
+        "score": 63,
+        "nickname": "name",
+        "id": "63a5b5c8fa8a3f8a9a85e680"
+    },
+    {
+        "score": 55,
+        "nickname": "postman",
+        "id": "6dad676a-90b4-451d-88d3-89c82e768066"
+    },
+    ...
+]
+}
+```
+
+
 <h1 id="cat-and-que-api">Category and Question API</h1>
 
 #### Roadmap Category API
@@ -125,9 +155,10 @@ RequestBody:
 
 - [X] Create Question
 - [X] Read all questions
-- [ ] Update question
+- [X] Update question
 - [ ] Delete Question
-- [ ] Read Question
+- [X] Read Question
+- [ ] Read Random Questions By Multiple Categories 
 
 
 
@@ -314,26 +345,21 @@ localhost:8085/api/questions
 ```
 RequestBody:
 ```json lines
+
 {
-  "categoryName": "Schätzfragen",
-  "questions": [
+  "question": "Wie viele Weihnachtsbäume werden in Deutschland pro Jahr verkauft?",
+  "answer": [
     {
-      "question": "Wie viele Weihnachtsbäume werden in Deutschland pro Jahr verkauft?",
-      "answer": [
-        {
-          "answer": "Etwa 30 Millionen",
-          "isAnswerCorrect": true
-        },
-        {
-          "answer": "Etwa 10 Millionen",
-          "isAnswerCorrect": false
-        }
-      ],
-      "categoryId": "54800863-0db5-472e-8799-4c6ee439b665",
-      "id": "12d38f34-be51-4909-8c04-a43440f497d1"
+      "answer": "Etwa 30 Millionen",
+      "isAnswerCorrect": true
     },
+    {
+      "answer": "Etwa 10 Millionen",
+      "isAnswerCorrect": false
+    }
   ],
-  "countQuestions": 1
+  "categoryId": "54800863-0db5-472e-8799-4c6ee439b665",
+  "id": "12d38f34-be51-4909-8c04-a43440f497d1"
 }
 ```
 Response:

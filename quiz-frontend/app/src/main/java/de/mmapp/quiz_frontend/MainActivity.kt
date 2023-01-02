@@ -29,10 +29,11 @@ class MainActivity : AppCompatActivity() {
                     buttonNewGame.isEnabled = true
                     buttonNewGame.setOnClickListener {
                         val nick = eingabeE.text.toString()
+                        setContentView(R.layout.gameid_screen)
                         // TODO when ready, change from "LastActivity" to "QuestionActivity"
-                        val intent = Intent(this@MainActivity, Question::class.java)
-                        intent.putExtra("nickname", nick)
-                        startActivity(intent)
+                        //val intent = Intent(this@MainActivity, Question::class.java)
+                        //intent.putExtra("nickname", nick)
+                        //startActivity(intent)
                     }
                 } else {
                     buttonNewGame.isEnabled = false

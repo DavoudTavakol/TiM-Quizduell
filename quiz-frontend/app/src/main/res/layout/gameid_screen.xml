@@ -14,12 +14,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Willkommen 'Nickname1'! \nLeite die Game ID an deinen Mitspieler weiter."
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Willkommen 'Nickname1'!"
+        android:textSize="35dp"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/willkommenEinns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Leite die Game ID an deinen Mitspieler weiter."
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,9 +32,67 @@
         android:layout_gravity="center"
         android:text="Game ID: 123456"
         android:textSize="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Wähle aus folgenden Kategorien aus:"
+        android:textSize="22dp"
+        android:layout_marginTop="20dp" />
+
+    <CheckBox android:id="@+id/Natur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Natur"/>
+
+    <CheckBox android:id="@+id/Technick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Technik"/>
+
+    <CheckBox android:id="@+id/Alltag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alltag"/>
+
+    <CheckBox android:id="@+id/Politik"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Musik"/>
+
+
+    <CheckBox android:id="@+id/Alle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ZUFÄLLIGE KATEGORIEN"/>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Start"
+        android:enabled="false"/>
+
+    <TextView
+        android:id="@+id/warte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Warte auf Spieler 2."
+        android:textSize="10dp" />
+
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 
 </LinearLayout>

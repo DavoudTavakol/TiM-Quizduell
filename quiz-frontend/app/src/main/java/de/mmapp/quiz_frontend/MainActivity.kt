@@ -1,13 +1,11 @@
 package de.mmapp.quiz_frontend
-
+// by Christine
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -60,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             //TODO QuestionsActivity starten
             //TODO Nickname 1 auch noch einbinden
             //textZ.setText(Nickname1 + "wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
+            //findViewById<RelativeLayout>(R.id.loadingPanel).setVisibility(View.GONE);
         }
 
         fun update (){

@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LastActivity"/>
+        <activity android:name=".HighscoreActivity"/>
         <activity
             android:name=".QuestionActivity"
             android:exported="true" />

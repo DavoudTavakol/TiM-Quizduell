@@ -12,13 +12,8 @@ Einstiegspunkt Kotlin Spring Doku
 https://kotlinlang.org/docs/jvm-create-project-with-spring-boot.html
  */
 @SpringBootApplication
-class QuizApiApplication{
-
-
-}
-
+class QuizApiApplication
 
 fun main(args: Array<String>) {
-    //runApplication<QuizApiApplication>(*args)
-    SpringApplication.run(QuizApiApplication::class.java, *args)
+    runApplication<QuizApiApplication>(*args)
 }

@@ -3,6 +3,7 @@ package com.tim.quiz_api.controller
 
 import com.mongodb.client.MongoDatabase
 import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.ReadQuestionMinDto
 import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.service.QuestionService
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -24,8 +26,7 @@ Hier findet sich das API-Team wieder!
  */
 @RestController
 @RequestMapping("api/questions")
-class QuestionController @Autowired constructor(var mongoTemplate: MongoTemplate, val questionService: QuestionService,) {
-    var db:MongoDatabase = mongoTemplate.db;
+class QuestionController @Autowired constructor(val questionService: QuestionService,) {
 
     @GetMapping("{categoryId}")
     fun getQuestionsByCategory(@PathVariable categoryId: String): QuestionListDto? {
@@ -34,40 +35,19 @@ class QuestionController @Autowired constructor(var mongoTemplate: MongoTemplate
 
     @PostMapping("/create")
     fun createQuestionInCategory(@RequestBody question: Question): ResponseEntity<Nothing> {
-        println(question)
+        //ID is generated automatically. Only when id is not in RequestBody.
         questionService.createQuestionInCategory(question)
         return ResponseEntity(null, HttpStatus.CREATED)
     }
 
-    /*@GetMapping("/create/{collectionName}")
-    fun createTestDoc(@PathVariable collectionName:String): MutableList<Question> {
-        val questions = listOf(
-            //Question("Test Question", "Test answer", 1,  "Q1"),
-            //Question("Test Question 2", "Test answer 2", 2,  "Q2")
-        )
-        mongoTemplate.insert(questions, collectionName)
-        return mutableListOf()
-    }*/
+    @PutMapping("/update")
+    fun updateQuestionInCategory(@RequestBody question:Question):ResponseEntity<Nothing>{
+        questionService.updateQuestionInCategory(question)
+        return ResponseEntity(null, HttpStatus.CREATED)
+    }
 
-    /*val mongoDb : MongoClient? = null
-    @GetMapping("/allmath")
-    fun getAllMathQuestions():
-       ResponseEntity<List<MathQuestion>> {
-           val mquestions = mathQuestionRepo.findAll()
-           return ResponseEntity.ok(mquestions)
-       }
-
-    @GetMapping("/math")
-    fun getMathQuestion():
-            ResponseEntity<Optional<MathQuestion>> {
-            val mquestion = mathQuestionRepo.findById("M3")
-            return ResponseEntity.ok(mquestion)
-        }
-
-    @GetMapping("/insert/math")
-    fun insertMathQuestion() :
-            ResponseEntity<MathQuestion> {
-        val ins = mathQuestionRepo.insert(MathQuestion(id = "M4", question = "Q!?", answer = "A1", points = 5))
-        return  ResponseEntity.ok(ins)
-    }*/
+    @PostMapping("/read")
+    fun getQuestionByIdInCategory(@RequestBody question: ReadQuestionMinDto):ResponseEntity<Question>{
+        return ResponseEntity(questionService.readQuestion(question), HttpStatus.OK)
+    }
 }

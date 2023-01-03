@@ -1,17 +1,20 @@
 <script>
-	import { overlayOpen } from '$lib/store.js';
+	import { confirmModalOpen } from '$lib/store.js';
 	import { fly } from 'svelte/transition';
 	import InputText from '$lib/InputText.svelte';
+	import { clickOutside } from '$lib/clickOutside.js';
 
 	function handleClose() {
-		overlayOpen.set(false);
+		confirmModalOpen.set(true);
 	}
 </script>
 
 <div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">
 	<div
+		use:clickOutside
+		on:click_outside={handleClose}
 		class="bg-white h-full m-auto right-0 w-175 absolute"
-		transition:fly={{ x: 700, duration: 100 }}
+		transition:fly={{ x: 700, duration: 300 }}
 	>
 		<button
 			class="rounded-l-full bg-gray-500 h-10 top-10 -left-10 w-10 absolute hover:bg-gray-600"

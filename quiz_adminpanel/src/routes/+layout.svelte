@@ -1,13 +1,17 @@
 <script>
 	import '@unocss/reset/tailwind.css';
 	import Login from '$lib/Login.svelte';
-	import Overlay from '$lib/Overlay.svelte';
-	import { logedIn, overlayOpen } from '$lib/store.js';
+	import OverlayQuestion from '$lib/OverlayQuestion.svelte';
+	import { logedIn, overlayQuestionOpen, overlayCategoryOpen, confirmModalOpen} from '$lib/store.js';
 	import Sidebar from '$lib/Sidebar.svelte';
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import OverlayCategory from '$lib/OverlayCategory.svelte';
+	import Confirm from '$lib/Confirm.svelte';
+
 
 	export let data;
+
 	let { categories } = data;
 
 	onMount(() => {
@@ -21,8 +25,17 @@
 	{#if $logedIn}
 		<section class="flex relative overflow-x-hidden">
 			<Sidebar {categories} />
-			{#if $overlayOpen}
-				<Overlay />
+			{#if $overlayQuestionOpen}
+				<OverlayQuestion />
+			{/if}
+			{#if $confirmModalOpen && $overlayQuestionOpen}
+				<Confirm/>
+			{/if}
+			{#if $overlayCategoryOpen}
+				<OverlayCategory />
+			{/if}
+			{#if $confirmModalOpen && $overlayCategoryOpen}
+				<Confirm/>
 			{/if}
 			<slot />
 		</section>

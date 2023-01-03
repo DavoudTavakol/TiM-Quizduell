@@ -9,8 +9,20 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import de.mmapp.quiz_frontend.CategoriesActivity.Companion.checkIfReady
+import de.mmapp.quiz_frontend.models.Game
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import okio.IOException
 
 class MainActivity : AppCompatActivity() {
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,12 +44,47 @@ class MainActivity : AppCompatActivity() {
                     buttonNewGame.setOnClickListener {
                         val nick = eingabeE.text.toString()
                         // TODO when ready, change from "LastActivity" to "QuestionActivity"
-                        val intent = Intent(this@MainActivity, Question::class.java)
-                        intent.putExtra("nickname", nick)
-                        startActivity(intent)
+
+                        //setContentView(R.layout.gameid_screen)
+
+                        var gameid: String = ""
+
+                        GlobalScope.launch(Dispatchers.Main) {
+
+                            try {
+                                gameid = createGameRequest(eingabeE.text.toString())
+                                println(gameid)
+
+                                var categories : ArrayList<String> = getCategories() as ArrayList<String>
+                                val intent = Intent(this@MainActivity, CategoriesActivity::class.java)
+
+                                // Send gameId and Categories List to Categories Activity
+                                intent.putExtra("nickname",nick)
+                                intent.putExtra("gameId", gameid)
+                                intent.putStringArrayListExtra("categories", categories)
+
+                                println(categories)
+                                startActivity(intent)
+                            } catch (e : IOException)  {
+                                Toast.makeText(this@MainActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
+
+                            }
+
+
+
+                        }
+
+
+
+                        print(gameid)
+
+
+
+
                     }
                 } else {
                     buttonNewGame.isEnabled = false
+
                     Toast.makeText(applicationContext, "Du musst einen Nicknamen eingeben! ", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -52,21 +99,76 @@ class MainActivity : AppCompatActivity() {
         // TODO Nickname 1
         // val textZ = findViewById<TextView>(R.id.spEinsWahlKategorien)
 
-        fun waitingScreen(){
+        fun waitingScreen(game : Game){
             setContentView(R.layout.waiting_screen)
             var nicknameZwei = findViewById<TextView>(R.id.willkommenZwei)
             val eingabeZwei = eingabeZ.text.toString()
+            var textZ = findViewById<TextView>(R.id.spEinsWahlKategorien)
             nicknameZwei.text = "Willkommen " + eingabeZwei
             //TODO QuestionsActivity starten
             //TODO Nickname 1 auch noch einbinden
-            //textZ.setText(Nickname1 + "wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
+            textZ.setText(game.player1.nickname + " wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
+
+            // Polling : Asking the server every second if the other player is ready.
+            // checkIfReady is a static method of the class CategoriesActivity
+
+
+            var newGame : Game
+            GlobalScope.launch(){
+
+
+
+
+                newGame = setReady(game.player2.nickname,game.gameId)
+
+
+                (1..30).asFlow() // a flow of requests
+                    .map { request -> checkIfReady(game.gameId,game.player2.nickname) }
+                    .collect { response ->
+
+                        println(response)
+                        if (response == "true"){
+                            val intent = Intent(this@MainActivity, QuestionActivity::class.java)
+
+                            intent.putExtra("game",newGame)
+                            startActivity(intent)
+                            this.cancel()
+
+                        }
+                    }
+
+
+            }
+
+
+
         }
 
         fun update (){
             if(boolID && boolNick){
                 buttonJoinGame.isEnabled = true
                 buttonJoinGame.setOnClickListener {
-                    waitingScreen()
+
+                    var game : Game
+
+                    GlobalScope.launch(Dispatchers.Main) {
+
+                       try {
+                           game = connectToGameRequest(eingabeZ.text.toString(),eingabeID.text.toString())
+                           println(game)
+
+                           waitingScreen(game)
+                       } catch (e : IOException) {
+                           Toast.makeText(this@MainActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
+
+                       }
+
+
+
+                    }
+
+
+
                 }
             } else {
                 buttonJoinGame.isEnabled = false
@@ -113,6 +215,150 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+
+     suspend fun createGameRequest(nickname : String): String = GlobalScope.async(Dispatchers.IO) {
+
+
+       // Request Body , See Documentation
+
+        val jsonBody :String = """
+             {
+                 "nickname" : "$nickname"
+             }
+             
+         """.trimIndent()
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8085/game/create")
+            .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+            .build()
+
+        var gameId : String = ""
+
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val mapper = jacksonObjectMapper()
+
+           // Parse the JSON String into a Game instance (accessibility through game. )
+            var game: Game = mapper.readValue(response.body.string())
+            println(game)
+            println(game.gameId)
+            gameId = game.gameId
+
+        }
+
+
+        return@async gameId
+
+
+    }.await()
+
+
+    private suspend fun connectToGameRequest(nickname : String, gameId : String): Game = GlobalScope.async(Dispatchers.IO) {
+
+        val jsonBody :String = """
+             {
+                 "gameId": "$gameId",
+                 "player2" : {
+                    "nickname" : "$nickname"
+                 }
+             }
+             
+         """.trimIndent()
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8085/game/connect")
+            .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+            .build()
+
+        var game : Game
+
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val mapper = jacksonObjectMapper()
+
+            game = mapper.readValue(response.body.string())
+
+
+
+        }
+
+
+        return@async game
+
+
+    }.await()
+
+
+
+    companion object {
+         suspend fun setReady(nickname : String, gameId : String): Game = GlobalScope.async(Dispatchers.IO) {
+
+            val jsonBody :String = """
+             {
+                 "gameId": "$gameId",
+                 "nickname":"$nickname",
+                 "categories" : []
+             }
+             
+         """.trimIndent()
+
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url("http://10.0.2.2:8085/game/ready")
+                .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
+
+            var game : Game
+
+
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                val mapper = jacksonObjectMapper()
+
+                game = mapper.readValue(response.body.string())
+
+
+
+            }
+
+
+            return@async game
+
+
+        }.await()
+    }
+
+    private suspend fun getCategories() : List<String> = GlobalScope.async(Dispatchers.IO) {
+
+        var categories : List<String> = listOf()
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://10.0.2.2:8085/game/categories")
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val mapper = jacksonObjectMapper()
+
+            categories = mapper.readValue(response.body.string())
+
+
+        }
+
+        return@async categories
+    }.await()
+
+
+
+
 }
+
+
 
 

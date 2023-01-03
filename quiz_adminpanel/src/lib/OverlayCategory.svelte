@@ -7,7 +7,6 @@
 	function handleClose() {
 		confirmModalOpen.set(true);
 	}
-
 </script>
 
 <div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">

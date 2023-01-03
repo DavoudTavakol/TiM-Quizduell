@@ -11,53 +11,43 @@ import androidx.appcompat.app.AppCompatActivity
 class LastActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.highscore_screen)
+        setContentView(R.layout.end_screen)
 
         // display winner
-        // for test run: instead of winner just players nickname
         val winner = findViewById<TextView>(R.id.whoWon)
-        val nick = intent.getStringExtra("nickname")
-        winner.setText(nick)
+        // TODO show winners real nickname
 
-        // display your points
+        // display nr of right questions answered
+        val rightQ = findViewById<TextView>(R.id.nrRightQ)
+        // TODO show real nr of right questions player got
+
+        // display your achieved points
         val points = findViewById<TextView>(R.id.myPoints)
-        points.setText("Deine Punkte: 'Zahl'")
         // TODO show real achieved points
 
-        // display highscore table
-        // 3 columns:
-        // one column with rank, one with the "nickname" and one with the achieved score
-
-        // test run
-        val score = findViewById<TextView>(R.id.scoreBoard)
-        score.setText("\n" + "1: " + "nick: " + "points" + "\n"
-                + "2: " + "nick: " + "points" + "\n"
-                + "3: " + "nick: " + "points" + "\n")
-
-        /*
-        val rank = findViewById<TextView>(R.id.rank)
-        val name = findViewById<TextView>(R.id.name)
-        val highscore = findViewById<TextView>(R.id.points)
-
-        val row = findViewById<TableRow>(R.id.tableRow)
-        // TODO show table with real content in real order
-        // *add new row of content when other player finished game and order it
-        // !just 5 rows in the table(?)
-        */
+        // display question list
+        val list = findViewById<TextView>(R.id.qList)
 
         //"Erneut spielen"
-        // for test run: instead of "Kategorien"-Screen use "Fragen"-Screen
-        val buttonNewGame = findViewById<Button>(R.id.btn1)
-        buttonNewGame.setOnClickListener {
-            val intent = Intent(this, QuestionActivity::class.java)
+        val btnNewGame = findViewById<Button>(R.id.btn1)
+        btnNewGame.setOnClickListener {
+            val intent = Intent(this, CategoriesActivity::class.java)
             startActivity(intent)
         }
-        // TODO create intent to "Kategorie" screen for p1 and to waiting screen for p2
+        // TODO both players must press "Erneut spielen" to confirm that they are ready.
+        //  (Player 1 presses Play again -> wait circle appears until player 2 also presses Play again (the other way round too)).
 
         // "Hauptmenue"
-        val buttonMenu = findViewById<Button>(R.id.btn2)
-        buttonMenu.setOnClickListener {
+        val btnMenu = findViewById<Button>(R.id.btn2)
+        btnMenu.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        // "Highscore Tabelle anzeigen"
+        val btnHighscore = findViewById<Button>(R.id.btn3)
+        btnHighscore.setOnClickListener {
+            val intent = Intent(this, HighscoreActivity::class.java)
             startActivity(intent)
         }
     }

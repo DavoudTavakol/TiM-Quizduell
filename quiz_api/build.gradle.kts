@@ -24,21 +24,15 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-mongodb") {
-        exclude(module = "spring-boot-starter-logging")
-        exclude(module = "logback-classic")
-    }
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf") {
-        exclude(module = "logback-classic")
-    }
-    implementation("org.springframework.boot:spring-boot-starter-web") {
-        exclude(module = "spring-boot-starter-logging")
-        exclude(module = "logback-classic")
-    }
+    implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation ("com.google.code.gson:gson:2.8.5")
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

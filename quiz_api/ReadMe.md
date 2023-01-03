@@ -411,3 +411,47 @@ Response:
 }
 ```
 
+## BUILD DOCKER LOCAL (TODO)
+Prerequisites: Docker + WSL2
+
+Create Image:
+```
+Navigate to dockerfile
+r-click > open Powershellwindow
+docker build -t wildfly ./
+```
+Run Image:
+```
+docker run -p 8080:8080 -p 9990:9990 -it wildfly
+```
+Dockerfile:
+```
+FROM quay.io/wildfly/wildfly
+RUN /opt/jboss/wildfly/bin/add-user.sh timadmin timadmin123 --silent
+#copy deployment
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+```
+
+## CREATE WAR-FILE AND DEPLOYMENT (TODO)
+Momentan nur auf Deployment-Branch möglich!
+
+Generate WAR-File:
+```
+Gradle > quiz_api > Tasks > build > run bootWar
+
+WAR-FILE found in
+build > libs > quiz_api-0.0.1-SNAPSHOT.war
+```
+Start Wildfly Appserver:
+```
+localhost:8080 > click "Administration Console"
+oder
+localhost:9990
+
+USER:   timadmin
+PW:     timadmin123
+```
+Deployment:
+```
+Deployments > Add > Upload Deployment >
+Choose a file or drag it here > myapp.war > next > finish

@@ -20,8 +20,8 @@ tools:context=".CategoriesActivity">
         app:titleCentered="true"
         app:titleTextColor="@color/white"
         app:title="@string/app_name"
-        android:background="@color/black"
-        />
+        android:background="@color/black"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
@@ -40,17 +40,17 @@ tools:context=".CategoriesActivity">
         tools:context=".MainActivity">
 
         <TextView
-            android:id="@+id/willkommenEins"
+            android:id="@+id/greetingOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="20dp"
+            android:text="Willkommen 'Nickname1'. \nLeite die 6-stellige Game-ID an deinen Mitspieler weiter."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white"/>
 
         <TextView
             android:textColor="@color/white"
@@ -63,6 +63,7 @@ tools:context=".CategoriesActivity">
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:textColor="@color/white"
             android:layout_width="wrap_content"
@@ -75,11 +76,11 @@ tools:context=".CategoriesActivity">
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox android:id="@+id/Alle"
+        <CheckBox android:id="@+id/all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="ALLE KATEGORIEN"/>
+            android:text="Zufällige Kategorien"/>
 
         <CheckBox android:id="@+id/no1"
             android:layout_width="wrap_content"
@@ -89,28 +90,22 @@ tools:context=".CategoriesActivity">
         <CheckBox android:id="@+id/no2"
             android:layout_width="wrap_content"
             android:textColor="@color/white"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <CheckBox android:id="@+id/no3"
             android:layout_width="wrap_content"
             android:textColor="@color/white"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <CheckBox android:id="@+id/no4"
             android:layout_width="wrap_content"
             android:textColor="@color/white"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <CheckBox android:id="@+id/no5"
             android:layout_width="wrap_content"
             android:textColor="@color/white"
-            android:layout_height="wrap_content" />
-
-        <CheckBox android:id="@+id/no6"
-            android:layout_width="wrap_content"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/startButton"
@@ -118,7 +113,6 @@ tools:context=".CategoriesActivity">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Start"/>
-
 
     </LinearLayout>
 

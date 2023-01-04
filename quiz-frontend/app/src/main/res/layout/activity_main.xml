@@ -21,8 +21,8 @@
             android:background="@color/black"
             app:titleTextColor="@color/white"
             app:title="@string/app_name"
-            android:elevation="5dp"
-            />
+            android:elevation="5dp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
@@ -30,6 +30,7 @@
             android:background="@color/gold" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,13 +40,12 @@
         android:paddingRight="16dp"
         tools:context=".MainActivity">
 
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Quizduell"
-            android:textSize="60dp"
+            android:text="Willkommen"
+            android:textSize="40dp"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -65,32 +65,27 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/MyTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:hint="Nickname"
-            app:expandedHintEnabled="false"
-            >
-
+            app:expandedHintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/MyTextInputEditText"
-                android:id="@+id/nicknameEins"
+                android:id="@+id/nicknameOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="15"
                 android:maxLines="1"
                 android:lines="1"
-                android:singleLine="true"
-                />
+                android:singleLine="true"/>
 
             <com.google.android.material.button.MaterialButton
                 android:backgroundTint="@color/button_selector"
-                android:id="@+id/neuesSpiel"
+                android:id="@+id/newGame"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -99,6 +94,8 @@
                 android:layout_marginBottom="30dp"
                 android:textColor="@color/text_color_selector"
                 android:enabled="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,36 +110,23 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/MyTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:hint="Nickname"
-            app:expandedHintEnabled="false"
-            >
-
+            app:expandedHintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/MyTextInputEditText"
-                android:id="@+id/nicknameZwei"
+                android:id="@+id/nicknameTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="15"
                 android:maxLines="1"
                 android:lines="1"
-                android:singleLine="true"
-                />
-
-
-
-
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,9 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:hint="Game-ID-6-Stellig"
-            app:expandedHintEnabled="false"
-            >
-
+            app:expandedHintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 style="@style/MyTextInputEditText"
@@ -171,7 +153,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:backgroundTint="@color/button_selector"
-                android:id="@+id/spielBeitreten"
+                android:id="@+id/joinGame"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -180,23 +162,9 @@
                 android:textColor="@color/text_color_selector"
                 android:enabled="false" />
 
-
-
-
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-
-
-
-
-
-
-
-
     </LinearLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

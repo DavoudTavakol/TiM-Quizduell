@@ -21,13 +21,12 @@ tools:context=".MainActivity">
         app:titleCentered="true"
         app:titleTextColor="@color/white"
         app:title="@string/app_name"
-        android:background="@color/black"
-        />
+        android:background="@color/black"/>
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_alignParentTop="true"
-        android:background="@color/gold" />
+        android:background="@color/gold"/>
 
 </com.google.android.material.appbar.AppBarLayout>
 
@@ -41,7 +40,7 @@ tools:context=".MainActivity">
         tools:context=".MainActivity">
 
         <TextView
-            android:id="@+id/willkommenZwei"
+            android:id="@+id/greetingTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -54,7 +53,7 @@ tools:context=".MainActivity">
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/spEinsWahlKategorien"
+            android:id="@+id/playerOneCategories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

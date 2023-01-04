@@ -53,7 +53,7 @@ tools:context=".MainActivity">
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/playerOneCategories"
+            android:id="@+id/passGameId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

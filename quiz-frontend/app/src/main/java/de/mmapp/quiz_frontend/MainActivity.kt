@@ -100,9 +100,9 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.waiting_screen)
             var nicknameTwo = findViewById<TextView>(R.id.greetingTwo)
             val nicknamePtwo = inputPlayerTwo.text.toString()
-            var text = findViewById<TextView>(R.id.playerOneCategories)
+            var text = findViewById<TextView>(R.id.passGameId)
             nicknameTwo.text = "Willkommen " + nicknamePtwo
-            text.setText(game.player1.nickname + " wählt gerade die Kategorie. \nBitte habe noch einen Moment Geduld, es geht gleich los!")
+            text.text = game.player1.nickname + " wählt gerade die Kategorien. \nBitte habe noch einen Moment Geduld, es geht gleich los!"
 
             // Polling : Asking the server every second if the other player is ready.
             // checkIfReady is a static method of the class CategoriesActivity

@@ -3,6 +3,7 @@ package de.mmapp.quiz_frontend
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -25,13 +26,27 @@ class CategoriesActivity : AppCompatActivity() {
         val id = intent.getStringExtra("gameId")
         val categories = intent.getStringArrayListExtra("categories")
 
-        // TODO : Build the Checkbox list
+        // TODO : Get the Checkbox text
+        var one = findViewById<CheckBox>(R.id.no1)
+        one.text = categories!![0]
+        var two = findViewById<CheckBox>(R.id.no2)
+        two.text = categories!![1]
+        var three = findViewById<CheckBox>(R.id.no3)
+        three.text = categories!![2]
+        /*var four = findViewById<CheckBox>(R.id.no4)
+        four.text = categories!![3]
+        var five = findViewById<CheckBox>(R.id.no5)
+        five.text = categories!![4]*/
 
         var gameId = findViewById<TextView>(R.id.gameId)
         val nickname = findViewById<TextView>(R.id.greetingOne)
         gameId.text = id
         nickname.text = intent.getStringExtra("nickname")
+        val name = nickname.text
+        var text = findViewById<TextView>(R.id.passGameId)
+        text.text = "Willkommen " + name + "! \nBitte leite die 6-stellige Game-ID an deinen Mitspieler weiter."
         println(categories)
+        //checkBoxes()
     }
 
     override fun onResume() {

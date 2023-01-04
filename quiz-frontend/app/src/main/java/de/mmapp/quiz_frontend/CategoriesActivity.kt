@@ -26,6 +26,8 @@ class CategoriesActivity : AppCompatActivity() {
         val id = intent.getStringExtra("gameId")
         val categories = intent.getStringArrayListExtra("categories")
 
+        /*
+        // doesn't work: CategoriesActivity stops working, NullPointerExcecption
         // TODO : Get the Checkbox text
         var one = findViewById<CheckBox>(R.id.no1)
         one.text = categories!![0]
@@ -37,6 +39,7 @@ class CategoriesActivity : AppCompatActivity() {
         four.text = categories!![3]
         var five = findViewById<CheckBox>(R.id.no5)
         five.text = categories!![4]*/
+        */
 
         var gameId = findViewById<TextView>(R.id.gameId)
         val nickname = findViewById<TextView>(R.id.greetingOne)

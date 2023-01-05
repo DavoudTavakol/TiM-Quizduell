@@ -63,17 +63,10 @@ class CategoryController @Autowired constructor(
     fun updateCategory(@RequestBody category: CategoryMinDto): ResponseEntity<Category> {
         val newName = category.categoryName
         val id = category.id
-        //request category from DB
-        val category = categoryService.getCategoryById(id)
-        //Check if categoryName is not null or empty string and check if category is actually in DB
-        if(category != null){
-            //change category name
-            category.categoryName = newName
-            //Returns a Status 200 OK
-            return ResponseEntity(categoryRepo.save(category), HttpStatus.OK)
-        }
-        //Returns a Status 400 Bad Request
-        return ResponseEntity(null, HttpStatus.BAD_REQUEST)
+        val category = categoryService.getCategoryById(id) ?: throw CategoryException("No category found!")
+        if(!categoryService.isValidCategoryName(newName)) throw CategoryException("Invalid name.")
+        category.categoryName = newName
+        return ResponseEntity(categoryRepo.save(category), HttpStatus.OK)
     }
 
 
@@ -83,12 +76,8 @@ class CategoryController @Autowired constructor(
 
     @GetMapping("{id}")
     fun findCategoryById(@PathVariable id:String): ResponseEntity<Category> {
-        val category = categoryService.getCategoryById(id)
-        return if(category != null){
-            ResponseEntity(category, HttpStatus.OK)
-        }else{
-            ResponseEntity(null, HttpStatus.NOT_FOUND)
-        }
+        val category = categoryService.getCategoryById(id) ?: throw CategoryException("No category found!")
+        return ResponseEntity(category, HttpStatus.OK)
     }
 
 
@@ -97,13 +86,9 @@ class CategoryController @Autowired constructor(
      */
     @DeleteMapping("{id}")
     fun deleteCategory(@PathVariable id:String):ResponseEntity<Category>{
-        val category = categoryService.getCategoryById(id)
-        if(category != null){
-            categoryRepo.deleteById(id)
-            return  return ResponseEntity(null, HttpStatus.NO_CONTENT)
-        }else{
-            return ResponseEntity(null, HttpStatus.NOT_FOUND)
-        }
+        categoryService.getCategoryById(id) ?: throw CategoryException("No category found!")
+        categoryRepo.deleteById(id)
+        return ResponseEntity(null, HttpStatus.NO_CONTENT)
     }
 
     @ExceptionHandler(CategoryException::class)

@@ -161,7 +161,25 @@ Response:
 - [ ] Read Random Questions By Multiple Categories 
 
 
-
+#### <span style='color:salmon'>Information about error handling for Category-API!</span>
+1. In case you have specified a category ID which is 
+not in our Database you will receive the following error message:
+````json lines
+{
+    "msg": "No category found!",
+    "date": "2023-01-06T09:30:11.462109",
+    "statusCode": 400
+}
+````
+2. In case you have specified a categoryName which is already taken or an empty-string 
+you will receive the following error message:
+```json lines
+{
+    "msg": "Invalid name.",
+    "date": "2023-01-06T09:32:06.956463",
+    "statusCode": 400
+}
+```
 
 ## CREATE a Category
 

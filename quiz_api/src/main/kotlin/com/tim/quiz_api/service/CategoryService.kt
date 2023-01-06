@@ -25,7 +25,7 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
         Returns Category and its questions
      */
     fun getCategoryById(id: String): Category? {
-        return categoryRepo.findByIdOrNull(id)
+        return categoryRepo.findByIdOrNull(id);
     }
 
     fun saveCategory(createCategory: CreateCategoryDto): Category {
@@ -54,7 +54,7 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
         return true
     }
 
-    private fun categoryExists(categoryName: String): Boolean {
+    fun categoryExists(categoryName: String): Boolean {
         return categoryRepo.existsByCategoryName(categoryName)
     }
 }

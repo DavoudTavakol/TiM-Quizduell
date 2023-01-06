@@ -2,9 +2,7 @@ package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.CategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
-import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
-import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.exceptions.CategoryException
 import com.tim.quiz_api.exceptions.exceptionDTO.CustomExceptionDTO
@@ -23,12 +21,6 @@ class CategoryController @Autowired constructor(
     val categoryRepo: CategoryRepo,
     val categoryService: CategoryService) {
 
-
-    @GetMapping("/test")
-    fun test(): ResponseEntity<Category?> {
-        return ResponseEntity(null, HttpStatus.OK)
-    }
-
     /*
         Liefert alle Kategorie ohne Fragen aus der Collection "categories" zurück
      */
@@ -40,7 +32,7 @@ class CategoryController @Autowired constructor(
         return ResponseEntity(categories, HttpStatus.OK)
     }
 
-    /*
+    /**
         Erstellt ein NEUES Dokument in der "category" collection mit dem übergebenen Namen
         z.B.: {categoryName: "Geschichte"}
 
@@ -61,11 +53,10 @@ class CategoryController @Autowired constructor(
      */
     @PutMapping("/update")
     fun updateCategory(@RequestBody category: CategoryMinDto): ResponseEntity<Category> {
-        val newName = category.categoryName
-        val id = category.id
+        val(id,categoryName) = category
         val category = categoryService.getCategoryById(id) ?: throw CategoryException("No category found!")
-        if(!categoryService.isValidCategoryName(newName)) throw CategoryException("Invalid name.")
-        category.categoryName = newName
+        if(!categoryService.isValidCategoryName(categoryName)) throw CategoryException("Invalid name.")
+        category.categoryName = categoryName
         return ResponseEntity(categoryRepo.save(category), HttpStatus.OK)
     }
 

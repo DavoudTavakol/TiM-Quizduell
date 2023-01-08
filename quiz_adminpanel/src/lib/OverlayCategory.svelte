@@ -1,13 +1,13 @@
 <script>
-	import { confirmModalOpen, overlayCategoryOpen } from '$lib/store.js';
-	import { fly } from 'svelte/transition';
-	import InputText from '$lib/InputText.svelte';
-	import { clickOutside } from '$lib/clickOutside.js';
+	import { confirmModalOpen, overlayCategoryOpen } from '$lib/store.js'
+	import { fly } from 'svelte/transition'
+	import InputText from '$lib/InputText.svelte'
+	import { clickOutside } from '$lib/clickOutside.js'
 
-	let title = '';
+	let title = ''
 
 	function handleClose() {
-		confirmModalOpen.set(true);
+		confirmModalOpen.set(true)
 	}
 
 	async function addCategory() {
@@ -19,10 +19,10 @@
 			body: JSON.stringify({
 				categoryName: title
 			})
-		});
-		console.log('Category added: ' + title);
-		title = '';
-		$overlayCategoryOpen = false;
+		})
+		console.log('Category added: ' + title)
+		title = ''
+		$overlayCategoryOpen = false
 	}
 </script>
 

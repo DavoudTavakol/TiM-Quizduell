@@ -1,11 +1,11 @@
 <script>
-	import { confirmModalOpen } from '$lib/store.js';
-	import { fly } from 'svelte/transition';
-	import InputText from '$lib/InputText.svelte';
-	import { clickOutside } from '$lib/clickOutside.js';
+	import { confirmModalOpen } from '$lib/store.js'
+	import { fly } from 'svelte/transition'
+	import InputText from '$lib/InputText.svelte'
+	import { clickOutside } from '$lib/clickOutside.js'
 
 	function handleClose() {
-		confirmModalOpen.set(true);
+		confirmModalOpen.set(true)
 	}
 </script>
 

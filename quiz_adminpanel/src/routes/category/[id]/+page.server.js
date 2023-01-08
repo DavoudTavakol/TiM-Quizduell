@@ -184,6 +184,6 @@ export function load() {
 			}
 		],
 		id: '942f3c05-bba2-47dc-8b37-11dc8847a1b5'
-	};
-	return res;
+	}
+	return res
 }

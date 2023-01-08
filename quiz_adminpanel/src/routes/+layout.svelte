@@ -1,24 +1,28 @@
 <script>
-	import '@unocss/reset/tailwind.css';
-	import Login from '$lib/Login.svelte';
-	import OverlayQuestion from '$lib/OverlayQuestion.svelte';
-	import { logedIn, overlayQuestionOpen, overlayCategoryOpen, confirmModalOpen} from '$lib/store.js';
-	import Sidebar from '$lib/Sidebar.svelte';
-	import '../app.css';
-	import { onMount } from 'svelte';
-	import OverlayCategory from '$lib/OverlayCategory.svelte';
-	import Confirm from '$lib/Confirm.svelte';
+	import '@unocss/reset/tailwind.css'
+	import Login from '$lib/Login.svelte'
+	import OverlayQuestion from '$lib/OverlayQuestion.svelte'
+	import {
+		logedIn,
+		overlayQuestionOpen,
+		overlayCategoryOpen,
+		confirmModalOpen
+	} from '$lib/store.js'
+	import Sidebar from '$lib/Sidebar.svelte'
+	import '../app.css'
+	import { onMount } from 'svelte'
+	import OverlayCategory from '$lib/OverlayCategory.svelte'
+	import Confirm from '$lib/Confirm.svelte'
 
+	export let data
 
-	export let data;
-
-	let { categories } = data;
+	let { categories } = data
 
 	onMount(() => {
 		if (window.localStorage.getItem('logedIn') === 'true') {
-			$logedIn = true;
+			$logedIn = true
 		}
-	});
+	})
 </script>
 
 <main>
@@ -29,13 +33,13 @@
 				<OverlayQuestion />
 			{/if}
 			{#if $confirmModalOpen && $overlayQuestionOpen}
-				<Confirm/>
+				<Confirm />
 			{/if}
 			{#if $overlayCategoryOpen}
 				<OverlayCategory />
 			{/if}
 			{#if $confirmModalOpen && $overlayCategoryOpen}
-				<Confirm/>
+				<Confirm />
 			{/if}
 			<slot />
 		</section>

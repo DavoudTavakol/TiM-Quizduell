@@ -1,14 +1,14 @@
 <script>
-	import InputText from '$lib/InputText.svelte';
-	import { logedIn } from '$lib/store.js';
+	import InputText from '$lib/InputText.svelte'
+	import { logedIn } from '$lib/store.js'
 
-	let username = '';
-	let password = '';
+	let username = ''
+	let password = ''
 
 	function handleLogin() {
 		if (username === 'admin' && password === 'admin') {
-			$logedIn = true;
-			localStorage.setItem('logedIn', true);
+			$logedIn = true
+			localStorage.setItem('logedIn', true)
 		}
 	}
 </script>

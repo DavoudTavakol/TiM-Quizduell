@@ -1,12 +1,12 @@
 <script>
-	import tippy from 'svelte-tippy';
-	import { page } from '$app/stores';
+	import tippy from 'svelte-tippy'
+	import { page } from '$app/stores'
 
-	export let title;
-	export let id = null;
+	export let title
+	export let id = null
 
-	$: link = id ? `/category/${id}` : '/';
-	$: active = $page.url.pathname === link;
+	$: link = id ? `/category/${id}` : '/'
+	$: active = $page.url.pathname === link
 </script>
 
 <a

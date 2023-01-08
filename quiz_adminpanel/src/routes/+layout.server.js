@@ -1,4 +1,4 @@
-let url = 'http://localhost:8085/api/category';
+let url = 'http://localhost:8085/api/category'
 
 let DummyRes = {
 	categories: [
@@ -15,17 +15,17 @@ let DummyRes = {
 			categoryName: 'Allgemeinwissen 2'
 		}
 	]
-};
+}
 
 export async function load() {
 	try {
-		let res = await fetch(url);
-		let data = await res.json();
+		let res = await fetch(url)
+		let data = await res.json()
 		return {
 			categories: data.categories
-		};
+		}
 	} catch (err) {
-		console.log('Fehler beim Laden der Kategorien: ' + err);
-		return DummyRes;
+		console.log('Fehler beim Laden der Kategorien: ' + err)
+		return DummyRes
 	}
 }

@@ -1,11 +1,11 @@
 <script>
-	import { page } from '$app/stores';
-	import Navbar from '../../../lib/Navbar.svelte';
-	export let data;
+	import { page } from '$app/stores'
+	import Navbar from '../../../lib/Navbar.svelte'
+	export let data
 
-	let { questions } = data;
+	let { questions } = data
 
-	$: id = $page.params.id;
+	$: id = $page.params.id
 </script>
 
 <main class="flex flex-col h-screen w-full overflow-scroll overflow-x-hidden">

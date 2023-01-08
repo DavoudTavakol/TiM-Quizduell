@@ -1,8 +1,8 @@
 <script>
-	import { overlayQuestionOpen } from '$lib/store.js';
-	export let title;
+	import { overlayQuestionOpen } from '$lib/store.js'
+	export let title
 
-	let words = title.split('/');
+	let words = title.split('/')
 </script>
 
 <main class="flex bg-gray-100 min-h-32 w-full p-6 items-center justify-between">

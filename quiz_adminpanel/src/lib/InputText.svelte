@@ -1,7 +1,7 @@
 <script>
-	export let label;
-	export let value = '';
-	export let type = 'text';
+	export let label
+	export let value = ''
+	export let type = 'text'
 </script>
 
 <div class="rounded flex flex-col bg-gray-200 mb-6 py-2 px-4 gap-2">

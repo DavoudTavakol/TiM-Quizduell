@@ -1,6 +1,4 @@
-import { get } from 'svelte/store';
-
-let url = 'localhost:8085/api/category';
+let url = 'http://localhost:8085/api/category';
 
 let DummyRes = {
 	categories: [
@@ -19,19 +17,16 @@ let DummyRes = {
 	]
 };
 
-async function getCategorys() {
-	await fetch(url)
-		.then((res) => res.json())
-		.then((categories) => {
-			return categories;
-		})
-		.catch(() => {
-			console.log("API Error");
-			return DummyRes;
-		});
-}
+export async function load() {
+	const fetchCategories = async () => {
+		let res = await fetch(url);
+		let data = await res.json();
+		return data.categories;
+	};
 
-export function load() {
-	let response = getCategorys();
-	return DummyRes;
+	return {
+		categories: fetchCategories()
+	};
+
+	// return DummyRes;
 }

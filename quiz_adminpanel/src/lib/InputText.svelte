@@ -11,20 +11,8 @@
 	</label>
 
 	{#if type === 'password'}
-		<input
-			class="bg-transparent focus:outline-none"
-			type="password"
-			name="username"
-			id="username"
-			bind:value
-		/>
+		<input class="bg-transparent focus:outline-none" type="password" name="username" bind:value />
 	{:else}
-		<input
-			class="bg-transparent focus:outline-none"
-			type="text"
-			name="username"
-			id="username"
-			bind:value
-		/>
+		<input class="bg-transparent focus:outline-none" type="text" name="username" bind:value />
 	{/if}
 </div>

@@ -17,6 +17,7 @@ import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/category")
+@CrossOrigin(origins = ["http://localhost:8080"])
 class CategoryController @Autowired constructor(
     val categoryRepo: CategoryRepo,
     val categoryService: CategoryService) {

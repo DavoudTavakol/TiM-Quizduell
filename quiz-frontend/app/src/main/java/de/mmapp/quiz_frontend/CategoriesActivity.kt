@@ -1,9 +1,11 @@
 package de.mmapp.quiz_frontend
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -20,36 +22,48 @@ import okio.IOException
 class CategoriesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.gameid_screen)
+
+        var ll_game_layout = findViewById<LinearLayout>(R.id.ll_game_layout)
+
         // Get the gameId and Categories from MainActivity
         val id = intent.getStringExtra("gameId")
-        val categories = intent.getStringArrayListExtra("categories")
+        var categories = arrayListOf<String>()
+        categories = intent.getStringArrayListExtra("categories") as ArrayList<String>
 
+        for(category: String in categories){
+            val checkbox = CheckBox(this)
+            checkbox.text = category
+            checkbox.setTextColor(Color.BLACK)
+            checkbox.setBackgroundColor(Color.WHITE)
+
+            // add TextView to LinearLayout
+             ll_game_layout.addView(checkbox)
+        }
         /*
-        // doesn't work: CategoriesActivity stops working, NullPointerExcecption
+        //doesnt work
         // TODO : Get the Checkbox text
+        var all = findViewById<CheckBox>(R.id.allCtg)
         var one = findViewById<CheckBox>(R.id.no1)
         one.text = categories!![0]
         var two = findViewById<CheckBox>(R.id.no2)
         two.text = categories!![1]
         var three = findViewById<CheckBox>(R.id.no3)
         three.text = categories!![2]
-        /*var four = findViewById<CheckBox>(R.id.no4)
+        var four = findViewById<CheckBox>(R.id.no4)
         four.text = categories!![3]
         var five = findViewById<CheckBox>(R.id.no5)
-        five.text = categories!![4]*/
-        */
+        five.text = categories!![4]
 
+*/
         var gameId = findViewById<TextView>(R.id.gameId)
-        val nickname = findViewById<TextView>(R.id.greetingOne)
+        //val nickname = findViewById<TextView>(R.id.greetingOne)
         gameId.text = id
-        nickname.text = intent.getStringExtra("nickname")
-        val name = nickname.text
+        //nickname.text = intent.getStringExtra("nickname")
+        val name = intent.getStringExtra("nickname")
         var text = findViewById<TextView>(R.id.passGameId)
         text.text = "Willkommen " + name + "! \nBitte leite die 6-stellige Game-ID an deinen Mitspieler weiter."
         println(categories)
-        //checkBoxes()
     }
 
     override fun onResume() {

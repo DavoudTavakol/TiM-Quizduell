@@ -31,6 +31,7 @@ tools:context=".CategoriesActivity">
 </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/ll_game_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -38,19 +39,6 @@ tools:context=".CategoriesActivity">
         android:paddingRight="16dp"
         android:paddingTop="60dp"
         tools:context=".MainActivity">
-
-        <TextView
-            android:id="@+id/greetingOne"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="20dp"
-            android:text="Willkommen 'Nickname1'!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/passGameId"
@@ -95,38 +83,22 @@ tools:context=".CategoriesActivity">
             android:textColor="@color/white"
             android:text="Zufällige Kategorien"/>
 
-        <CheckBox android:id="@+id/no1"
-            android:layout_width="wrap_content"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
-        <CheckBox android:id="@+id/no2"
-            android:layout_width="wrap_content"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content"/>
-
-        <CheckBox android:id="@+id/no3"
-            android:layout_width="wrap_content"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content"/>
-
-        <CheckBox android:id="@+id/no4"
-            android:layout_width="wrap_content"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content"/>
-
-        <CheckBox android:id="@+id/no5"
-            android:layout_width="wrap_content"
-            android:textColor="@color/white"
-            android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/startButton"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Start"/>
+            android:text="Start"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

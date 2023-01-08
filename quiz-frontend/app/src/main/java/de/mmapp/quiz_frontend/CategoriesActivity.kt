@@ -3,10 +3,7 @@ package de.mmapp.quiz_frontend
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -20,6 +17,9 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
 
 class CategoriesActivity : AppCompatActivity() {
+
+    var countCategories = 0;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gameid_screen)
@@ -34,6 +34,8 @@ class CategoriesActivity : AppCompatActivity() {
         for(category: String in categories){
             val checkbox = CheckBox(this)
             checkbox.text = category
+            checkbox.id = countCategories
+            countCategories++
             checkbox.setTextColor(Color.BLACK)
             checkbox.setBackgroundColor(Color.WHITE)
 
@@ -66,6 +68,34 @@ class CategoriesActivity : AppCompatActivity() {
         println(categories)
     }
 
+    //Auswertung der geklickten Kategorien
+    fun getCheckedCategroies(): Array<String?> {
+
+        var ll_game_layout = findViewById<LinearLayout>(R.id.ll_game_layout)
+        var count = ll_game_layout.childCount
+        var arrayCount = 0
+
+        //Checkboxen anschauen, welche angemerkt sind und dann dem returnValue zufügen
+        for (i in count downTo 1 step 1) {
+            var v = ll_game_layout.getChildAt(i-1) as CheckBox
+            if (v.isChecked)
+                arrayCount++
+
+        }
+
+        var returnValue = arrayOfNulls<String>(arrayCount)
+        var arraycountUp = 0
+
+        for (i in count downTo 1 step 1) {
+            var v = ll_game_layout.getChildAt(i-1) as CheckBox
+            if (v.isChecked){
+                returnValue.set(arraycountUp, v.text as String?)
+                arraycountUp++
+            }
+        }
+        return returnValue;
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -73,7 +103,12 @@ class CategoriesActivity : AppCompatActivity() {
         val id = intent.getStringExtra("gameId")
         val nickname = intent.getStringExtra("nickname")
 
+
         startButton.setOnClickListener() {
+
+            //Bei Klick auf Starg werden die gewählten Checkboxen ausgewertet und in einem String Array gespeichert
+            var clickedCategoriesArray = getCheckedCategroies()
+
 
             GlobalScope.launch() {
 

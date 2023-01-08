@@ -31,7 +31,7 @@ tools:context=".CategoriesActivity">
 </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/ll_game_layout"
+        android:id="@+id/ll_game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -82,6 +82,16 @@ tools:context=".CategoriesActivity">
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:text="Zufällige Kategorien"/>
+
+        <LinearLayout
+            android:id="@+id/ll_game_layout"
+            android:layout_width="match_parent"
+            android:layout_height="441dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="60dp"
+            android:paddingRight="16dp"
+            tools:context=".MainActivity"></LinearLayout>
 
     </LinearLayout>
 

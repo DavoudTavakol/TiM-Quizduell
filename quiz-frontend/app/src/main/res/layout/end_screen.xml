@@ -102,7 +102,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Erneut spielen" />
+            android:text="Erneut spielen"/>
 
         <Button
             android:id="@+id/btn2"

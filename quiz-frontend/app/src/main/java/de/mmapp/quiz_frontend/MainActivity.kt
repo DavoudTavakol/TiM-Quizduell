@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             var newGame: Game
             GlobalScope.launch() {
 
-                newGame = setReady(game.player2.nickname, game.gameId)
+                newGame = setReady(game.player2.nickname, game.gameId, mutableListOf())
 
                 (1..30).asFlow() // a flow of requests
                     .map { request -> checkIfReady(game.gameId, game.player2.nickname) }
@@ -273,26 +273,25 @@ class MainActivity : AppCompatActivity() {
 
 
     companion object {
-        suspend fun setReady(nickname: String, gameId: String): Game =
+        suspend fun setReady(nickname: String, gameId: String, categories: MutableList<String>): Game =
             GlobalScope.async(Dispatchers.IO) {
 
-                val jsonBody: String = """
-             {
-                 "gameId": "$gameId",
-                 "nickname":"$nickname",
-                 "categories" : []
-             }
-             
-         """.trimIndent()
+                val jsonBody = object  {
+                    var gameId = gameId
+                    var nickname = nickname
+                    var categories = categories
+                }
+
+                val mapper = jacksonObjectMapper()
+                val body = mapper.writeValueAsString(jsonBody)
 
                 val client = OkHttpClient()
                 val request = Request.Builder()
                     .url("http://10.0.2.2:8085/game/ready")
-                    .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                    .post(body.toRequestBody("application/json; charset=utf-8".toMediaType()))
                     .build()
 
                 var game: Game
-
                 client.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
                     val mapper = jacksonObjectMapper()

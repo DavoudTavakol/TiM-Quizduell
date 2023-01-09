@@ -18,8 +18,8 @@ class QuestionActivity : AppCompatActivity() {
     private var questionCount: Int = 0
     private var answerList: MutableList<Answer> = mutableListOf()
     private var points: Int = 0
-    private var gameId: String = intent.getParcelableExtra<Game>("game")!!.gameId
-    private var nickname: String? = intent.getStringExtra("nickname")
+    //private var gameId: String = intent.getParcelableExtra<Game>("game")!!.gameId
+    //private var nickname: String? = intent.getStringExtra("nickname")
 
     // start of timer
     private var timeLeftInSeconds: Int = 60
@@ -32,6 +32,8 @@ class QuestionActivity : AppCompatActivity() {
         card.cardElevation = 10.0F
 
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -180,9 +182,10 @@ class QuestionActivity : AppCompatActivity() {
         // ToDo send request -> send following parameters
         var timeLeftForReq = timeLeftInSeconds
         var listForReq = answerList
-        var idForReq = gameId
-        var nicknameForReq = nickname
+        //var idForReq = gameId
+        //var nicknameForReq = nickname
     }
+
 
     private fun loadHighScores() {
         // ToDo change to Highscore-Activity

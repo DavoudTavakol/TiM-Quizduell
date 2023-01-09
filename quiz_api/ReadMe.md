@@ -223,11 +223,15 @@ Response:
   "categories": [
     {
       "id": "54800863-0db5-472e-8799-4c6ee439b665",
-      "categoryName": "Schätzfragen"
+      "categoryName": "Schätzfragen",
+      "iconURL": "",
+      "desc": ""
     },
     {
       "id": "c13be76d-ffce-4a91-b3df-9c66fe7d3fa5",
-      "categoryName": "Allgemeinwissen"
+      "categoryName": "Allgemeinwissen",
+      "iconURL": "",
+      "desc": ""
     },
   ],
   "countCategories": 2,

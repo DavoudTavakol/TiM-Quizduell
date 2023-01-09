@@ -43,7 +43,8 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
             It is important for the UUID to be set before we save a list of questions,
             because questions depend on the categoryID as a foreign key
          */
-        val category = Category(createCategory.categoryName, mutableListOf())
+        val category = Category(createCategory.categoryName, mutableListOf(),
+            createCategory.iconURL, createCategory.desc)
         //set questions of category to mapped questions list, if the provided list is not empty
         category.questions =
             if(createCategory.questions.isNotEmpty())

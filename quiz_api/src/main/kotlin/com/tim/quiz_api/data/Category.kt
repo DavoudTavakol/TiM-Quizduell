@@ -16,5 +16,7 @@ Aufgabe Funktion zum Auto-generieren der ID (Robert)
 class Category(
     var categoryName: String,
     var questions: MutableList<Question>,
+    var iconURL:String = "",
+    var desc:String = "",
     @Id val id:String = UUID.randomUUID().toString(),
 )

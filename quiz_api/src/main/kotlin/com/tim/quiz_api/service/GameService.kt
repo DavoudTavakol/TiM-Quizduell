@@ -33,13 +33,15 @@ class GameService {
 
     fun connectToGame(gameId : String, player2 : Player): Game? {
 
-        var game : Game? = GameRepo.getGame(gameId)
-        if (game != null) {
-            game.player2 = player2
-            game.gameStatus = GameStatus.IN_PROGRESS
-        }
+        var game: Game? = GameRepo.getGame(gameId)
+            if (game!!.player1.nickname != player2.nickname) {
+                game.player2 = player2
+                game.gameStatus = GameStatus.IN_PROGRESS
+                return game
+            } else {
+                return null
+            }
 
-        return game
 
 
     }

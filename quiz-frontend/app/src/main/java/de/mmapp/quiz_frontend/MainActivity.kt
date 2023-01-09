@@ -130,6 +130,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        854062
         fun update() {
             if (boolID && boolNick) {
                 buttonJoinGame.isEnabled = true
@@ -137,6 +138,7 @@ class MainActivity : AppCompatActivity() {
 
                     var game: Game
 
+                    
                     GlobalScope.launch(Dispatchers.Main) {
 
                         try {
@@ -147,12 +149,14 @@ class MainActivity : AppCompatActivity() {
                             println(game)
                             waitingScreen(game)
                         } catch (e: IOException) {
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Keine Verbindung",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    e.message.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+
                     }
                 }
             } else {

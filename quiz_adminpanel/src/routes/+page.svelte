@@ -1,7 +1,7 @@
 <script>
 	export let data
 
-	let { connected, categoryCount } = data
+	let { connected, categoryCount, questionCount } = data
 
 	function handleLogout() {
 		localStorage.removeItem('logedIn')
@@ -9,7 +9,7 @@
 	}
 </script>
 
-<main class="flex flex-col  flex-1 w-full text-gray-700">
+<main class="flex flex-col  bg-gray-50 flex-1 w-full text-gray-700">
 	<section class="border-b flex bg-gray-100 min-h-32 p-6 items-center justify-between">
 		<h1 class="font-semibold text-lg">TiM Adminboard</h1>
 		<button class="text-2xl i-ri-login-box-line" on:click={handleLogout} />
@@ -79,7 +79,7 @@
 				<h2>Questions:</h2>
 			</section>
 
-			<span class="font-mono font-semibold text-2xl">150</span>
+			<span class="font-mono font-semibold text-2xl">{questionCount}</span>
 		</div>
 	</section>
 </main>

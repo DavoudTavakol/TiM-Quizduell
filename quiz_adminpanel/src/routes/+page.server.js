@@ -11,6 +11,7 @@ export async function load() {
 		let data = await res.json()
 		return {
 			categoryCount: data.countCategories,
+			questionCount: data.countQuestions,
 			connected: true
 		}
 	} catch (err) {

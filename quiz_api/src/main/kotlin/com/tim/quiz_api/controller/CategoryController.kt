@@ -2,6 +2,7 @@ package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.CategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryListMinDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.exceptions.CategoryException
@@ -26,10 +27,8 @@ class CategoryController @Autowired constructor(
         Liefert alle Kategorie ohne Fragen aus der Collection "categories" zurück
      */
     @GetMapping()
-    fun getAllCategories(): ResponseEntity<CategoryDto> {
-        val categoriesMinDto = categoryService.getAllCategories()
-        val numberOfCategories = categoriesMinDto.count()
-        val categories = CategoryDto(categoriesMinDto, numberOfCategories)
+    fun getAllCategories(): ResponseEntity<CategoryListMinDto> {
+        val categories = categoryService.getAllCategoriesAndCount()
         return ResponseEntity(categories, HttpStatus.OK)
     }
 

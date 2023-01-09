@@ -229,12 +229,9 @@ Response:
       "id": "c13be76d-ffce-4a91-b3df-9c66fe7d3fa5",
       "categoryName": "Allgemeinwissen"
     },
-    {
-      "id": "5cd67945-ed50-47fd-a476-fddc125bae76",
-      "categoryName": "Allgemeinwissen 2"
-    }
   ],
-  "countCategories": 3
+  "countCategories": 2,
+  "countQuestions": 8
 }
 ```
 

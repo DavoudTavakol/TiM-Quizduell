@@ -2,6 +2,7 @@ package com.tim.quiz_api.service
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryListMinDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
 import com.tim.quiz_api.data.Category
@@ -17,7 +18,15 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
     /*
         Returns a List of CategoryMinDTOS (CategoryName and ID) without Questions
      */
-    fun getAllCategories(): List<CategoryMinDto> {
+    fun getAllCategoriesAndCount(): CategoryListMinDto {
+        val categories = categoryRepo.findAll()
+        val numberOfCategories = categories.count()
+        val numberOfQuestions = categories.sumOf { it.questions.count() }
+        val categoryMin = DtoMapper.categoriesToCategoryMinDTOs(categoryRepo.findAll())
+        return CategoryListMinDto(categoryMin, numberOfCategories, numberOfQuestions)
+    }
+
+    fun getAllCategories():List<CategoryMinDto>{
         return DtoMapper.categoriesToCategoryMinDTOs(categoryRepo.findAll())
     }
 

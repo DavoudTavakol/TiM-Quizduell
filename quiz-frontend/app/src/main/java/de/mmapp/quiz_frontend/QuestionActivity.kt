@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import de.mmapp.quiz_frontend.models.Answer
 import de.mmapp.quiz_frontend.models.Game
 import de.mmapp.quiz_frontend.models.Question
+import kotlinx.coroutines.runBlocking
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 
 class QuestionActivity : AppCompatActivity() {
@@ -24,6 +25,11 @@ class QuestionActivity : AppCompatActivity() {
     // start of timer
     private var timeLeftInSeconds: Int = 60
 
+    override fun onBackPressed() {
+        println("Huhu")
+    }
+    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.questions_activity)
@@ -34,9 +40,8 @@ class QuestionActivity : AppCompatActivity() {
     }
 
 
-
-    override fun onResume() {
-        super.onResume()
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
 
         val game = intent.getParcelableExtra<Game>("game")
         println(game!!.questionList)
@@ -65,8 +70,13 @@ class QuestionActivity : AppCompatActivity() {
                 submitRequest()
             }
         }
-        mCountDownTimer.start()
+
+        runBlocking {
+            mCountDownTimer.start()
+        }
+
     }
+
 
     private fun setQuestion(question: String) {
         val questionView = findViewById<TextView>(R.id.question)
@@ -187,6 +197,7 @@ class QuestionActivity : AppCompatActivity() {
     }
 
 
+
     private fun loadHighScores() {
         // ToDo change to Highscore-Activity
         val intent = Intent(this@QuestionActivity, MainActivity::class.java)
@@ -199,7 +210,7 @@ class QuestionActivity : AppCompatActivity() {
         val isAnswerCorrect = questionList[questionCount].answer[numberOfAnswer].isAnswerCorrect
         if (isAnswerCorrect) {
             points++
-            print("Points of the player: " + points.toString() + "\n")
+            println("Points of the player: $points\n")
         }
     }
 
@@ -208,4 +219,6 @@ class QuestionActivity : AppCompatActivity() {
         val questionNumber: Int = questionCount + 1
         numberView.text = "Frage Nummer: $questionNumber "
     }
+
+
 }

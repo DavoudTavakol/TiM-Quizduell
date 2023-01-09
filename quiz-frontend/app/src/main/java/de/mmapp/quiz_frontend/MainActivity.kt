@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
 
                     var game: Game
 
-                    
+
                     GlobalScope.launch(Dispatchers.Main) {
 
                         try {

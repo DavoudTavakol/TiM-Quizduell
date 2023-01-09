@@ -2,17 +2,20 @@
 	import '@unocss/reset/tailwind.css'
 	import Login from '$lib/Login.svelte'
 	import OverlayQuestion from '$lib/OverlayQuestion.svelte'
+	import AddOverlayCategory from '$lib/AddOverlayCategory.svelte'
+	import EditOverlayCategory from '$lib/EditOverlayCategory.svelte'
+	import Confirm from '$lib/Confirm.svelte'
+
 	import {
 		logedIn,
 		overlayQuestionOpen,
 		overlayCategoryOpen,
-		confirmModalOpen
+		confirmModalOpen,
+		overlayEditCategoryOpen
 	} from '$lib/store.js'
 	import Sidebar from '$lib/Sidebar.svelte'
 	import '../app.css'
 	import { onMount } from 'svelte'
-	import OverlayCategory from '$lib/OverlayCategory.svelte'
-	import Confirm from '$lib/Confirm.svelte'
 
 	export let data
 
@@ -38,13 +41,13 @@
 			{#if $overlayQuestionOpen}
 				<OverlayQuestion />
 			{/if}
-			{#if $confirmModalOpen && $overlayQuestionOpen}
-				<Confirm />
-			{/if}
 			{#if $overlayCategoryOpen}
-				<OverlayCategory />
+				<AddOverlayCategory />
 			{/if}
-			{#if $confirmModalOpen && $overlayCategoryOpen}
+			{#if $overlayEditCategoryOpen}
+				<EditOverlayCategory />
+			{/if}
+			{#if $confirmModalOpen}
 				<Confirm />
 			{/if}
 			<slot />

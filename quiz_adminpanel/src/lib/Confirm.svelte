@@ -1,10 +1,16 @@
 <script>
-	import { confirmModalOpen, overlayCategoryOpen, overlayQuestionOpen } from '$lib/store.js'
+	import {
+		confirmModalOpen,
+		overlayCategoryOpen,
+		overlayQuestionOpen,
+		overlayEditCategoryOpen
+	} from '$lib/store.js'
 
 	function backToMenu() {
 		confirmModalOpen.set(false)
 		overlayCategoryOpen.set(false)
 		overlayQuestionOpen.set(false)
+		overlayEditCategoryOpen.set(false)
 	}
 
 	function backToEdit() {

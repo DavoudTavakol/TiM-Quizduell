@@ -46,7 +46,7 @@ class GameController @Autowired constructor(
     @PostMapping("/ready")
     fun setReady(@RequestBody request : ReadyRequest) :
             ResponseEntity<Game> {
-        val questions = questionService.getQuestionsByCategoryId("54800863-0db5-472e-8799-4c6ee439b665")
+        val questions = questionService.getQuestionsByCategoryId("c13be76d-ffce-4a91-b3df-9c66fe7d3fa9")
         println(questions!!.questions)
         return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories, questions!!.questions))
     }

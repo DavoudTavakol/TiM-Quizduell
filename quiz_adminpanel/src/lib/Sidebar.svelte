@@ -4,6 +4,13 @@
 
 	export let categories
 
+	let searchTerm = ''
+	let open = false
+
+	$: filteredCategories = categories.filter((category) => {
+		return category.categoryName.toLowerCase().includes(searchTerm.toLowerCase())
+	})
+
 	function addCategory() {
 		$overlayCategoryOpen = true
 		console.log('add category')
@@ -11,12 +18,37 @@
 </script>
 
 <main>
-	<div class="border-r flex flex-col h-screen py-6 px-2 w-19 items-center">
-		<img src="https://pocketbase.io/images/logo.svg" alt="logo" class="mb-8" />
+	<div
+		class="border-r flex flex-col h-screen py-6 px-2 w-19 "
+		class:w-62={open}
+		class:items-center={!open}
+		class:px-4={open}
+	>
+		<img src="https://pocketbase.io/images/logo.svg" alt="logo" class="h-11 mb-8 w-11" />
 		<div class="flex flex-col flex-1 gap-4 overflow-scroll scrollbar-hide">
-			<SidebarElement title="Home" />
-			{#each categories as element}
-				<SidebarElement title={element.categoryName} id={element.id} />
+			<SidebarElement title="Home" {open} />
+
+			<div class="flex gap-2">
+				<button
+					class="border-black rounded-xl cursor-pointer flex min-h-11 w-11"
+					on:click={() => {
+						open = !open
+					}}
+				>
+					<div class="m-auto text-2xl i-carbon-search" />
+				</button>
+				{#if open}
+					<input
+						type="text"
+						bind:value={searchTerm}
+						placeholder="Search..."
+						class="rounded-xl font-mono outline-none bg-gray-100 text-sm max-w-[20ch] px-2"
+					/>
+				{/if}
+			</div>
+
+			{#each filteredCategories as element}
+				<SidebarElement title={element.categoryName} id={element.id} {open} />
 			{/each}
 		</div>
 
@@ -25,3 +57,6 @@
 		</button>
 	</div>
 </main>
+
+<style>
+</style>

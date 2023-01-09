@@ -18,6 +18,7 @@ let DummyRes = {
 }
 
 export async function load() {
+	console.log('Lade Kategorien von ' + url)
 	try {
 		let res = await fetch(url)
 		let data = await res.json()

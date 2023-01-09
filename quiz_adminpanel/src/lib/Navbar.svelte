@@ -16,8 +16,10 @@
 				{words[1]}
 			</span>
 		</h1>
-		<button class="text-lg i-ri-settings-4-line" />
 		<button class="text-lg i-ri-refresh-line" />
+		<button
+			class="text-lg transition-all duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500) "
+		/>
 	</section>
 
 	<section>

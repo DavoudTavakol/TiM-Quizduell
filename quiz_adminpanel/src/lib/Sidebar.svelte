@@ -15,6 +15,14 @@
 		$overlayCategoryOpen = true
 		console.log('add category')
 	}
+
+	function handleClick() {
+		open = !open
+
+		if (!open) {
+			searchTerm = ''
+		}
+	}
 </script>
 
 <main>
@@ -24,25 +32,25 @@
 		class:items-center={!open}
 		class:px-4={open}
 	>
-		<img src="https://pocketbase.io/images/logo.svg" alt="logo" class="h-11 mb-8 w-11" />
+		<img src="/logo.svg" alt="logo" class="h-11 mb-8 w-11" />
 		<div class="flex flex-col flex-1 gap-4 overflow-scroll scrollbar-hide">
 			<SidebarElement title="Home" {open} />
 
-			<div class="flex gap-2">
+			<div class="rounded-xl flex gap-2" class:bg-gray-100={open}>
 				<button
 					class="border-black rounded-xl cursor-pointer flex min-h-11 w-11"
-					on:click={() => {
-						open = !open
-					}}
+					on:click={handleClick}
 				>
 					<div class="m-auto text-2xl i-carbon-search" />
 				</button>
 				{#if open}
+					<!-- svelte-ignore a11y-autofocus -->
 					<input
 						type="text"
+						autofocus
 						bind:value={searchTerm}
 						placeholder="Search..."
-						class="rounded-xl font-mono outline-none bg-gray-100 text-sm max-w-[20ch] px-2"
+						class="rounded-xl font-mono outline-none bg-gray-100 text-sm max-w-[20ch] px-2 test"
 					/>
 				{/if}
 			</div>

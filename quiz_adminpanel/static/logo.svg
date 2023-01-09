@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Created with Vectornator (http://vectornator.io/) -->
+<svg height="100%" stroke-miterlimit="10" style="fill-rule:nonzero;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;" version="1.1" viewBox="0 0 40 40" width="100%" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:vectornator="http://vectornator.io" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<clipPath id="TextBounds">
+<rect height="28.1839" width="20" x="-0.0104558" y="-0.924138"/>
+</clipPath>
+<clipPath id="TextBounds_2">
+<rect height="28.1839" width="20" x="18.7453" y="17.5726"/>
+</clipPath>
+<clipPath id="TextBounds_3">
+<rect height="28.1839" width="20" x="8.82134" y="7.65489"/>
+</clipPath>
+</defs>
+<g id="Untitled" vectornator:layerName="Untitled">
+<path d="M25.536 13.4861L26.7276 14.7191L26.7276 14.7191L14.6949 26.3481L14.6949 26.3481L13.5033 25.1152L13.5033 25.1152L25.536 13.4861L25.536 13.4861Z" fill="#ffffff" fill-rule="nonzero" opacity="1" stroke="none"/>
+<path d="M26 14L36.8 14C37.4628 14 38 14.5373 38 15.2L38 36.8C38 37.4628 37.4628 38 36.8 38L15.2 38C14.5373 38 14 37.4628 14 36.8L14 26" fill="#ffffff" fill-rule="nonzero" opacity="1" stroke="none"/>
+<path d="M26 14L36.8 14C37.4628 14 38 14.5373 38 15.2L38 36.8C38 37.4628 37.4628 38 36.8 38L15.2 38C14.5373 38 14 37.4628 14 36.8L14 26" fill="none" opacity="1" stroke="#16161a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+<path d="M26 14L26 3.2C26 2.53726 25.4628 2 24.8 2L3.2 2C2.53726 2 2 2.53726 2 3.2L2 24.8C2 25.4628 2.53726 26 3.2 26L14 26" fill="#ffffff" fill-rule="nonzero" opacity="1" stroke="none"/>
+<path d="M26 14L26 3.2C26 2.53726 25.4628 2 24.8 2L3.2 2C2.53726 2 2 2.53726 2 3.2L2 24.8C2 25.4628 2.53726 26 3.2 26L14 26" fill="none" opacity="1" stroke="#16161a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+<path clip-path="url(#TextBounds)" d="M4.91752 5.33856L15.003 5.33856L15.003 7.98992L11.6192 7.98992L11.6192 16.0759L8.30131 16.0759L8.30131 7.98992L4.91752 7.98992L4.91752 5.33856Z" fill="#16161a" opacity="1" stroke="none"/>
+<path clip-path="url(#TextBounds_2)" d="M22.7285 23.8353L27.0937 23.8353L28.7783 30.3685L30.4556 23.8353L34.8061 23.8353L34.8061 34.5726L32.0962 34.5726L32.0962 26.3841L29.9941 34.5726L27.5405 34.5726L25.4458 26.3841L25.4458 34.5726L22.7285 34.5726L22.7285 23.8353Z" fill="#16161a" opacity="1" stroke="none"/>
+<path clip-path="url(#TextBounds_3)" d="M17.3345 13.9176L20.3155 13.9176L20.3155 15.9464L17.3345 15.9464L17.3345 13.9176ZM17.3345 16.8766L20.3155 16.8766L20.3155 24.6549L17.3345 24.6549L17.3345 16.8766Z" fill="#16161a" opacity="1" stroke="none"/>
+</g>
+</svg>

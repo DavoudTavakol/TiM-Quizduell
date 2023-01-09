@@ -16,7 +16,7 @@
 
 	export let data
 
-	let { categories } = data
+	$: ({ categories } = data)
 
 	onMount(() => {
 		if (window.localStorage.getItem('logedIn') === 'true') {
@@ -24,6 +24,12 @@
 		}
 	})
 </script>
+
+<svelte:head>
+	<title>TiM Adminpanel</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" type="image/png" href="/favicon.png" />
+</svelte:head>
 
 <main>
 	{#if $logedIn}

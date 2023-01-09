@@ -22,7 +22,7 @@
 		>&nbsp and Password:&nbsp<span class="font-semibold underline">admin</span>
 	</div>
 
-	<img src="https://pocketbase.io/images/logo.svg" alt="logo" />
+	<img src="/logo.svg" alt="logo" class="w-11" />
 	<h2 class="mt-10 mb-5">Admin sign in</h2>
 
 	<form action="login" method="POST" class="w-[30%]" on:submit|preventDefault={handleLogin}>

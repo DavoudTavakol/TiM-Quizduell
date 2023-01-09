@@ -2,6 +2,7 @@
 	export let label
 	export let value = ''
 	export let type = 'text'
+	export let placeholder = ''
 </script>
 
 <div class="rounded flex flex-col bg-gray-200 mb-6 py-2 px-4 gap-2">
@@ -11,8 +12,20 @@
 	</label>
 
 	{#if type === 'password'}
-		<input class="bg-transparent focus:outline-none" type="password" name="username" bind:value />
+		<input
+			class="bg-transparent focus:outline-none"
+			type="password"
+			name="username"
+			{placeholder}
+			bind:value
+		/>
 	{:else}
-		<input class="bg-transparent focus:outline-none" type="text" name="username" bind:value />
+		<input
+			class="bg-transparent focus:outline-none"
+			type="text"
+			name="username"
+			{placeholder}
+			bind:value
+		/>
 	{/if}
 </div>

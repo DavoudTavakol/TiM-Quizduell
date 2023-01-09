@@ -1,4 +1,5 @@
 <script>
+	import { invalidateAll } from '$app/navigation'
 	import { confirmModalOpen, overlayCategoryOpen } from '$lib/store.js'
 	import { fly } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
@@ -23,6 +24,7 @@
 		console.log('Category added: ' + title)
 		title = ''
 		$overlayCategoryOpen = false
+		invalidateAll()
 	}
 </script>
 

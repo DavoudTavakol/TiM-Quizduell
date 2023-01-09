@@ -38,6 +38,6 @@
 	</div>
 
 	{#if open}
-		<span class="font-mono max-w-[16ch] text-gray-500 overflow-hidden">{title}</span>
+		<span class="font-mono max-w-[16ch] text-gray-700 overflow-hidden">{title}</span>
 	{/if}
 </a>

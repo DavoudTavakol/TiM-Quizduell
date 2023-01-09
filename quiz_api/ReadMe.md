@@ -252,7 +252,9 @@ RequestBody:
 ```json lines
 {
     "id": "1234567",
-    "categoryName": "New Category Name"
+    "categoryName": "New Category Name",
+    "iconURL": "www.some-icon.de/123456?size=sm",
+    "desc": "This is a description"
 }
 ```
 

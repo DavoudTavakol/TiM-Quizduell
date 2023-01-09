@@ -18,9 +18,11 @@ class QuestionActivity : AppCompatActivity() {
     private var questionCount: Int = 0
     private var answerList: MutableList<Answer> = mutableListOf()
     private var points: Int = 0
+    private var gameId: String = intent.getParcelableExtra<Game>("game")!!.gameId
+    private var nickname: String? = intent.getStringExtra("nickname")
 
     // start of timer
-    var i: Int = 60
+    private var timeLeftInSeconds: Int = 60
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,13 +53,14 @@ class QuestionActivity : AppCompatActivity() {
         mCountDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 println("this is a tick ${myProgressBar.progress}")
-                i--
-                timeView.text = i.toString()
-                myProgressBar.progress = (i * (5.0 / 3.0)).toInt()
+                timeLeftInSeconds--
+                timeView.text = timeLeftInSeconds.toString()
+                myProgressBar.progress = (timeLeftInSeconds * (5.0 / 3.0)).toInt()
             }
 
             override fun onFinish() {
                 // ToDo submit all answers -> API
+                submitRequest()
             }
         }
         mCountDownTimer.start()
@@ -101,6 +104,7 @@ class QuestionActivity : AppCompatActivity() {
                 // Load next answers
                 setAnswers(questionList)
             } else {
+                submitRequest()
                 loadHighScores()
             }
         }
@@ -122,6 +126,7 @@ class QuestionActivity : AppCompatActivity() {
                 // Load next answers
                 setAnswers(questionList)
             } else {
+                submitRequest()
                 loadHighScores()
             }
         }
@@ -143,6 +148,7 @@ class QuestionActivity : AppCompatActivity() {
                 // Load next answers
                 setAnswers(questionList)
             } else {
+                submitRequest()
                 loadHighScores()
             }
         }
@@ -164,9 +170,18 @@ class QuestionActivity : AppCompatActivity() {
                 // Load next answers
                 setAnswers(questionList)
             } else {
+                submitRequest()
                 loadHighScores()
             }
         }
+    }
+
+    private fun submitRequest() {
+        // ToDo send request -> send following parameters
+        var timeLeftForReq = timeLeftInSeconds
+        var listForReq = answerList
+        var idForReq = gameId
+        var nicknameForReq = nickname
     }
 
     private fun loadHighScores() {

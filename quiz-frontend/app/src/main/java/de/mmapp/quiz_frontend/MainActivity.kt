@@ -121,6 +121,7 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(this@MainActivity, QuestionActivity::class.java)
 
                             intent.putExtra("game", newGame)
+                            intent.putExtra("nickname", nicknamePtwo)
                             startActivity(intent)
                             this.cancel()
 

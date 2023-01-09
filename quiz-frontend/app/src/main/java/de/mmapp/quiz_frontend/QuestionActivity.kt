@@ -1,11 +1,9 @@
 package de.mmapp.quiz_frontend
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +11,7 @@ import androidx.cardview.widget.CardView
 import de.mmapp.quiz_frontend.models.Answer
 import de.mmapp.quiz_frontend.models.Game
 import de.mmapp.quiz_frontend.models.Question
-import kotlinx.coroutines.cancel
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-
 
 class QuestionActivity : AppCompatActivity() {
 
@@ -23,7 +19,7 @@ class QuestionActivity : AppCompatActivity() {
     private var answerList: MutableList<Answer> = mutableListOf()
     private var points: Int = 0
 
-    // start progress bar
+    // start of timer
     var i: Int = 60
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +60,6 @@ class QuestionActivity : AppCompatActivity() {
                 // ToDo submit all answers -> API
             }
         }
-
         mCountDownTimer.start()
     }
 
@@ -87,93 +82,99 @@ class QuestionActivity : AppCompatActivity() {
         val answer4 = findViewById<Button>(R.id.answer4)
         answer4.text = questionList[questionCount].answer[3].answer
 
-        // Every Button updates the question and all answers with the next question
         // ToDo : Save answers to send them in the timer's onFinish() callback
         answer1.setOnClickListener() {
-/*
-            if (questionCount == 9) {
-                println("DEBUUUG")
-                val intent =
-                    Intent(this@QuestionActivity, HighscoreActivity::class.java)
-                intent.putExtra("points", points)
-                startActivity(intent)
+            if (questionCount < 9) {
+                // Save Answer
+                answerList.add(questionList[questionCount].answer[0])
+
+                // Update the points of the player
+                updatePoints(0, questionList)
+
+                // Update UI
+                questionCount++
+                setQuestionNumber()
+
+                // Load next question
+                setQuestion(questionList[questionCount].question)
+
+                // Load next answers
+                setAnswers(questionList)
+            } else {
+                loadHighScores()
             }
-*/
-            // Save Answer
-            answerList.add(questionList[questionCount].answer[0])
-
-            // Update the points of the player
-            updatePoints(0, questionList)
-
-            // Update UI
-            questionCount++
-            setQuestionNumber()
-
-            // Load next question
-            setQuestion(questionList[questionCount].question)
-            // Load next answers
-            answer1.text = questionList[questionCount].answer[0].answer
-            answer2.text = questionList[questionCount].answer[1].answer
-            answer3.text = questionList[questionCount].answer[2].answer
-            answer4.text = questionList[questionCount].answer[3].answer
         }
 
         answer2.setOnClickListener() {
-            // Save answer
-            answerList.add(questionList[questionCount].answer[1])
+            if (questionCount < 9) {
+                // Save answer
+                answerList.add(questionList[questionCount].answer[1])
 
-            // Update the points of the player
-            updatePoints(1, questionList)
+                // Update the points of the player
+                updatePoints(1, questionList)
 
-            questionCount++
-            setQuestionNumber()
+                questionCount++
+                setQuestionNumber()
 
-            // Load next question
-            setQuestion(questionList[questionCount].question)
-            // Load next answers
-            answer1.text = questionList[questionCount].answer[0].answer
-            answer2.text = questionList[questionCount].answer[1].answer
-            answer3.text = questionList[questionCount].answer[2].answer
-            answer4.text = questionList[questionCount].answer[3].answer
+                // Load next question
+                setQuestion(questionList[questionCount].question)
+
+                // Load next answers
+                setAnswers(questionList)
+            } else {
+                loadHighScores()
+            }
         }
 
         answer3.setOnClickListener() {
-            // Save answer
-            answerList.add(questionList[questionCount].answer[2])
+            if (questionCount < 9) {
+                // Save answer
+                answerList.add(questionList[questionCount].answer[2])
 
-            // Update the points of the player
-            updatePoints(2, questionList)
+                // Update the points of the player
+                updatePoints(2, questionList)
 
-            questionCount++
-            setQuestionNumber()
+                questionCount++
+                setQuestionNumber()
 
-            // Load next question
-            setQuestion(questionList[questionCount].question)
-            // Load next answers
-            answer1.text = questionList[questionCount].answer[0].answer
-            answer2.text = questionList[questionCount].answer[1].answer
-            answer3.text = questionList[questionCount].answer[2].answer
-            answer4.text = questionList[questionCount].answer[3].answer
+                // Load next question
+                setQuestion(questionList[questionCount].question)
+
+                // Load next answers
+                setAnswers(questionList)
+            } else {
+                loadHighScores()
+            }
         }
 
         answer4.setOnClickListener() {
-            // Save answer
-            answerList.add(questionList[questionCount].answer[3])
+            if (questionCount < 9) {
+                // Save answer
+                answerList.add(questionList[questionCount].answer[3])
 
-            // Update the points of the player
-            updatePoints(3, questionList)
+                // Update the points of the player
+                updatePoints(3, questionList)
 
-            questionCount++
-            setQuestionNumber()
+                questionCount++
+                setQuestionNumber()
 
-            // Load next question
-            setQuestion(questionList[questionCount].question)
-            // Load next answers
-            answer1.text = questionList[questionCount].answer[0].answer
-            answer2.text = questionList[questionCount].answer[1].answer
-            answer3.text = questionList[questionCount].answer[2].answer
-            answer4.text = questionList[questionCount].answer[3].answer
+                // Load next question
+                setQuestion(questionList[questionCount].question)
+
+                // Load next answers
+                setAnswers(questionList)
+            } else {
+                loadHighScores()
+            }
         }
+    }
+
+    private fun loadHighScores() {
+        // ToDo change to Highscore-Activity
+        val intent = Intent(this@QuestionActivity, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        //intent.putExtra("points", points)
+        startActivity(intent)
     }
 
     private fun updatePoints(numberOfAnswer: Int, questionList: List<Question>) {

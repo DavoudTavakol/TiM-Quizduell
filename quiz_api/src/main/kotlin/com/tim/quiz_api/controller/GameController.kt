@@ -1,15 +1,12 @@
 package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.*
-import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.CategoryRepo
-import com.tim.quiz_api.service.CategoryService
 import com.tim.quiz_api.service.GameService
 import com.tim.quiz_api.service.HighscoreService
 import com.tim.quiz_api.service.QuestionService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -65,6 +62,7 @@ class GameController @Autowired constructor(
         if(game != null && game.gameStatus === GameStatus.FINISHED){
             highscoreService.updateHighscore(game.player1.score, game.player1.nickname)
             highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
+            gameService.deleteGame(game.gameId)
         }
 
         return ResponseEntity.ok(game)

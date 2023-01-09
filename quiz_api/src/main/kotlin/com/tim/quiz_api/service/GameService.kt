@@ -1,29 +1,27 @@
 package com.tim.quiz_api.service
 
 import com.tim.quiz_api.data.*
-import com.tim.quiz_api.repository.GameRepo
+import com.tim.quiz_api.repository.GamesRepo
 import lombok.AllArgsConstructor
 import org.springframework.stereotype.Service
 import org.apache.commons.lang3.RandomStringUtils
-
-import java.util.*
+import org.springframework.beans.factory.annotation.Autowired
 
 @Service
 @AllArgsConstructor
-class GameService {
+class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
 
     fun createGame(player: Player): Game {
-
 
         var game : Game = Game(
             gameId = RandomStringUtils.randomNumeric(6).toString(),
             player1 = player,
             player2 = Player(""),
-            listOf<String>(),
-            mutableListOf<Question>(),
-            GameStatus.NEW,
+            categories = listOf<String>(),
+            questionList =mutableListOf<Question>(),
+            gameStatus= GameStatus.NEW,
             )
-        GameRepo.games.put(game.gameId,game)
+        gamesRepo.save(game)
 
         return game
 
@@ -33,20 +31,19 @@ class GameService {
 
     fun connectToGame(gameId : String, player2 : Player): Game? {
 
-        var game : Game? = GameRepo.getGame(gameId)
+        var game : Game? = gamesRepo.findGameByGameId(gameId)
         if (game != null) {
             game.player2 = player2
             game.gameStatus = GameStatus.IN_PROGRESS
+            gamesRepo.save(game)
         }
 
         return game
-
-
     }
 
     fun submitAnswers(gameId : String , nickname : String ,answers : List<Answer>, time : Float ) : Game? {
 
-        var game : Game? = GameRepo.getGame(gameId)
+        var game : Game? = gamesRepo.findGameByGameId(gameId)
         if (game != null) {
 
             var score = getScore(answers, time)
@@ -61,13 +58,14 @@ class GameService {
                 game.player2.time = time
                 game.gameStatus = GameStatus.FINISHED
             }
+            gamesRepo.save(game)
 
         }
         return  game
     }
 
     fun isPlayerReady(gameId: String, nickname: String): Boolean {
-        var game : Game? = GameRepo.getGame(gameId)
+        var game : Game? = gamesRepo.findGameByGameId(gameId)
 
         if(game!!.player1.nickname == nickname){
             return game!!.player2.isReady
@@ -79,7 +77,7 @@ class GameService {
     }
 
     fun setReady(nickname : String, gameId: String, categories : List<String>, questionList : List<Question>): Game {
-        var game : Game? = GameRepo.getGame(gameId)
+        var game : Game? = gamesRepo.findGameByGameId(gameId)
 
         if (game!!.player1.nickname == nickname){
             game.player1.isReady = true
@@ -88,6 +86,8 @@ class GameService {
         } else if (game!!.player2.nickname == nickname){
             game.player2.isReady = true
         }
+
+        gamesRepo.save(game)
 
         return game
     }
@@ -113,6 +113,10 @@ class GameService {
         if(correctAnswers == 10) return ((60 - timeNeeded) * 10 + 200).toInt()
 
         return ((60 - timeNeeded) / (10 - correctAnswers) * 10 + correctAnswers * 10).toInt()
+    }
+
+    fun deleteGame(gameId: String){
+        gamesRepo.deleteGameByGameId(gameId)
     }
 
 }

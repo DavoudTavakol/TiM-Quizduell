@@ -79,4 +79,10 @@ class GameController @Autowired constructor(
         }
         return ResponseEntity<MutableList<String>>(namesList, HttpStatus.OK)
     }
+
+    // for debugging
+    @GetMapping("/deletegame")
+    fun deleteGame(gameId: String) {
+        gameService.deleteGame(gameId)
+    }
 }

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface GamesRepo : MongoRepository<Game, String>{
     fun findGameByGameId(gameId : String) : Game
-    fun deleteGameByGameId(gameId: String)
+    fun removeGameByGameId(uid: String)
 }

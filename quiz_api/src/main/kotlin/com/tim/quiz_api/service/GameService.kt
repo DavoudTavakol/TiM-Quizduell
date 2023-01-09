@@ -116,7 +116,7 @@ class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
     }
 
     fun deleteGame(gameId: String){
-        gamesRepo.deleteGameByGameId(gameId)
+        gamesRepo.removeGameByGameId(gameId)
     }
 
 }

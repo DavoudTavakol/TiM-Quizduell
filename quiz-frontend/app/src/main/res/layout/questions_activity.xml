@@ -32,87 +32,19 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingTop="60dp"
 
+        android:paddingTop="60dp"
         android:paddingRight="16dp"
         tools:context=".QuestionActivity">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:paddingTop="20dp"
-                    android:text="Runde 1"
-                    tools:ignore="HardcodedText" />
-
-                <TextView
-                    android:id="@+id/question"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="20dp">
-
-                </TextView>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/answer1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="0.5"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:text="Antwort 1" />
-
-            <Button
-                android:id="@+id/answer2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="0.5"
-                android:layout_gravity="center"
-                android:text="Antwort 2" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/answer3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="0.5"
-                android:layout_gravity="center"
-                android:layout_marginRight="10dp"
-                android:text="Antwort 3" />
+            android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/answer4"
@@ -120,48 +52,140 @@
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="0.5"
                 android:layout_gravity="center"
-                android:text="Antwort 4" />
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-                android:id="@+id/progressbar"
-                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
-                android:layout_width="219dp"
-                android:layout_height="212dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="26dp"
-                android:indeterminate="false"
-                android:progress="100"
-                android:progressTint="@android:color/holo_green_dark"
+                android:text="Antwort 4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.523"
+                app:layout_constraintHorizontal_bias="0.813"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.568"
-                app:mpb_determinateCircularProgressStyle="normal"
-                app:mpb_progressStyle="circular"
-                app:mpb_showProgressBackground="true" />
+                app:layout_constraintVertical_bias="0.58000004" />
 
-            <TextView
-                android:id="@+id/gameTimer"
-                android:layout_width="123dp"
-                android:layout_height="107dp"
-                android:layout_marginTop="48dp"
-                android:text="10"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textColor="#F4F0F0"
-                android:textSize="88sp"
+            <Button
+                android:id="@+id/answer1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="0.5"
+                android:layout_gravity="center"
+                android:text="Antwort 1"
+                app:layout_constraintBottom_toTopOf="@+id/answer4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.813"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.91" />
+
+            309998
+
+            <Button
+                android:id="@+id/answer2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="0.5"
+                android:layout_gravity="center"
+                android:text="Antwort 2"
+                app:layout_constraintBottom_toTopOf="@+id/answer3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.151"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.909" />
+
+            <Button
+                android:id="@+id/answer3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="0.5"
+                android:layout_gravity="center"
+                android:text="Antwort 3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.151"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.581" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/progressbar" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.038">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingTop="20dp"
+                        android:text="Runde 1"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/question"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="20dp">
+
+                    </TextView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="285dp"
+                android:layout_height="277dp"
+                android:layout_marginTop="492dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/card">
+
+                <TextView
+                    android:id="@+id/gameTimer"
+                    android:layout_width="123dp"
+                    android:layout_height="107dp"
+                    android:text="10"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="#F4F0F0"
+                    android:textSize="88sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/progressbar"
+                    app:layout_constraintEnd_toEndOf="@+id/progressbar"
+                    app:layout_constraintStart_toStartOf="@+id/progressbar"
+                    app:layout_constraintTop_toTopOf="@+id/progressbar"
+                    app:layout_constraintVertical_bias="0.438" />
+
+                <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                    android:id="@+id/progressbar"
+                    style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
+                    android:layout_width="219dp"
+                    android:layout_height="212dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="26dp"
+                    android:indeterminate="false"
+                    android:progress="100"
+                    android:progressTint="@android:color/holo_green_dark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:mpb_determinateCircularProgressStyle="normal"
+                    app:mpb_progressStyle="circular"
+                    app:mpb_showProgressBackground="true" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

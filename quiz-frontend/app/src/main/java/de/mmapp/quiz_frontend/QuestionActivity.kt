@@ -18,9 +18,8 @@ class QuestionActivity : AppCompatActivity() {
 
     private var questionCount: Int = 0
     private var answerList: MutableList<Answer> = mutableListOf()
-    private var points: Int = 0
-    //private var gameId: String = intent.getParcelableExtra<Game>("game")!!.gameId
-    //private var nickname: String? = intent.getStringExtra("nickname")
+    private var numberOfRightQuestions: Int = 0
+    private var nickname: String = ""
 
     // start of timer
     private var timeLeftInSeconds: Int = 60
@@ -33,6 +32,7 @@ class QuestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.questions_activity)
+        nickname = intent.getStringExtra("nickname").toString()
         val card = findViewById<CardView>(R.id.card)
         card.setCardBackgroundColor(Color.rgb(240, 240, 240))
         card.cardElevation = 10.0F
@@ -117,7 +117,7 @@ class QuestionActivity : AppCompatActivity() {
                 setAnswers(questionList)
             } else {
                 submitRequest()
-                loadHighScores()
+                loadLastActivity()
             }
         }
 
@@ -139,7 +139,7 @@ class QuestionActivity : AppCompatActivity() {
                 setAnswers(questionList)
             } else {
                 submitRequest()
-                loadHighScores()
+                loadLastActivity()
             }
         }
 
@@ -161,7 +161,7 @@ class QuestionActivity : AppCompatActivity() {
                 setAnswers(questionList)
             } else {
                 submitRequest()
-                loadHighScores()
+                loadLastActivity()
             }
         }
 
@@ -183,7 +183,7 @@ class QuestionActivity : AppCompatActivity() {
                 setAnswers(questionList)
             } else {
                 submitRequest()
-                loadHighScores()
+                loadLastActivity()
             }
         }
     }
@@ -197,21 +197,19 @@ class QuestionActivity : AppCompatActivity() {
     }
 
 
-
-
-    private fun loadHighScores() {
-        // ToDo change to Highscore-Activity
+    private fun loadLastActivity() {
         val intent = Intent(this@QuestionActivity, LastActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        //intent.putExtra("points", points)
+        intent.putExtra("nrOfRightQuestions", numberOfRightQuestions)
+        intent.putExtra("nickname", nickname)
         startActivity(intent)
     }
 
     private fun updatePoints(numberOfAnswer: Int, questionList: List<Question>) {
         val isAnswerCorrect = questionList[questionCount].answer[numberOfAnswer].isAnswerCorrect
         if (isAnswerCorrect) {
-            points++
-            println("Points of the player: $points\n")
+            numberOfRightQuestions++
+            println("Points of the player: $numberOfRightQuestions\n")
         }
     }
 

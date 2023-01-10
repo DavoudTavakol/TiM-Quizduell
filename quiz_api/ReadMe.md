@@ -432,29 +432,41 @@ Response:
 }
 ```
 
-## BUILD DOCKER LOCAL
+## CREATE DOCKER CONTAINER
 Prerequisites: Docker + WSL2
 
-Create Image:
+Pull Image:
 ```
-Navigate to dockerfile
-r-click > open Powershellwindow
-docker build -t wildfly ./
+open PowerShell
+docker pull tavakolda80866/tim-quizgame:timwildfly
 ```
 Run Image:
 ```
-docker run -p 8080:8080 -p 9990:9990 -it wildfly
+docker run -p 8080:8080 -p 9990:9990 -it tavakolda80866/tim-quizgame:timwildfly
 ```
-Dockerfile:
+
+## UPDATE DOCKER IMAGE ON DOCKERHUB
+
+Build Image:
+```
+open PowerShell
+docker build -t tavakolda80866/tim-quizgame:timwildfly
+```
+Push Image:
+```
+docker push tavakolda80866/tim-quizgame:timwildfly
+```
+Current Dockerfile used to build the image:
 ```
 FROM quay.io/wildfly/wildfly
 RUN /opt/jboss/wildfly/bin/add-user.sh timadmin timadmin123 --silent
-#copy deployment
+ADD quiz_api-0.0.1-SNAPSHOT.war /opt/jboss/wildfly/standalone/deployments/
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
 ```
 
 ## CREATE WAR-FILE AND DEPLOYMENT
-Momentan nur auf Deployment-Branch möglich!
+Nur zu Informationszwecken.
+WAR-File jetzt im Image bereitgestellt
 
 Generate WAR-File:
 ```

@@ -12,7 +12,7 @@ class WebServerConfig {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
                 registry.addMapping("/**")
-                    .allowedOriginPatterns("http://*")
+                    .allowedOriginPatterns("http://*","https://*")
                     .allowedMethods("*")
             }
         }

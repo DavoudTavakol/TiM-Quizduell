@@ -3,12 +3,15 @@ package de.mmapp.quiz_frontend
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.ContextThemeWrapper
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
@@ -92,9 +95,17 @@ class CategoriesActivity : AppCompatActivity() {
         val id = intent.getStringExtra("gameId")
         val nickname = intent.getStringExtra("nickname")
 
+        val progressbar = findViewById<ProgressBar>(R.id.requestProgress)
+
+        progressbar.isIndeterminate = true
+        progressbar.visibility = View.INVISIBLE
+
+
+
 
         startButton.setOnClickListener() {
 
+            progressbar.visibility = View.VISIBLE
             //Bei Klick auf Start werden die gewählten Checkboxen ausgewertet und in einem String Array gespeichert
             var clickedCategoriesArray = getCheckedCategroies()
 
@@ -113,6 +124,7 @@ class CategoriesActivity : AppCompatActivity() {
                             val intent =
                                 Intent(this@CategoriesActivity, QuestionActivity::class.java)
                             intent.putExtra("game", game)
+                            progressbar.visibility = View.INVISIBLE
                             startActivity(intent)
 
                             this.cancel()

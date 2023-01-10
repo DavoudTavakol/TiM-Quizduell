@@ -408,7 +408,7 @@ Response:
 ## Read Question
 POST-Request:
 ```
-localhost:8085/api/question
+localhost:8085/api/question/read
 ```
 RequestBody:
 ```json lines

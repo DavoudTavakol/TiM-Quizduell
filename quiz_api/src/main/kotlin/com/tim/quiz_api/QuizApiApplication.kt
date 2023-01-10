@@ -17,3 +17,5 @@ class QuizApiApplication
 fun main(args: Array<String>) {
     runApplication<QuizApiApplication>(*args)
 }
+
+

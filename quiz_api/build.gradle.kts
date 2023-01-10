@@ -39,6 +39,13 @@ dependencies {
     testImplementation("io.mockk:mockk:1.8.8")
 }
 
+configurations {
+    all {
+        exclude(module = "spring-boot-starter-logging")
+        exclude(module = "logback-classic")
+    }
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")

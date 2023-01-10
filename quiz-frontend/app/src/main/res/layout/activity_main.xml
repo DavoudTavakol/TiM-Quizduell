@@ -83,6 +83,17 @@
                 android:lines="1"
                 android:singleLine="true"/>
 
+            <TextView
+                android:id="@+id/obligatoryNicknameOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:text="Du musst einen Nicknamen eingeben."
+                android:textSize="15dp"
+                android:textColor="@color/gold"
+                android:visibility="invisible"/>
+
             <com.google.android.material.button.MaterialButton
                 android:backgroundTint="@color/button_selector"
                 android:id="@+id/newGame"
@@ -90,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Neues Spiel"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="30dp"
                 android:textColor="@color/text_color_selector"
                 android:enabled="false" />
@@ -114,7 +125,6 @@
             style="@style/MyTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:hint="Nickname"
             app:expandedHintEnabled="false">
 
@@ -127,6 +137,17 @@
                 android:maxLines="1"
                 android:lines="1"
                 android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/obligatoryNicknameTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:text="Du musst einen Nicknamen eingeben."
+                android:textSize="15dp"
+                android:textColor="@color/gold"
+                android:visibility="invisible"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -151,6 +172,17 @@
                 android:singleLine="true"
                 android:maxLength="6"/>
 
+            <TextView
+                android:id="@+id/obligatoryGameId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:text="Die Game ID muss genau 6 Stellen lang sein."
+                android:textSize="15dp"
+                android:textColor="@color/gold"
+                android:visibility="invisible"/>
+
             <com.google.android.material.button.MaterialButton
                 android:backgroundTint="@color/button_selector"
                 android:id="@+id/joinGame"
@@ -158,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Spiel beitreten"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/text_color_selector"
                 android:enabled="false" />
 

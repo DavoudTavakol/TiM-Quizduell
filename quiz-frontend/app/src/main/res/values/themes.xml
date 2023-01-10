@@ -14,7 +14,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorOnSecondary</item>
         <!-- Customize your theme here. -->
-693152
+
+
+    </style>
+
+    <style name="MyChechBox" parent="Theme.AppCompat.DayNight">
+        <item name="android:buttonTint">@color/white</item>
 
     </style>
 

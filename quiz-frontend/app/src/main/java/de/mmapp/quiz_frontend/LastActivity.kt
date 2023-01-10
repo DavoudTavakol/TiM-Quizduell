@@ -24,17 +24,15 @@ class LastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.end_screen)
 
-        // display winner
-        // val nameOfWinner = intent.getExtra(x)
-        val winner = findViewById<TextView>(R.id.whoWon)
-        // winner.setText(nameOfWinner + " hat gewonnen")
-        // TODO show REAL winners nickname
+        // display nickname of player
+        val nameOfPlayer = intent.getStringExtra("nickname")
+        val player = findViewById<TextView>(R.id.whoAreYou)
+        player.setText("Danke fuers spielen " + nameOfPlayer + "!")
 
         // display nr of right questions answered
-        // val nrQ = intent.getExtra(y)
+        val nrQ = intent.getStringExtra("nrOfRightQuestions")
         val rightQ = findViewById<TextView>(R.id.nrRightQ)
-        // rightQ.setText("Insgesamt " + nrQ.toString() + " von 10 Fragen rightig")
-        // TODO show REAL nr of right questions player got
+        rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen rightig")
 
         // display your achieved points
         // val totalP = intent.getExtra(z)

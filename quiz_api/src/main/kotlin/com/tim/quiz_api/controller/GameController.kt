@@ -46,7 +46,7 @@ class GameController @Autowired constructor(
     @PostMapping("/ready")
     fun setReady(@RequestBody request : ReadyRequest) :
             ResponseEntity<Game> {
-        val questions = questionService.getQuestionsByCategoryId("54800863-0db5-472e-8799-4c6ee439b665")
+        val questions = questionService.getQuestionsByCategoryId("c13be76d-ffce-4a91-b3df-9c66fe7d3fa9")
         println(questions!!.questions)
         return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories, questions!!.questions))
     }
@@ -62,8 +62,9 @@ class GameController @Autowired constructor(
 
         var game = gameService?.submitAnswers(request.gameId, request.nickname, request.answers, request.time)
 
-        if(game != null && game.gameStatus === GameStatus.FINISHED){
+        if(game!!.player1.nickname == request.nickname) {
             highscoreService.updateHighscore(game.player1.score, game.player1.nickname)
+        } else if (game!!.player2.nickname == request.nickname) {
             highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
         }
 

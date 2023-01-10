@@ -161,7 +161,25 @@ Response:
 - [ ] Read Random Questions By Multiple Categories 
 
 
-
+#### <span style='color:salmon'>Information about error handling for Category-API!</span>
+1. In case you have specified a category ID which is 
+not in our Database you will receive the following error message:
+````json lines
+{
+    "msg": "No category found!",
+    "date": "2023-01-06T09:30:11.462109",
+    "statusCode": 400
+}
+````
+2. In case you have specified a categoryName which is already taken or an empty-string 
+you will receive the following error message:
+```json lines
+{
+    "msg": "Invalid name.",
+    "date": "2023-01-06T09:32:06.956463",
+    "statusCode": 400
+}
+```
 
 ## CREATE a Category
 
@@ -205,18 +223,19 @@ Response:
   "categories": [
     {
       "id": "54800863-0db5-472e-8799-4c6ee439b665",
-      "categoryName": "Schätzfragen"
+      "categoryName": "Schätzfragen",
+      "iconURL": "",
+      "desc": ""
     },
     {
       "id": "c13be76d-ffce-4a91-b3df-9c66fe7d3fa5",
-      "categoryName": "Allgemeinwissen"
+      "categoryName": "Allgemeinwissen",
+      "iconURL": "",
+      "desc": ""
     },
-    {
-      "id": "5cd67945-ed50-47fd-a476-fddc125bae76",
-      "categoryName": "Allgemeinwissen 2"
-    }
   ],
-  "countCategories": 3
+  "countCategories": 2,
+  "countQuestions": 8
 }
 ```
 
@@ -233,7 +252,9 @@ RequestBody:
 ```json lines
 {
     "id": "1234567",
-    "categoryName": "New Category Name"
+    "categoryName": "New Category Name",
+    "iconURL": "www.some-icon.de/123456?size=sm",
+    "desc": "This is a description"
 }
 ```
 

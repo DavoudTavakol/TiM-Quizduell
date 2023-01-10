@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
 
 plugins {
     war
@@ -33,16 +32,11 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.10")
     implementation("org.apache.commons:commons-lang3:3.12.0")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-}
-
-configurations {
-    all {
-        exclude(module = "spring-boot-starter-logging")
-        exclude(module = "logback-classic")
-    }
+    testImplementation("io.mockk:mockk:1.8.8")
 }
 
 tasks.withType<KotlinCompile> {

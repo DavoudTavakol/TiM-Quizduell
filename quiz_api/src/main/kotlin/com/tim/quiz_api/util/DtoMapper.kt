@@ -14,7 +14,7 @@ object DtoMapper {
     }
 
     fun categoriesToCategoryMinDTOs(categories:List<Category>): List<CategoryMinDto> {
-        return categories.map { CategoryMinDto(it.id, it.categoryName) }
+        return categories.map { CategoryMinDto(it.id, it.categoryName, it.iconURL, it.desc) }
     }
 
 }

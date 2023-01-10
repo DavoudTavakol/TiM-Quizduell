@@ -27,11 +27,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Neues Spiel
-        val buttonNewGame = findViewById<Button>(R.id.neuesSpiel)
-        val eingabeE = findViewById<EditText>(R.id.nicknameEins)
+        // New Game
+        val buttonNewGame = findViewById<Button>(R.id.newGame)
+        val inputPlayerOne = findViewById<EditText>(R.id.nicknameOne)
 
-        eingabeE.addTextChangedListener(object : TextWatcher {
+        inputPlayerOne.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
@@ -42,140 +42,129 @@ class MainActivity : AppCompatActivity() {
                 if (s.isNotEmpty()) {
                     buttonNewGame.isEnabled = true
                     buttonNewGame.setOnClickListener {
-                        val nick = eingabeE.text.toString()
+                        val nick = inputPlayerOne.text.toString()
                         // TODO when ready, change from "LastActivity" to "QuestionActivity"
 
-                        //setContentView(R.layout.gameid_screen)
+                        //setContentView(R.layout.gameid_screen) /löschen?
 
                         var gameid: String = ""
 
                         GlobalScope.launch(Dispatchers.Main) {
 
                             try {
-                                gameid = createGameRequest(eingabeE.text.toString())
+                                gameid = createGameRequest(inputPlayerOne.text.toString())
                                 println(gameid)
 
-                                var categories : ArrayList<String> = getCategories() as ArrayList<String>
-                                val intent = Intent(this@MainActivity, CategoriesActivity::class.java)
+                                var categories: ArrayList<String> =
+                                    getCategories() as ArrayList<String>
+                                val intent =
+                                    Intent(this@MainActivity, CategoriesActivity::class.java)
 
                                 // Send gameId and Categories List to Categories Activity
-                                intent.putExtra("nickname",nick)
+                                intent.putExtra("nickname", nick)
                                 intent.putExtra("gameId", gameid)
                                 intent.putStringArrayListExtra("categories", categories)
 
                                 println(categories)
                                 startActivity(intent)
-                            } catch (e : IOException)  {
-                                Toast.makeText(this@MainActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
-
+                            } catch (e: IOException) {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Keine Verbindung",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-
-
-
                         }
-
-
-
                         print(gameid)
-
-
-
-
                     }
                 } else {
                     buttonNewGame.isEnabled = false
-
-                    Toast.makeText(applicationContext, "Du musst einen Nicknamen eingeben! ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Du musst einen Nicknamen eingeben! ",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
 
-        // Spiel beitreten
-        val buttonJoinGame = findViewById<Button>(R.id.spielBeitreten)
-        val eingabeZ = findViewById<EditText>(R.id.nicknameZwei)
-        val eingabeID = findViewById<EditText>(R.id.gameID)
+        // Join Game
+        val buttonJoinGame = findViewById<Button>(R.id.joinGame)
+        val inputPlayerTwo = findViewById<EditText>(R.id.nicknameTwo)
+        val inputId = findViewById<EditText>(R.id.gameID)
         var boolID = false
         var boolNick = false
-        // TODO Nickname 1
-        // val textZ = findViewById<TextView>(R.id.spEinsWahlKategorien)
+        //TODO Check if Nickname 1 und Nickname 2 are equal
 
-        fun waitingScreen(game : Game){
+        fun waitingScreen(game: Game) {
             setContentView(R.layout.waiting_screen)
-            var nicknameZwei = findViewById<TextView>(R.id.willkommenZwei)
-            val eingabeZwei = eingabeZ.text.toString()
-            var textZ = findViewById<TextView>(R.id.spEinsWahlKategorien)
-            nicknameZwei.text = "Willkommen " + eingabeZwei
-            //TODO QuestionsActivity starten
-            //TODO Nickname 1 auch noch einbinden
-            textZ.setText(game.player1.nickname + " wählt gerade die Kategorie. Bitte habe noch einen Moment Geduld, es geht gleich los!")
+            var nicknameTwo = findViewById<TextView>(R.id.greetingTwo)
+            val nicknamePtwo = inputPlayerTwo.text.toString()
+            var text = findViewById<TextView>(R.id.passGameId)
+            nicknameTwo.text = "Willkommen " + nicknamePtwo
+            text.text = game.player1.nickname + " wählt gerade die Kategorien. \nBitte habe noch einen Moment Geduld, es geht gleich los!"
 
             // Polling : Asking the server every second if the other player is ready.
             // checkIfReady is a static method of the class CategoriesActivity
 
+            var newGame: Game
+            GlobalScope.launch() {
 
-            var newGame : Game
-            GlobalScope.launch(){
-
-
-
-
-                newGame = setReady(game.player2.nickname,game.gameId)
-
+                newGame = setReady(game.player2.nickname, game.gameId, mutableListOf())
 
                 (1..30).asFlow() // a flow of requests
-                    .map { request -> checkIfReady(game.gameId,game.player2.nickname) }
+                    .map { request -> checkIfReady(game.gameId, game.player2.nickname) }
                     .collect { response ->
 
                         println(response)
-                        if (response == "true"){
+                        if (response == "true") {
                             val intent = Intent(this@MainActivity, QuestionActivity::class.java)
 
-                            intent.putExtra("game",newGame)
+                            intent.putExtra("game", newGame)
+                            intent.putExtra("nickname", nicknamePtwo)
                             startActivity(intent)
                             this.cancel()
 
                         }
                     }
-
-
             }
-
-
-
         }
 
-        fun update (){
-            if(boolID && boolNick){
+        854062
+        fun update() {
+            if (boolID && boolNick) {
                 buttonJoinGame.isEnabled = true
                 buttonJoinGame.setOnClickListener {
 
-                    var game : Game
+                    var game: Game
+
 
                     GlobalScope.launch(Dispatchers.Main) {
 
-                       try {
-                           game = connectToGameRequest(eingabeZ.text.toString(),eingabeID.text.toString())
-                           println(game)
+                        try {
+                            game = connectToGameRequest(
+                                inputPlayerTwo.text.toString(),
+                                inputId.text.toString()
+                            )
+                            println(game)
+                            waitingScreen(game)
+                        } catch (e: IOException) {
 
-                           waitingScreen(game)
-                       } catch (e : IOException) {
-                           Toast.makeText(this@MainActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
-
-                       }
-
-
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    e.message.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
 
                     }
-
-
-
                 }
             } else {
                 buttonJoinGame.isEnabled = false
             }
         }
 
-        eingabeZ.addTextChangedListener(object : TextWatcher {
+        inputPlayerTwo.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
@@ -189,12 +178,16 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     boolNick = false
                     update()
-                    Toast.makeText(applicationContext, "Du musst einen Nicknamen eingeben! ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "Du musst einen Nicknamen eingeben! ",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
 
-        eingabeID.addTextChangedListener(object : TextWatcher {
+        inputId.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
@@ -209,20 +202,21 @@ class MainActivity : AppCompatActivity() {
                     boolID = false
                     update()
                     if (s.isEmpty()) {
-                        Toast.makeText(applicationContext, "Du musst eine 6-stellige Game ID eingeben! ", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            applicationContext,
+                            "Du musst eine 6-stellige Game ID eingeben! ",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
         })
     }
 
+    suspend fun createGameRequest(nickname: String): String = GlobalScope.async(Dispatchers.IO) {
+        // Request Body , See Documentation
 
-     suspend fun createGameRequest(nickname : String): String = GlobalScope.async(Dispatchers.IO) {
-
-
-       // Request Body , See Documentation
-
-        val jsonBody :String = """
+        val jsonBody: String = """
              {
                  "nickname" : "$nickname"
              }
@@ -235,31 +229,26 @@ class MainActivity : AppCompatActivity() {
             .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
             .build()
 
-        var gameId : String = ""
-
+        var gameId: String = ""
 
         client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
             val mapper = jacksonObjectMapper()
 
-           // Parse the JSON String into a Game instance (accessibility through game. )
+            // Parse the JSON String into a Game instance (accessibility through game. )
             var game: Game = mapper.readValue(response.body.string())
             println(game)
             println(game.gameId)
             gameId = game.gameId
 
         }
-
-
         return@async gameId
-
-
     }.await()
 
+    private suspend fun connectToGameRequest(nickname: String, gameId: String): Game =
+        GlobalScope.async(Dispatchers.IO) {
 
-    private suspend fun connectToGameRequest(nickname : String, gameId : String): Game = GlobalScope.async(Dispatchers.IO) {
-
-        val jsonBody :String = """
+            val jsonBody: String = """
              {
                  "gameId": "$gameId",
                  "player2" : {
@@ -269,74 +258,57 @@ class MainActivity : AppCompatActivity() {
              
          """.trimIndent()
 
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url("http://10.0.2.2:8085/game/connect")
-            .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
-            .build()
-
-        var game : Game
-
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val mapper = jacksonObjectMapper()
-
-            game = mapper.readValue(response.body.string())
-
-
-
-        }
-
-
-        return@async game
-
-
-    }.await()
-
-
-
-    companion object {
-         suspend fun setReady(nickname : String, gameId : String): Game = GlobalScope.async(Dispatchers.IO) {
-
-            val jsonBody :String = """
-             {
-                 "gameId": "$gameId",
-                 "nickname":"$nickname",
-                 "categories" : []
-             }
-             
-         """.trimIndent()
-
             val client = OkHttpClient()
             val request = Request.Builder()
-                .url("http://10.0.2.2:8085/game/ready")
+                .url("http://10.0.2.2:8085/game/connect")
                 .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
                 .build()
 
-            var game : Game
-
+            var game: Game
 
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
                 val mapper = jacksonObjectMapper()
 
                 game = mapper.readValue(response.body.string())
-
-
-
             }
-
-
             return@async game
-
-
         }.await()
+
+
+    companion object {
+        suspend fun setReady(nickname: String, gameId: String, categories: MutableList<String>): Game =
+            GlobalScope.async(Dispatchers.IO) {
+
+                val jsonBody = object  {
+                    var gameId = gameId
+                    var nickname = nickname
+                    var categories = categories
+                }
+
+                val mapper = jacksonObjectMapper()
+                val body = mapper.writeValueAsString(jsonBody)
+
+                val client = OkHttpClient()
+                val request = Request.Builder()
+                    .url("http://10.0.2.2:8085/game/ready")
+                    .post(body.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                    .build()
+
+                var game: Game
+                client.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                    val mapper = jacksonObjectMapper()
+
+                    game = mapper.readValue(response.body.string())
+                }
+                return@async game
+            }.await()
     }
 
-    private suspend fun getCategories() : List<String> = GlobalScope.async(Dispatchers.IO) {
+    private suspend fun getCategories(): List<String> = GlobalScope.async(Dispatchers.IO) {
 
-        var categories : List<String> = listOf()
+        var categories: List<String> = listOf()
         val client = OkHttpClient()
         val request = Request.Builder()
             .url("http://10.0.2.2:8085/game/categories")
@@ -347,16 +319,9 @@ class MainActivity : AppCompatActivity() {
             val mapper = jacksonObjectMapper()
 
             categories = mapper.readValue(response.body.string())
-
-
         }
-
         return@async categories
     }.await()
-
-
-
-
 }
 
 

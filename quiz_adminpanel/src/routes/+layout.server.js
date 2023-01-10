@@ -1,6 +1,6 @@
-import { get } from 'svelte/store';
+import { get } from 'svelte/store'
 
-let url = 'localhost:8085/api/category';
+let url = 'http://localhost:8085/api/category'
 
 let DummyRes = {
 	categories: [
@@ -17,21 +17,18 @@ let DummyRes = {
 			categoryName: 'Allgemeinwissen 2'
 		}
 	]
-};
-
-async function getCategorys() {
-	await fetch(url)
-		.then((res) => res.json())
-		.then((categories) => {
-			return categories;
-		})
-		.catch(() => {
-			console.log("API Error");
-			return DummyRes;
-		});
 }
 
-export function load() {
-	let response = getCategorys();
-	return DummyRes;
+export async function load() {
+	console.log('Lade Kategorien von ' + url)
+	try {
+		let res = await fetch(url)
+		let data = await res.json()
+		return {
+			categories: data.categories
+		}
+	} catch (err) {
+		console.log('Fehler beim Laden der Kategorien: ' + err)
+		return DummyRes
+	}
 }

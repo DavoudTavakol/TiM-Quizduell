@@ -1,15 +1,14 @@
 <script>
-	import { page } from '$app/stores';
-	import Navbar from '../../../lib/Navbar.svelte';
-	export let data;
+	import { page } from '$app/stores'
+	import Navbar from '../../../lib/Navbar.svelte'
+	export let data
 
-	let { questions } = data;
-
-	$: id = $page.params.id;
+	$: id = $page.params.id
+	$: ({questions} = data)
 </script>
 
 <main class="flex flex-col h-screen w-full overflow-scroll overflow-x-hidden">
-	<Navbar title="Category/Schätzfragen" />
+	<Navbar title="Category/Schätzfragen" {id} />
 	<div class="flex flex-col">
 		<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
 			<div class="min-w-full inline-block sm:px-6 lg:px-8">
@@ -49,7 +48,7 @@
 
 									{#each question.answer as answer}
 										<td class="table-data">
-											{answer}
+											{answer.answer}
 										</td>
 									{/each}
 								</tr>

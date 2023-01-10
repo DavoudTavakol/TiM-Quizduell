@@ -2,6 +2,7 @@ package com.tim.quiz_api.service
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.CreateCategoryDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryListMinDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.QuestionMinDto
 import com.tim.quiz_api.data.Category
@@ -17,7 +18,15 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
     /*
         Returns a List of CategoryMinDTOS (CategoryName and ID) without Questions
      */
-    fun getAllCategories(): List<CategoryMinDto> {
+    fun getAllCategoriesAndCount(): CategoryListMinDto {
+        val categories = categoryRepo.findAll()
+        val numberOfCategories = categories.count()
+        val numberOfQuestions = categories.sumOf { it.questions.count() }
+        val categoryMin = DtoMapper.categoriesToCategoryMinDTOs(categoryRepo.findAll())
+        return CategoryListMinDto(categoryMin, numberOfCategories, numberOfQuestions)
+    }
+
+    fun getAllCategories():List<CategoryMinDto>{
         return DtoMapper.categoriesToCategoryMinDTOs(categoryRepo.findAll())
     }
 
@@ -25,7 +34,7 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
         Returns Category and its questions
      */
     fun getCategoryById(id: String): Category? {
-        return categoryRepo.findByIdOrNull(id)
+        return categoryRepo.findByIdOrNull(id);
     }
 
     fun saveCategory(createCategory: CreateCategoryDto): Category {
@@ -34,7 +43,8 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
             It is important for the UUID to be set before we save a list of questions,
             because questions depend on the categoryID as a foreign key
          */
-        val category = Category(createCategory.categoryName, mutableListOf())
+        val category = Category(createCategory.categoryName, mutableListOf(),
+            createCategory.iconURL, createCategory.desc)
         //set questions of category to mapped questions list, if the provided list is not empty
         category.questions =
             if(createCategory.questions.isNotEmpty())
@@ -54,7 +64,7 @@ class CategoryService @Autowired constructor(private val categoryRepo: CategoryR
         return true
     }
 
-    private fun categoryExists(categoryName: String): Boolean {
+    fun categoryExists(categoryName: String): Boolean {
         return categoryRepo.existsByCategoryName(categoryName)
     }
 }

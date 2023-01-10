@@ -40,7 +40,7 @@ class CategoriesActivity : AppCompatActivity() {
             checkbox.id = countCategories
             countCategories++
             checkbox.setTextColor(Color.WHITE)
-            checkbox.textSize = 20F
+            checkbox.textSize = 22F
 
             // add TextView to LinearLayout
              ll_game_layout.addView(checkbox)

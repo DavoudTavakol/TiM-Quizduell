@@ -1,13 +1,15 @@
 <script>
 	import { invalidateAll } from '$app/navigation'
 	import { confirmModalOpen, overlayCategoryOpen } from '$lib/store.js'
-	import { fly } from 'svelte/transition'
+	import { fly, fade } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
 
 	let title = ''
 	let desc = ''
 	let iconURL = ''
+	let showHint = false
+	let playShake = false
 
 	$: hasData = title.length > 0 || desc.length > 0 || iconURL.length > 0
 
@@ -26,21 +28,27 @@
 	}
 
 	async function addCategory() {
-		await fetch('http://localhost:8085/api/category/create', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				categoryName: title,
-				desc: desc,
-				iconURL: iconURL
+		if (title.length > 0) {
+			await fetch('http://localhost:8085/api/category/create', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					categoryName: title,
+					desc: desc,
+					iconURL: iconURL
+				})
 			})
-		})
-		console.log('Category added: ' + title)
-		resetData()
-		$overlayCategoryOpen = false
-		invalidateAll()
+			console.log('Category added: ' + title)
+			resetData()
+			$overlayCategoryOpen = false
+			invalidateAll()
+		} else {
+			showHint = true
+			playShake = true
+			setTimeout(() => (playShake = false), 820)
+		}
 	}
 </script>
 
@@ -70,14 +78,47 @@
 				<div>
 					<button
 						class="bg-black rounded flex font-bold text-sm text-white w-full p-4 transition-all gap-3 duration-250 items-center justify-center"
+						class:apply-shake={playShake}
 						type="submit"
 						on:click={addCategory}
 					>
 						<span>Add</span>
 						<div class="text-lg i-carbon-arrow-right" />
 					</button>
+					{#if showHint}
+						<span
+							class="flex font-semibold text-center text-sm w-full p-4 text-red-500 justify-center items-center"
+							transition:fade>Please add a Name to continue!</span
+						>
+					{/if}
 				</div>
 			</div>
 		</section>
 	</div>
 </div>
+
+<style>
+	@keyframes shake {
+		10%,
+		90% {
+			transform: translate3d(-1px, 0, 0);
+		}
+		20%,
+		80% {
+			transform: translate3d(2px, 0, 0);
+		}
+		30%,
+		50%,
+		70% {
+			transform: translate3d(-4px, 0, 0);
+		}
+		40%,
+		60% {
+			transform: translate3d(4px, 0, 0);
+		}
+	}
+
+	.apply-shake {
+		animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+	}
+</style>

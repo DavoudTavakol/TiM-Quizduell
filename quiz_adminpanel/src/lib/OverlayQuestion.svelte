@@ -1,69 +1,97 @@
 <script>
 	import { confirmModalOpen, overlayQuestionOpen } from '$lib/store.js'
-	import { fly } from 'svelte/transition'
+	import { fly, fade } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
-	import {page} from '$app/stores' 
+	import { page } from '$app/stores'
 	import { invalidateAll } from '$app/navigation'
 
-	function handleClose() {
-		confirmModalOpen.set(true)
-	}
-
+	let question = ''
 	let answerA = ''
 	let answerB = ''
 	let answerC = ''
 	let answerD = ''
-	let question = ''
+	let playShake = false
+	let showHint = false
 	let options = ['a', 'b', 'c', 'd']
-	let selected = options[0] 
-
-
+	let selected = options[0]
 	let id = $page.params.id
-	
+
+	$: hasData =
+		question.length > 0 ||
+		answerA.length > 0 ||
+		answerB.length > 0 ||
+		answerC.length > 0 ||
+		answerD.length > 0
 
 	function resetData() {
 		question = ''
 		answerA = ''
-	    answerB = ''
-	    answerC = ''
-	    answerD = ''
-		selected = options[0] 
+		answerB = ''
+		answerC = ''
+		answerD = ''
+		selected = options[0]
 	}
 
+	function handleClose() {
+		if (hasData) {
+			confirmModalOpen.set(true)
+		} else {
+			overlayQuestionOpen.set(false)
+		}
+	}
 
+	function checkIfFilled() {
+		return (
+			question.length > 0 &&
+			answerA.length > 0 &&
+			answerB.length > 0 &&
+			answerC.length > 0 &&
+			answerD.length > 0
+		)
+	}
 
 	async function addQuestion() {
-		await fetch('http://localhost:8085/api/questions/create', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				question: question,
-				answer: [{
-					answer: answerA,
-					isAnswerCorrect: selected === 'a' ? true : false 
-				},{
-					answer: answerB,
-					isAnswerCorrect: selected === 'b' ? true : false 
-				},{
-					answer: answerC,
-					isAnswerCorrect: selected === 'c' ? true : false 
-				},{
-					answer: answerD,
-					isAnswerCorrect: selected === 'd' ? true : false 
-				}],
-				categoryId: id
+		if (checkIfFilled()) {
+			await fetch('http://localhost:8085/api/questions/create', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					question: question,
+					answer: [
+						{
+							answer: answerA,
+							isAnswerCorrect: selected === 'a' ? true : false
+						},
+						{
+							answer: answerB,
+							isAnswerCorrect: selected === 'b' ? true : false
+						},
+						{
+							answer: answerC,
+							isAnswerCorrect: selected === 'c' ? true : false
+						},
+						{
+							answer: answerD,
+							isAnswerCorrect: selected === 'd' ? true : false
+						}
+					],
+					categoryId: id
+				})
 			})
-		})
-		console.log('Question added: ' + question)
-		resetData()
-		invalidateAll()
-		overlayQuestionOpen.set(false)
+			console.log('Question added: ' + question)
+			resetData()
+			invalidateAll()
+			overlayQuestionOpen.set(false)
+		} else {
+			showHint = true
+			playShake = true
+			setTimeout(() => (playShake = false), 820)
+		}
 	}
 </script>
-
 
 <div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">
 	<div
@@ -83,43 +111,81 @@
 			<h1 class="text-lg py-6 px-8">Add new <span class="font-semibold">Question</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Question'} class="i-ri-text" bind:value = {question}/>
+					<InputText label={'Question'} class="i-ri-text" bind:value={question} required={true} />
 
-					<InputText label={'Answer A'} class="i-ri-text" bind:value = {answerA} />
-
-					<InputText label={'Answer B'} class="i-ri-text" bind:value = {answerB} />
-
-					<InputText label={'Answer C'} class="i-ri-text" bind:value = {answerC}/>
-
-					<InputText label={'Answer D'} class="i-ri-text" bind:value = {answerD}/>
-
-					<div class="rounded flex bg-gray-200 mb-6 py-2 px-4 gap-2  justify-around">
-						<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">
-							<div class="i-ri-text" />
-							Select Correct Answer</label
-						>
-						<div>
-							{#each options as option }
-								<input type="radio" bind:group={selected} name='answers' value={option}/>
-							{/each}	
-
-							
+					<div class="flex w-full relative">
+						<InputText label={'Answer A'} class="i-ri-text" bind:value={answerA} required={true} />
+						<div class="top-5 right-5 absolute">
+							<input type="radio" bind:group={selected} name="answers" value={options[0]} />
 						</div>
-					
+					</div>
+
+					<div class="flex w-full relative">
+						<InputText label={'Answer B'} class="i-ri-text" bind:value={answerB} required={true} />
+						<div class="top-5 right-5 absolute">
+							<input type="radio" bind:group={selected} name="answers" value={options[1]} />
+						</div>
+					</div>
+
+					<div class="flex w-full relative">
+						<InputText label={'Answer C'} class="i-ri-text" bind:value={answerC} required={true} />
+						<div class="top-5 right-5 absolute">
+							<input type="radio" bind:group={selected} name="answers" value={options[2]} />
+						</div>
+					</div>
+
+					<div class="flex w-full relative">
+						<InputText label={'Answer D'} class="i-ri-text" bind:value={answerD} required={true} />
+						<div class="top-5 right-5 absolute">
+							<input type="radio" bind:group={selected} name="answers" value={options[3]} />
+						</div>
 					</div>
 				</form>
 
 				<div>
 					<button
 						class="bg-black rounded flex font-bold text-sm text-white w-full p-4 transition-all gap-3 duration-250 items-center justify-center"
+						class:apply-shake={playShake}
 						type="submit"
 						on:click={addQuestion}
 					>
 						<span>Add</span>
 						<div class="text-lg i-carbon-arrow-right" />
 					</button>
+					{#if showHint}
+						<span
+							class="flex font-semibold text-center text-sm w-full p-4 text-red-500 justify-center items-center"
+							transition:fade>Please fill in all fields before you continue!</span
+						>
+					{/if}
 				</div>
 			</div>
 		</section>
 	</div>
 </div>
+
+<style>
+	@keyframes shake {
+		10%,
+		90% {
+			transform: translate3d(-1px, 0, 0);
+		}
+		20%,
+		80% {
+			transform: translate3d(2px, 0, 0);
+		}
+		30%,
+		50%,
+		70% {
+			transform: translate3d(-4px, 0, 0);
+		}
+		40%,
+		60% {
+			transform: translate3d(4px, 0, 0);
+		}
+	}
+
+	.apply-shake {
+		animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+	}
+</style>

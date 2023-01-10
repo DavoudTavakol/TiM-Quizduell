@@ -34,7 +34,7 @@
 		{#if title === 'Home'}
 			<div class="m-auto text-2xl i-carbon-home" />
 		{:else if iconURL}
-			<img src={iconURL} alt="" />
+			<img src={iconURL} class="m-auto h-[32px] w-[24px]" alt="" />
 		{:else}
 			<div class="m-auto text-2xl i-carbon-folder" />
 		{/if}

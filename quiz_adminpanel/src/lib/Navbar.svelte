@@ -5,8 +5,6 @@
 	export let title
 	export let id
 
-	let words = title.split('/')
-
 	async function handleDelete() {
 		await fetch(`http://localhost:8085/api/category/${id}`, {
 			method: 'DELETE',
@@ -21,12 +19,10 @@
 <main class="flex bg-gray-100 min-h-32 w-full p-6 items-center justify-between">
 	<section class="flex gap-5 items-center">
 		<h1 class="space-x-2 text-lg text-gray-400">
-			<span>
-				{words[0]}
-			</span>
+			<span> Category </span>
 			<span> / </span>
 			<span class="text-black">
-				{words[1]}
+				{title}
 			</span>
 		</h1>
 		<button class="text-lg i-ri-pencil-fill" on:click={() => ($overlayEditCategoryOpen = true)} />

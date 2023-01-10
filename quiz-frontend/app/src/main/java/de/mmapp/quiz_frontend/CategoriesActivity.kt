@@ -1,5 +1,6 @@
 package de.mmapp.quiz_frontend
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -21,6 +22,7 @@ class CategoriesActivity : AppCompatActivity() {
 
     var countCategories = 0;
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gameid_screen)
@@ -38,6 +40,7 @@ class CategoriesActivity : AppCompatActivity() {
             checkbox.id = countCategories
             countCategories++
             checkbox.setTextColor(Color.WHITE)
+            checkbox.textSize = 20F
 
             // add TextView to LinearLayout
              ll_game_layout.addView(checkbox)
@@ -50,6 +53,7 @@ class CategoriesActivity : AppCompatActivity() {
         val name = intent.getStringExtra("nickname")
         var text = findViewById<TextView>(R.id.passGameId)
         text.text = "Willkommen " + name + "! \nBitte leite die 6-stellige Game-ID an deinen Mitspieler weiter."
+        text.textSize = 25F
         println(categories)
     }
 
@@ -91,7 +95,7 @@ class CategoriesActivity : AppCompatActivity() {
 
         startButton.setOnClickListener() {
 
-            //Bei Klick auf Starg werden die gewählten Checkboxen ausgewertet und in einem String Array gespeichert
+            //Bei Klick auf Start werden die gewählten Checkboxen ausgewertet und in einem String Array gespeichert
             var clickedCategoriesArray = getCheckedCategroies()
 
 

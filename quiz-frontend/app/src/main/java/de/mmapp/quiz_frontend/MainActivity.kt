@@ -95,9 +95,9 @@ class MainActivity : AppCompatActivity() {
         fun waitingScreen(game: Game) {
             setContentView(R.layout.waiting_screen)
             var nicknameTwo = findViewById<TextView>(R.id.greetingTwo)
-            val nicknamePtwo = inputPlayerTwo.text.toString()
+            val nicknamePlTwo = inputPlayerTwo.text.toString()
             var text = findViewById<TextView>(R.id.passGameId)
-            nicknameTwo.text = "Willkommen " + nicknamePtwo + "!"
+            nicknameTwo.text = "Willkommen " + nicknamePlTwo + "!"
             text.text = game.player1.nickname + " wählt gerade die Kategorien. \nBitte habe noch einen Moment Geduld, es geht gleich los!"
 
             // Polling : Asking the server every second if the other player is ready.
@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(this@MainActivity, QuestionActivity::class.java)
 
                             intent.putExtra("game", newGame)
-                            intent.putExtra("nickname", nicknamePtwo)
+                            intent.putExtra("nickname", nicknamePlTwo)
                             startActivity(intent)
                             this.cancel()
 
@@ -131,7 +131,6 @@ class MainActivity : AppCompatActivity() {
                 buttonJoinGame.setOnClickListener {
 
                     var game: Game
-
 
                     GlobalScope.launch(Dispatchers.Main) {
 
@@ -149,6 +148,10 @@ class MainActivity : AppCompatActivity() {
                                     e.message.toString(),
                                     Toast.LENGTH_LONG
                                 ).show()
+                            //TextView wird eingeblendet, wenn Nickname1 = Nickname 2 //funktioniert noch nicht
+                            var obligatory = findViewById<TextView>(R.id.obligatoryNicknameTwo)
+                            obligatory.text = "Dieser Nickname ist bereits vergeben."
+                            obligatory.visibility = View.INVISIBLE
                             }
 
                     }

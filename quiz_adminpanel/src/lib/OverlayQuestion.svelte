@@ -1,13 +1,69 @@
 <script>
-	import { confirmModalOpen } from '$lib/store.js'
+	import { confirmModalOpen, overlayQuestionOpen } from '$lib/store.js'
 	import { fly } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
+	import {page} from '$app/stores' 
+	import { invalidateAll } from '$app/navigation'
 
 	function handleClose() {
 		confirmModalOpen.set(true)
 	}
+
+	let answerA = ''
+	let answerB = ''
+	let answerC = ''
+	let answerD = ''
+	let question = ''
+	let options = ['a', 'b', 'c', 'd']
+	let selected = options[0] 
+
+
+	let id = $page.params.id
+	
+
+	function resetData() {
+		question = ''
+		answerA = ''
+	    answerB = ''
+	    answerC = ''
+	    answerD = ''
+		selected = options[0] 
+	}
+
+
+
+	async function addQuestion() {
+		await fetch('http://localhost:8085/api/questions/create', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				question: question,
+				answer: [{
+					answer: answerA,
+					isAnswerCorrect: selected === 'a' ? true : false 
+				},{
+					answer: answerB,
+					isAnswerCorrect: selected === 'b' ? true : false 
+				},{
+					answer: answerC,
+					isAnswerCorrect: selected === 'c' ? true : false 
+				},{
+					answer: answerD,
+					isAnswerCorrect: selected === 'd' ? true : false 
+				}],
+				categoryId: id
+			})
+		})
+		console.log('Question added: ' + question)
+		resetData()
+		invalidateAll()
+		overlayQuestionOpen.set(false)
+	}
 </script>
+
 
 <div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">
 	<div
@@ -27,25 +83,29 @@
 			<h1 class="text-lg py-6 px-8">Add new <span class="font-semibold">Question</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Question'} class="i-ri-text" />
+					<InputText label={'Question'} class="i-ri-text" bind:value = {question}/>
 
-					<InputText label={'Answer A'} class="i-ri-text" />
+					<InputText label={'Answer A'} class="i-ri-text" bind:value = {answerA} />
 
-					<InputText label={'Answer B'} class="i-ri-text" />
+					<InputText label={'Answer B'} class="i-ri-text" bind:value = {answerB} />
 
-					<InputText label={'Answer C'} class="i-ri-text" />
+					<InputText label={'Answer C'} class="i-ri-text" bind:value = {answerC}/>
 
-					<InputText label={'Answer D'} class="i-ri-text" />
+					<InputText label={'Answer D'} class="i-ri-text" bind:value = {answerD}/>
 
 					<div class="rounded flex bg-gray-200 mb-6 py-2 px-4 gap-2  justify-around">
 						<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">
 							<div class="i-ri-text" />
 							Select Correct Answer</label
 						>
-						<input type="radio" />
-						<input type="radio" />
-						<input type="radio" />
-						<input type="radio" />
+						<div>
+							{#each options as option }
+								<input type="radio" bind:group={selected} name='answers' value={option}/>
+							{/each}	
+
+							
+						</div>
+					
 					</div>
 				</form>
 
@@ -53,6 +113,7 @@
 					<button
 						class="bg-black rounded flex font-bold text-sm text-white w-full p-4 transition-all gap-3 duration-250 items-center justify-center"
 						type="submit"
+						on:click={addQuestion}
 					>
 						<span>Add</span>
 						<div class="text-lg i-carbon-arrow-right" />

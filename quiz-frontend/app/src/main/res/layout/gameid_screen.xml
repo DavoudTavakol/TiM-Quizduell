@@ -53,12 +53,13 @@ tools:context=".CategoriesActivity">
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textColor="@color/white"
+            android:textColor="@color/gold"
             android:id ="@+id/gameId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="40dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -69,7 +70,6 @@ tools:context=".CategoriesActivity">
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="Wähle aus folgenden Kategorien aus:"
             android:textSize="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -77,11 +77,6 @@ tools:context=".CategoriesActivity">
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox android:id="@+id/allCtg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="Zufällige Kategorien"/>
 
         <LinearLayout
             android:id="@+id/ll_game_layout"
@@ -89,12 +84,11 @@ tools:context=".CategoriesActivity">
             android:layout_height="441dp"
             android:orientation="vertical"
             android:paddingLeft="16dp"
-            android:paddingTop="60dp"
+            android:paddingTop="20dp"
             android:paddingRight="16dp"
             tools:context=".MainActivity"></LinearLayout>
 
     </LinearLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

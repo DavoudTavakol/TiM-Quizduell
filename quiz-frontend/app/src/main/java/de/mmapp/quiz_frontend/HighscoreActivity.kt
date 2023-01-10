@@ -29,6 +29,7 @@ class HighscoreActivity : AppCompatActivity() {
         }
         // display in screen
         table.setText(text)
+        // TODO layout
 
         // "Hauptmenue" button on screen
         val btnMenu = findViewById<Button>(R.id.menu)

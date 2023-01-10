@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -40,13 +41,12 @@ class MainActivity : AppCompatActivity() {
                 before: Int, counJot: Int
             ) {
                 if (s.isNotEmpty()) {
+                    val obligatory = findViewById<View>(R.id.obligatoryNicknameOne)
+                    obligatory.visibility = View.INVISIBLE
+
                     buttonNewGame.isEnabled = true
                     buttonNewGame.setOnClickListener {
                         val nick = inputPlayerOne.text.toString()
-                        // TODO when ready, change from "LastActivity" to "QuestionActivity"
-
-                        //setContentView(R.layout.gameid_screen) /löschen?
-
                         var gameid: String = ""
 
                         GlobalScope.launch(Dispatchers.Main) {
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                                 Toast.makeText(
                                     this@MainActivity,
                                     "Keine Verbindung",
-                                    Toast.LENGTH_SHORT
+                                    Toast.LENGTH_LONG
                                 ).show()
                             }
                         }
@@ -79,11 +79,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     buttonNewGame.isEnabled = false
-                    Toast.makeText(
-                        applicationContext,
-                        "Du musst einen Nicknamen eingeben! ",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val obligatory = findViewById<View>(R.id.obligatoryNicknameOne)
+                    obligatory.visibility = View.VISIBLE
                 }
             }
         })
@@ -94,23 +91,21 @@ class MainActivity : AppCompatActivity() {
         val inputId = findViewById<EditText>(R.id.gameID)
         var boolID = false
         var boolNick = false
-        //TODO Check if Nickname 1 und Nickname 2 are equal
 
         fun waitingScreen(game: Game) {
             setContentView(R.layout.waiting_screen)
             var nicknameTwo = findViewById<TextView>(R.id.greetingTwo)
-            val nicknamePtwo = inputPlayerTwo.text.toString()
+            val nicknamePlTwo = inputPlayerTwo.text.toString()
             var text = findViewById<TextView>(R.id.passGameId)
-            nicknameTwo.text = "Willkommen " + nicknamePtwo
+            nicknameTwo.text = "Willkommen " + nicknamePlTwo + "!"
             text.text = game.player1.nickname + " wählt gerade die Kategorien. \nBitte habe noch einen Moment Geduld, es geht gleich los!"
 
             // Polling : Asking the server every second if the other player is ready.
             // checkIfReady is a static method of the class CategoriesActivity
-
             var newGame: Game
             GlobalScope.launch() {
 
-                newGame = setReady(game.player2.nickname, game.gameId)
+                newGame = setReady(game.player2.nickname, game.gameId, mutableListOf())
 
                 (1..30).asFlow() // a flow of requests
                     .map { request -> checkIfReady(game.gameId, game.player2.nickname) }
@@ -121,6 +116,7 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(this@MainActivity, QuestionActivity::class.java)
 
                             intent.putExtra("game", newGame)
+                            intent.putExtra("nickname", nicknamePlTwo)
                             startActivity(intent)
                             this.cancel()
 
@@ -146,12 +142,18 @@ class MainActivity : AppCompatActivity() {
                             println(game)
                             waitingScreen(game)
                         } catch (e: IOException) {
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Keine Verbindung",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    e.message.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            //TextView wird eingeblendet, wenn Nickname1 = Nickname 2 //funktioniert noch nicht
+                            var obligatory = findViewById<TextView>(R.id.obligatoryNicknameTwo)
+                            obligatory.text = "Dieser Nickname ist bereits vergeben."
+                            obligatory.visibility = View.INVISIBLE
+                            }
+
                     }
                 }
             } else {
@@ -170,14 +172,13 @@ class MainActivity : AppCompatActivity() {
                 if (s.isNotEmpty()) {
                     boolNick = true
                     update()
+                    val obligatory = findViewById<View>(R.id.obligatoryNicknameTwo)
+                    obligatory.visibility = View.INVISIBLE
                 } else {
                     boolNick = false
                     update()
-                    Toast.makeText(
-                        applicationContext,
-                        "Du musst einen Nicknamen eingeben! ",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val obligatory = findViewById<View>(R.id.obligatoryNicknameTwo)
+                    obligatory.visibility = View.VISIBLE
                 }
             }
         })
@@ -192,17 +193,14 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (s.length == 6) {
                     boolID = true
+                    val obligatory = findViewById<View>(R.id.obligatoryGameId)
+                    obligatory.visibility = View.INVISIBLE
                     update()
                 } else {
                     boolID = false
+                    val obligatory = findViewById<View>(R.id.obligatoryGameId)
+                    obligatory.visibility = View.VISIBLE
                     update()
-                    if (s.isEmpty()) {
-                        Toast.makeText(
-                            applicationContext,
-                            "Du musst eine 6-stellige Game ID eingeben! ",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
                 }
             }
         })
@@ -272,26 +270,25 @@ class MainActivity : AppCompatActivity() {
 
 
     companion object {
-        suspend fun setReady(nickname: String, gameId: String): Game =
+        suspend fun setReady(nickname: String, gameId: String, categories: MutableList<String>): Game =
             GlobalScope.async(Dispatchers.IO) {
 
-                val jsonBody: String = """
-             {
-                 "gameId": "$gameId",
-                 "nickname":"$nickname",
-                 "categories" : []
-             }
-             
-         """.trimIndent()
+                val jsonBody = object  {
+                    var gameId = gameId
+                    var nickname = nickname
+                    var categories = categories
+                }
+
+                val mapper = jacksonObjectMapper()
+                val body = mapper.writeValueAsString(jsonBody)
 
                 val client = OkHttpClient()
                 val request = Request.Builder()
                     .url("http://10.0.2.2:8085/game/ready")
-                    .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                    .post(body.toRequestBody("application/json; charset=utf-8".toMediaType()))
                     .build()
 
                 var game: Game
-
                 client.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
                     val mapper = jacksonObjectMapper()

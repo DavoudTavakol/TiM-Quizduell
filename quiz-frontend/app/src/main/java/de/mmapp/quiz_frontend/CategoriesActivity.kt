@@ -1,8 +1,10 @@
 package de.mmapp.quiz_frontend
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -20,6 +22,7 @@ class CategoriesActivity : AppCompatActivity() {
 
     var countCategories = 0;
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.gameid_screen)
@@ -32,32 +35,17 @@ class CategoriesActivity : AppCompatActivity() {
         categories = intent.getStringArrayListExtra("categories") as ArrayList<String>
 
         for(category: String in categories){
-            val checkbox = CheckBox(this)
+            val checkbox = CheckBox(ContextThemeWrapper(this, R.style.MyChechBox))
             checkbox.text = category
             checkbox.id = countCategories
             countCategories++
-            checkbox.setTextColor(Color.BLACK)
-            checkbox.setBackgroundColor(Color.WHITE)
+            checkbox.setTextColor(Color.WHITE)
+            checkbox.textSize = 22F
 
             // add TextView to LinearLayout
              ll_game_layout.addView(checkbox)
         }
-        /*
-        //doesnt work
-        // TODO : Get the Checkbox text
-        var all = findViewById<CheckBox>(R.id.allCtg)
-        var one = findViewById<CheckBox>(R.id.no1)
-        one.text = categories!![0]
-        var two = findViewById<CheckBox>(R.id.no2)
-        two.text = categories!![1]
-        var three = findViewById<CheckBox>(R.id.no3)
-        three.text = categories!![2]
-        var four = findViewById<CheckBox>(R.id.no4)
-        four.text = categories!![3]
-        var five = findViewById<CheckBox>(R.id.no5)
-        five.text = categories!![4]
 
-*/
         var gameId = findViewById<TextView>(R.id.gameId)
         //val nickname = findViewById<TextView>(R.id.greetingOne)
         gameId.text = id
@@ -65,11 +53,12 @@ class CategoriesActivity : AppCompatActivity() {
         val name = intent.getStringExtra("nickname")
         var text = findViewById<TextView>(R.id.passGameId)
         text.text = "Willkommen " + name + "! \nBitte leite die 6-stellige Game-ID an deinen Mitspieler weiter."
+        text.textSize = 25F
         println(categories)
     }
 
     //Auswertung der geklickten Kategorien
-    fun getCheckedCategroies(): Array<String?> {
+    fun getCheckedCategroies(): MutableList<String> {
 
         var ll_game_layout = findViewById<LinearLayout>(R.id.ll_game_layout)
         var count = ll_game_layout.childCount
@@ -83,17 +72,17 @@ class CategoriesActivity : AppCompatActivity() {
 
         }
 
-        var returnValue = arrayOfNulls<String>(arrayCount)
+        var returnValue : MutableList<String> = mutableListOf()
         var arraycountUp = 0
 
         for (i in count downTo 1 step 1) {
             var v = ll_game_layout.getChildAt(i-1) as CheckBox
             if (v.isChecked){
-                returnValue.set(arraycountUp, v.text as String?)
+                returnValue.add(v.text.toString())
                 arraycountUp++
             }
         }
-        return returnValue;
+        return returnValue
     }
 
     override fun onResume() {
@@ -106,13 +95,13 @@ class CategoriesActivity : AppCompatActivity() {
 
         startButton.setOnClickListener() {
 
-            //Bei Klick auf Starg werden die gewählten Checkboxen ausgewertet und in einem String Array gespeichert
+            //Bei Klick auf Start werden die gewählten Checkboxen ausgewertet und in einem String Array gespeichert
             var clickedCategoriesArray = getCheckedCategroies()
 
 
             GlobalScope.launch() {
 
-                val game = MainActivity.setReady(nickname!!, id!!)
+                val game = MainActivity.setReady(nickname!!, id!!,clickedCategoriesArray)
 
                 // Check is the Player2 is Ready
                 (1..30).asFlow() // a flow of requests

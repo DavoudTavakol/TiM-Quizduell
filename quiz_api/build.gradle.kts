@@ -31,11 +31,19 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation ("com.google.code.gson:gson:2.10")
     implementation("org.apache.commons:commons-lang3:3.12.0")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.8.8")
+}
+
+configurations {
+    all {
+        exclude(module = "spring-boot-starter-logging")
+        exclude(module = "logback-classic")
+    }
 }
 
 tasks.withType<KotlinCompile> {

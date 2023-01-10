@@ -7,3 +7,5 @@ export const overlayQuestionOpen = writable(false)
 export const overlayCategoryOpen = writable(false)
 
 export const confirmModalOpen = writable(false)
+
+export const overlayEditCategoryOpen = writable(false)

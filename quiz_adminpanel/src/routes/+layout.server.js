@@ -1,3 +1,5 @@
+import { get } from 'svelte/store'
+
 let url = 'http://localhost:8085/api/category'
 
 let DummyRes = {

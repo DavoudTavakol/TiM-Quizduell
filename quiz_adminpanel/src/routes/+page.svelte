@@ -1,7 +1,17 @@
 <script>
+	import { onMount } from 'svelte'
+	import { invalidateAll } from '$app/navigation'
+
 	export let data
 
-	let { connected, categoryCount, questionCount } = data
+	let { connected } = data
+
+	$: ({ categoryCount } = data)
+	$: ({ questionCount } = data)
+
+	onMount(() => {
+		invalidateAll()
+	})
 
 	function handleLogout() {
 		localStorage.removeItem('logedIn')
@@ -46,9 +56,7 @@
 					<span class="font-semibold text-green-300" class:text-red-300={!connected}>
 						{connected ? 'Online' : 'Offline'}
 					</span>
-					<span
-						>: https://cloud.mongodb.com/v2/638664005bcd5b74eb50369b#/clusters/detail/QuizBase</span
-					>
+					<span>: https://cloud.mongodb.com/</span>
 				</span>
 			</section>
 

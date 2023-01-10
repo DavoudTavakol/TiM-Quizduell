@@ -1,15 +1,12 @@
 package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.*
-import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.CategoryRepo
-import com.tim.quiz_api.service.CategoryService
 import com.tim.quiz_api.service.GameService
 import com.tim.quiz_api.service.HighscoreService
 import com.tim.quiz_api.service.QuestionService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -46,7 +43,7 @@ class GameController @Autowired constructor(
     @PostMapping("/ready")
     fun setReady(@RequestBody request : ReadyRequest) :
             ResponseEntity<Game> {
-        val questions = questionService.getQuestionsByCategoryId("54800863-0db5-472e-8799-4c6ee439b665")
+        val questions = questionService.getQuestionsByCategoryId("c13be76d-ffce-4a91-b3df-9c66fe7d3fa9")
         println(questions!!.questions)
         return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories, questions!!.questions))
     }
@@ -62,9 +59,15 @@ class GameController @Autowired constructor(
 
         var game = gameService?.submitAnswers(request.gameId, request.nickname, request.answers, request.time)
 
-        if(game != null && game.gameStatus === GameStatus.FINISHED){
+        if(game!!.player1.nickname == request.nickname) {
             highscoreService.updateHighscore(game.player1.score, game.player1.nickname)
+        } else if (game!!.player2.nickname == request.nickname) {
             highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
+        }
+
+        if(game.gameStatus == GameStatus.FINISHED){
+            gameService.saveGameInDatabase(game)
+            gameService.deleteGameFromLocalRepo(game.gameId)
         }
 
         return ResponseEntity.ok(game)
@@ -80,5 +83,11 @@ class GameController @Autowired constructor(
             namesList.add(itr.next().categoryName)
         }
         return ResponseEntity<MutableList<String>>(namesList, HttpStatus.OK)
+    }
+
+    // for debugging
+    @GetMapping("/deletegame")
+    fun deleteGame(gameId: String) {
+        gameService.deleteGameInDatabase(gameId)
     }
 }

@@ -56,7 +56,12 @@
 			</div>
 
 			{#each filteredCategories as element}
-				<SidebarElement title={element.categoryName} id={element.id} {open} />
+				<SidebarElement
+					title={element.categoryName}
+					id={element.id}
+					iconURL={element.iconURL}
+					{open}
+				/>
 			{/each}
 		</div>
 

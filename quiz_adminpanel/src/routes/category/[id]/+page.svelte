@@ -1,65 +1,98 @@
 <script>
 	import { page } from '$app/stores'
+	import { overlayQuestionOpen } from '$lib/store.js'
 	import Navbar from '../../../lib/Navbar.svelte'
 	export let data
 
-	let { questions } = data
-
 	$: id = $page.params.id
+	$: ({ categoryName, questions } = data)
+	$: hasQuestions = questions.length > 0
 </script>
 
-<main class="flex flex-col h-screen w-full overflow-scroll overflow-x-hidden">
-	<Navbar title="Category/Schätzfragen" />
-	<div class="flex flex-col">
-		<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-			<div class="min-w-full inline-block sm:px-6 lg:px-8">
-				<div class="overflow-hidden">
-					<table class="min-w-full">
-						<thead class="border-b bg-gray-100">
-							<tr>
-								<th class="table-header">
-									<input type="checkbox" />
-								</th>
-								<th class="table-header">
-									<div class="flex gap-2 items-center">
-										<div class="i-ri-key-line" />
-										<span>ID</span>
-									</div>
-								</th>
-								<th class="table-header">
-									<div class="flex gap-2 items-center">
-										<div class="i-ri-question-line" />
-										<span>Question</span>
-									</div>
-								</th>
-								<th class="table-header"> A </th>
-								<th class="table-header"> B </th>
-								<th class="table-header"> C </th>
-								<th class="table-header"> D </th>
-							</tr>
-						</thead>
-						<tbody>
-							{#each questions as question, i}
-								<tr class="border-b bg-gray-100" class:bg-white={i % 2 === 0}>
-									<td class="table-data">
-										<input type="checkbox" />
-									</td>
-									<td class="font-mono table-data">{question.id}</td>
-									<td class="table-data">{question.question}</td>
-
-									{#each question.answer as answer}
-										<td class="table-data">
-											{answer}
-										</td>
-									{/each}
+<main class="flex flex-col h-screen bg-gray-50 w-full overflow-scroll overflow-x-hidden">
+	<Navbar {id} title={categoryName} />
+	{#if !hasQuestions}
+		<div class="flex flex-1 w-full items-center justify-center">
+			<section class="flex flex-col mb-60 gap-10 items-center">
+				<h1 class="font-semibold text-xl text-gray-700">
+					No questions in
+					<span class="underline">{categoryName}</span>, please add the first question in this
+					category.
+				</h1>
+				<button
+					class="rounded flex font-semibold bg-gray-900 text-white text-sm py-2 px-6 gap-2 items-center"
+					on:click={() => ($overlayQuestionOpen = true)}
+				>
+					<div class="i-ri-add-line" />
+					New Question
+				</button>
+			</section>
+		</div>
+	{:else}
+		<div class="flex flex-col">
+			<div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+				<div class="min-w-full inline-block sm:px-6 lg:px-8">
+					<div class="overflow-hidden">
+						<table class="min-w-full">
+							<thead class="border-b bg-gray-100">
+								<tr>
+									<th class="table-header">
+										<div class="flex gap-2 items-center">
+											<div class="i-ri-key-line" />
+											<span>ID</span>
+										</div>
+									</th>
+									<th class="table-header">
+										<div class="flex gap-2 items-center">
+											<div class="i-ri-question-line" />
+											<span>Question</span>
+										</div>
+									</th>
+									<th class="table-header"> A </th>
+									<th class="table-header"> B </th>
+									<th class="table-header"> C </th>
+									<th class="table-header"> D </th>
+									<th class="table-header"> Edit </th>
+									<th class="table-header"> Delete </th>
 								</tr>
-							{/each}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{#each questions as question, i}
+									<tr class="border-b bg-gray-100" class:bg-white={i % 2 === 0}>
+										<td class="font-mono table-data">{question.id}</td>
+										<td class="table-data">{question.question}</td>
+
+										{#each question.answer as answer}
+											<td class="table-data">
+												<span
+													class:text-green-500={answer.isAnswerCorrect}
+													class:font-semibold={answer.isAnswerCorrect}
+												>
+													{answer.answer}
+												</span>
+											</td>
+										{/each}
+										<td class="table-data">
+											<button
+												class="bg-gray-700 text-lg transition-all duration-250 i-ri-settings-4-line hover:(i-ri-settings-4-fill bg-gray-900) "
+												on:click={() => {}}
+											/>
+										</td>
+										<td class="table-data">
+											<button
+												class="bg-red-500 text-lg transition-all duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500) "
+												on:click={() => {}}
+											/>
+										</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	{/if}
 </main>
 
 <style>

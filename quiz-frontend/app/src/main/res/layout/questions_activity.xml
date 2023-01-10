@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".QuestionActivity">
-
-
-<com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBarLayout"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    tools:context=".QuestionActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/topAppBar"
-        style="@style/Widget.MaterialComponents.Toolbar.Primary"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:titleCentered="true"
-        app:titleTextColor="@color/white"
-        app:title="@string/app_name"
-        android:background="@color/black"
-        />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/gold" />
 
-</com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/black"
+            app:title="@string/app_name"
+            app:titleCentered="true"
+            app:titleTextColor="@color/white" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/gold" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:paddingTop="60dp"
 
+        android:paddingRight="16dp"
         tools:context=".QuestionActivity">
 
         <com.google.android.material.card.MaterialCardView
@@ -69,20 +68,17 @@ tools:context=".QuestionActivity">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:padding="20dp"
-                    >
+                    android:padding="20dp">
 
                 </TextView>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <GridLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:columnCount="2"
-            android:rowCount="2"
-            android:useDefaultMargins="true">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/answer1"
@@ -90,6 +86,7 @@ tools:context=".QuestionActivity">
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="0.5"
                 android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:text="Antwort 1" />
 
             <Button
@@ -100,12 +97,21 @@ tools:context=".QuestionActivity">
                 android:layout_gravity="center"
                 android:text="Antwort 2" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
             <Button
                 android:id="@+id/answer3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="0.5"
                 android:layout_gravity="center"
+                android:layout_marginRight="10dp"
                 android:text="Antwort 3" />
 
             <Button
@@ -115,8 +121,7 @@ tools:context=".QuestionActivity">
                 android:layout_columnWeight="0.5"
                 android:layout_gravity="center"
                 android:text="Antwort 4" />
-
-        </GridLayout>
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -125,30 +130,31 @@ tools:context=".QuestionActivity">
             <me.zhanghai.android.materialprogressbar.MaterialProgressBar
                 android:id="@+id/progressbar"
                 style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"
-                android:layout_width="400dp"
-                android:layout_height="400dp"
+                android:layout_width="219dp"
+                android:layout_height="212dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="26dp"
                 android:indeterminate="false"
-                android:progress="99"
+                android:progress="100"
                 android:progressTint="@android:color/holo_green_dark"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.523"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
+                app:layout_constraintVertical_bias="0.568"
+                app:mpb_determinateCircularProgressStyle="normal"
                 app:mpb_progressStyle="circular"
-                app:mpb_showProgressBackground="true"
-                app:mpb_determinateCircularProgressStyle="normal"/>
+                app:mpb_showProgressBackground="true" />
 
             <TextView
                 android:id="@+id/gameTimer"
                 android:layout_width="123dp"
                 android:layout_height="107dp"
-                android:layout_marginTop="132dp"
-                android:text=":59"
+                android:layout_marginTop="48dp"
+                android:text="10"
+                android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textColor="#F4F0F0"

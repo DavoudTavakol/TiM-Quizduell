@@ -1,13 +1,28 @@
 <script>
+	import { invalidateAll } from '$app/navigation'
 	import { confirmModalOpen, overlayCategoryOpen } from '$lib/store.js'
 	import { fly } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
 
 	let title = ''
+	let desc = ''
+	let iconURL = ''
+
+	$: hasData = title.length > 0 || desc.length > 0 || iconURL.length > 0
 
 	function handleClose() {
-		confirmModalOpen.set(true)
+		if (hasData) {
+			confirmModalOpen.set(true)
+		} else {
+			overlayCategoryOpen.set(false)
+		}
+	}
+
+	function resetData() {
+		title = ''
+		desc = ''
+		iconURL = ''
 	}
 
 	async function addCategory() {
@@ -17,12 +32,15 @@
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				categoryName: title
+				categoryName: title,
+				desc: desc,
+				iconURL: iconURL
 			})
 		})
 		console.log('Category added: ' + title)
-		title = ''
+		resetData()
 		$overlayCategoryOpen = false
+		invalidateAll()
 	}
 </script>
 
@@ -44,8 +62,9 @@
 			<h1 class="text-lg py-6 px-8">Add new <span class="font-semibold">Category</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Name'} bind:value={title} class="i-ri-text" />
-					<InputText label={'Description'} class="i-ri-text" />
+					<InputText label={'Name'} bind:value={title} class="i-ri-text" required={true} />
+					<InputText label={'Description'} bind:value={desc} class="i-ri-text" />
+					<InputText label={'Icon Url'} bind:value={iconURL} class="i-ri-link" />
 				</form>
 
 				<div>

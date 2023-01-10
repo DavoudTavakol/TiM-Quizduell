@@ -45,7 +45,7 @@ class CategoryServiceTest @Autowired constructor(private val repo:CategoryRepo){
 
     @Test
     fun `should create a category with name TEST_CATEGORY_1 and delete it after`(){
-        val category = service.saveCategory(CreateCategoryDto(testCategoryName, mutableListOf()))
+        val category = service.saveCategory(CreateCategoryDto(testCategoryName, "", "", mutableListOf()))
         //ID property exists
         assertFalse(category.id.isNullOrEmpty())
         //Category name is equal to testCategoryName

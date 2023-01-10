@@ -223,18 +223,19 @@ Response:
   "categories": [
     {
       "id": "54800863-0db5-472e-8799-4c6ee439b665",
-      "categoryName": "Schätzfragen"
+      "categoryName": "Schätzfragen",
+      "iconURL": "",
+      "desc": ""
     },
     {
       "id": "c13be76d-ffce-4a91-b3df-9c66fe7d3fa5",
-      "categoryName": "Allgemeinwissen"
+      "categoryName": "Allgemeinwissen",
+      "iconURL": "",
+      "desc": ""
     },
-    {
-      "id": "5cd67945-ed50-47fd-a476-fddc125bae76",
-      "categoryName": "Allgemeinwissen 2"
-    }
   ],
-  "countCategories": 3
+  "countCategories": 2,
+  "countQuestions": 8
 }
 ```
 
@@ -251,7 +252,9 @@ RequestBody:
 ```json lines
 {
     "id": "1234567",
-    "categoryName": "New Category Name"
+    "categoryName": "New Category Name",
+    "iconURL": "www.some-icon.de/123456?size=sm",
+    "desc": "This is a description"
 }
 ```
 

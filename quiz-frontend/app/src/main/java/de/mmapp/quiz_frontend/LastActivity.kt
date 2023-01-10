@@ -4,6 +4,7 @@ package de.mmapp.quiz_frontend
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -43,6 +44,11 @@ class LastActivity : AppCompatActivity() {
         // display question list
         // val answeredQ = intent.putExtra(w)
         val list = findViewById<TextView>(R.id.qList)
+        // make TextView scrollable
+        list.movementMethod = ScrollingMovementMethod()
+        // example text for testing of scrollbar
+        list.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." +
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
         // list.setText(answeredQ.toString())
         // TODO show REAL full list of answered questions
 

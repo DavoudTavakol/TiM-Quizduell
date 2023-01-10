@@ -14,7 +14,7 @@
 
 
         <activity
-            android:name=".HighscoreActivity"
+            android:name=".LastActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LastActivity"/>
         <activity android:name=".MainActivity"/>
+        <activity android:name=".HighscoreActivity"/>
         <activity android:name=".QuestionActivity" />
         <activity android:name=".CategoriesActivity"/>
     </application>

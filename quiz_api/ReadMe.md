@@ -432,7 +432,7 @@ Response:
 }
 ```
 
-## BUILD DOCKER LOCAL (TODO)
+## BUILD DOCKER LOCAL
 Prerequisites: Docker + WSL2
 
 Create Image:
@@ -453,7 +453,7 @@ RUN /opt/jboss/wildfly/bin/add-user.sh timadmin timadmin123 --silent
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
 ```
 
-## CREATE WAR-FILE AND DEPLOYMENT (TODO)
+## CREATE WAR-FILE AND DEPLOYMENT
 Momentan nur auf Deployment-Branch möglich!
 
 Generate WAR-File:
@@ -476,3 +476,10 @@ Deployment:
 ```
 Deployments > Add > Upload Deployment >
 Choose a file or drag it here > myapp.war > next > finish
+```
+Acces:
+```
+Base URL:
+http://localhost:8080/quiz
+Bsp:
+http://localhost:8080/quiz/api/category

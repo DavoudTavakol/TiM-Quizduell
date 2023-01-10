@@ -1,6 +1,7 @@
 <script>
-	import { overlayQuestionOpen, overlayEditCategoryOpen } from '$lib/store.js'
-	import { goto } from '$app/navigation'
+	import { overlayQuestionOpen, overlayEditCategoryOpen, loading } from '$lib/store.js'
+	import { goto, invalidateAll } from '$app/navigation'
+	import tippy from 'svelte-tippy'
 
 	export let title
 	export let id
@@ -14,6 +15,13 @@
 		})
 		goto('/')
 	}
+
+	function refetch() {
+		$loading = true
+
+		invalidateAll()
+		setTimeout(() => ($loading = false), 500)
+	}
 </script>
 
 <main class="flex bg-gray-100 min-h-32 w-full p-6 items-center justify-between">
@@ -25,21 +33,51 @@
 				{title}
 			</span>
 		</h1>
-		<button class="text-lg i-ri-pencil-fill" on:click={() => ($overlayEditCategoryOpen = true)} />
-		<button class="text-lg i-ri-refresh-line" />
+		<button
+			class="h-5 text-lg transition-all w-5 duration-250 i-ri-pencil-line hover:(i-ri-pencil-fill w-5 h-5 scale-110) "
+			use:tippy={{
+				theme: 'own',
+				content: 'Edit',
+				placement: 'top',
+				duration: 0
+			}}
+			on:click={() => ($overlayEditCategoryOpen = true)}
+		/>
+		<button
+			class="h-5 text-lg transition w-5 duration-250 i-ri-refresh-line hover:(rotate-180 scale-110) "
+			use:tippy={{
+				theme: 'own',
+				content: 'Refresh',
+				placement: 'top',
+				duration: 0
+			}}
+			on:click={refetch}
+		/>
 	</section>
 
 	<section class="flex gap-8 items-center">
+		<button class="deleteBtn group" on:click={() => {}}>
+			<div
+				class="transition-all duration-50 i-ri-delete-bin-6-line group-hover:(i-ri-delete-bin-6-fill scale-110) "
+			/>
+			Delete Category
+		</button>
 		<button
-			class="bg-red-500 text-lg transition-all duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500) "
-			on:click={() => {}}
-		/>
-		<button
-			class="bg-white border-black rounded flex font-semibold border-2 text-sm py-2 px-6 gap-2 items-center"
+			class="bg-white border-black rounded flex font-semibold border-2 text-sm py-2 px-6 gap-2 items-center group"
 			on:click={() => ($overlayQuestionOpen = true)}
 		>
-			<div class="i-ri-add-line" />
+			<div class="transition-all duration-250 i-ri-add-line group-hover:(rotate-180 scale-110) " />
 			New Question
 		</button>
 	</section>
 </main>
+
+<style>
+	.deleteBtn {
+		@apply bg-white rounded flex font-semibold border-red-500 border-2 text-sm py-2 px-6 transition-all text-red-500 gap-2 duration-250 items-center;
+	}
+	.deleteBtn:hover {
+		@apply text-white;
+		@apply bg-red-500;
+	}
+</style>

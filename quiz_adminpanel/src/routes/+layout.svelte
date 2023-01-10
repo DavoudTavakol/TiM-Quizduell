@@ -1,9 +1,10 @@
 <script>
 	import '@unocss/reset/tailwind.css'
 	import Login from '$lib/Login.svelte'
-	import OverlayQuestion from '$lib/OverlayQuestion.svelte'
-	import AddOverlayCategory from '$lib/AddOverlayCategory.svelte'
-	import EditOverlayCategory from '$lib/EditOverlayCategory.svelte'
+	import AddOverlayQuestion from '$lib/Overlays/AddOverlayQuestion.svelte'
+	import AddOverlayCategory from '$lib/Overlays/AddOverlayCategory.svelte'
+	import EditOverlayCategory from '$lib/Overlays/EditOverlayCategory.svelte'
+	import EditOverlayQuestion from '$lib/Overlays/EditOverlayQuestion.svelte'
 	import Confirm from '$lib/Confirm.svelte'
 
 	import {
@@ -11,7 +12,8 @@
 		overlayQuestionOpen,
 		overlayCategoryOpen,
 		confirmModalOpen,
-		overlayEditCategoryOpen
+		overlayEditCategoryOpen,
+		overlayEditQuestionOpen
 	} from '$lib/store.js'
 	import Sidebar from '$lib/Sidebar.svelte'
 	import '../app.css'
@@ -39,13 +41,16 @@
 		<section class="flex relative overflow-x-hidden">
 			<Sidebar {categories} />
 			{#if $overlayQuestionOpen}
-				<OverlayQuestion />
+				<AddOverlayQuestion />
 			{/if}
 			{#if $overlayCategoryOpen}
 				<AddOverlayCategory />
 			{/if}
 			{#if $overlayEditCategoryOpen}
 				<EditOverlayCategory />
+			{/if}
+			{#if $overlayEditQuestionOpen}
+				<EditOverlayQuestion />
 			{/if}
 			{#if $confirmModalOpen}
 				<Confirm />

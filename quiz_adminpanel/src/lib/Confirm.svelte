@@ -3,7 +3,8 @@
 		confirmModalOpen,
 		overlayCategoryOpen,
 		overlayQuestionOpen,
-		overlayEditCategoryOpen
+		overlayEditCategoryOpen,
+		overlayEditQuestionOpen
 	} from '$lib/store.js'
 
 	function backToMenu() {
@@ -11,6 +12,7 @@
 		overlayCategoryOpen.set(false)
 		overlayQuestionOpen.set(false)
 		overlayEditCategoryOpen.set(false)
+		overlayEditQuestionOpen.set(false)
 	}
 
 	function backToEdit() {

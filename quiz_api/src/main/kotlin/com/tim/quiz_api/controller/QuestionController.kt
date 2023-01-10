@@ -35,6 +35,12 @@ class QuestionController @Autowired constructor(val questionService: QuestionSer
         return ResponseEntity(null, HttpStatus.CREATED)
     }
 
+    @DeleteMapping("/delete")
+    fun deleteQuestionInCategory(@RequestBody question: ReadQuestionMinDto):ResponseEntity<Nothing>{
+        questionService.deleteQuestionInCategory(question)
+        return ResponseEntity(null, HttpStatus.OK)
+    }
+
     @PutMapping("/update")
     fun updateQuestionInCategory(@RequestBody question:Question):ResponseEntity<Nothing>{
         questionService.updateQuestionInCategory(question)

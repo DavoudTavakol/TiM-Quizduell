@@ -1,9 +1,9 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import Unocss from 'unocss/vite';
-import transformerDirectives from '@unocss/transformer-directives';
-import transformerVariantGroup from '@unocss/transformer-variant-group';
-import presetIcons from '@unocss/preset-icons';
-import presetUno from '@unocss/preset-uno';
+import { sveltekit } from '@sveltejs/kit/vite'
+import Unocss from 'unocss/vite'
+import transformerDirectives from '@unocss/transformer-directives'
+import transformerVariantGroup from '@unocss/transformer-variant-group'
+import presetIcons from '@unocss/preset-icons'
+import presetUno from '@unocss/preset-uno'
 
 /** @type {import('vite').UserConfig} */
 const config = {
@@ -15,6 +15,6 @@ const config = {
 		}),
 		sveltekit()
 	]
-};
+}
 
-export default config;
+export default config

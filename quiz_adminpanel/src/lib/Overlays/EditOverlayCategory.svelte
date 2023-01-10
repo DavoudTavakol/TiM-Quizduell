@@ -24,7 +24,6 @@
 		title = data.categoryName
 		desc = data.desc
 		iconURL = data.iconURL
-		console.log(data)
 	})
 
 	function handleClose() {
@@ -85,13 +84,15 @@
 
 				<div>
 					<button
-						class="bg-black rounded flex font-bold text-sm text-white w-full p-4 transition-all gap-3 duration-250 items-center justify-center"
+						class="rounded flex font-bold bg-gray-900 text-sm text-white w-full p-4 transition-all gap-3 duration-250 group items-center justify-center"
 						class:apply-shake={playShake}
 						type="submit"
 						on:click={editCategory}
 					>
 						<span>Edit</span>
-						<div class="text-lg i-carbon-arrow-right" />
+						<div
+							class="text-lg transition-all duration-250 i-carbon-arrow-right group-hover:translate-x-1"
+						/>
 					</button>
 					{#if showHint}
 						<span

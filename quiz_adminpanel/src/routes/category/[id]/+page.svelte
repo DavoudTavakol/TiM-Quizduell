@@ -1,17 +1,35 @@
 <script>
 	import { page } from '$app/stores'
-	import { overlayQuestionOpen } from '$lib/store.js'
-	import Navbar from '../../../lib/Navbar.svelte'
+	import { fade } from 'svelte/transition'
+	import {
+		overlayQuestionOpen,
+		loading,
+		overlayEditQuestionOpen,
+		editQuestionID
+	} from '$lib/store.js'
+	import Navbar from '$lib/Navbar.svelte'
 	export let data
 
 	$: id = $page.params.id
 	$: ({ categoryName, questions } = data)
 	$: hasQuestions = questions.length > 0
+
+	function handleEdit(id) {
+		overlayEditQuestionOpen.set(true)
+		$editQuestionID = id
+	}
 </script>
 
 <main class="flex flex-col h-screen bg-gray-50 w-full overflow-scroll overflow-x-hidden">
 	<Navbar {id} title={categoryName} />
-	{#if !hasQuestions}
+
+	{#if $loading}
+		<div class="flex bg-gray-100 flex-1 w-full items-center justify-center" in:fade>
+			<div
+				class="border-gray rounded-full border-4 border-t-4 border-t-gray-600 h-20 mr-3 animate-spin w-20"
+			/>
+		</div>
+	{:else if !hasQuestions}
 		<div class="flex flex-1 w-full items-center justify-center">
 			<section class="flex flex-col mb-60 gap-10 items-center">
 				<h1 class="font-semibold text-xl text-gray-700">
@@ -20,10 +38,12 @@
 					category.
 				</h1>
 				<button
-					class="rounded flex font-semibold bg-gray-900 text-white text-sm py-2 px-6 gap-2 items-center"
+					class="rounded flex font-semibold bg-gray-900 text-white text-sm py-2 px-6 gap-2 items-center group"
 					on:click={() => ($overlayQuestionOpen = true)}
 				>
-					<div class="i-ri-add-line" />
+					<div
+						class="transition-all duration-250 i-ri-add-line group-hover:(rotate-180 scale-110) "
+					/>
 					New Question
 				</button>
 			</section>
@@ -75,7 +95,7 @@
 										<td class="table-data">
 											<button
 												class="bg-gray-700 text-lg transition-all duration-250 i-ri-settings-4-line hover:(i-ri-settings-4-fill bg-gray-900) "
-												on:click={() => {}}
+												on:click={handleEdit(question.id)}
 											/>
 										</td>
 										<td class="table-data">

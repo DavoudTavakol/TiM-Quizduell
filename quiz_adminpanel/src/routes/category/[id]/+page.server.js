@@ -1,4 +1,3 @@
-
 let DummyRes = {
 	categoryName: 'Fragen zum Thema Programmieren in Kotlin',
 	questions: [
@@ -24,12 +23,11 @@ let DummyRes = {
 	id: '942f3c05-bba2-47dc-8b37-11dc8847a1b5'
 }
 
-export async function load({params}) {
-	let urlQuestions = 'http://localhost:8085/api/questions/' + params.id
-	console.log('Lade Fragen von ' + urlQuestions)
-	console.log('Params:' + params.id);
-
+export async function load({ params }) {
 	try {
+		let urlQuestions = 'http://localhost:8085/api/questions/' + params.id
+		console.log('Lade Fragen von ' + urlQuestions)
+		console.log('Params:' + params.id)
 		let res = await fetch(urlQuestions)
 		let data = await res.json()
 		return {

@@ -34,6 +34,18 @@ class QuestionService @Autowired constructor(val categoryRepo: CategoryRepo, val
         return categoryRepo.save(category!!)
     }
 
+    fun deleteQuestionInCategory(question:ReadQuestionMinDto):Category? {
+        val categoryId = question.categoryId
+        val questionId = question.id
+        val category = categoryService.getCategoryById(categoryId)
+
+        if(category != null){
+            category.questions = category.questions.filter { it.id != questionId }.toMutableList()
+            return categoryRepo.save(category)
+        }
+        return  null
+    }
+
     fun updateQuestionInCategory(newQuestion:Question):Category? {
         val categoryId = newQuestion.categoryId;
         val questionId = newQuestion.id

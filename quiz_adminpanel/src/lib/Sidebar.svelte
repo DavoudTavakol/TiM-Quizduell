@@ -25,7 +25,7 @@
 	}
 </script>
 
-<main>
+<main class="select-none">
 	<div
 		class="border-r flex flex-col h-screen py-6 px-2 w-19 "
 		class:w-62={open}

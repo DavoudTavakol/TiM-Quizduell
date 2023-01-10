@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Game(
+    var id: String,
     var gameId: String,
     val player1: Player,
     var player2: Player,

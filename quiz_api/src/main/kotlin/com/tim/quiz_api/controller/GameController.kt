@@ -1,15 +1,12 @@
 package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.*
-import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryMinDto
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.CategoryRepo
-import com.tim.quiz_api.service.CategoryService
 import com.tim.quiz_api.service.GameService
 import com.tim.quiz_api.service.HighscoreService
 import com.tim.quiz_api.service.QuestionService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -68,6 +65,11 @@ class GameController @Autowired constructor(
             highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
         }
 
+        if(game.gameStatus == GameStatus.FINISHED){
+            gameService.saveGameInDatabase(game)
+            gameService.deleteGameFromLocalRepo(game.gameId)
+        }
+
         return ResponseEntity.ok(game)
     }
 
@@ -81,5 +83,11 @@ class GameController @Autowired constructor(
             namesList.add(itr.next().categoryName)
         }
         return ResponseEntity<MutableList<String>>(namesList, HttpStatus.OK)
+    }
+
+    // for debugging
+    @GetMapping("/deletegame")
+    fun deleteGame(gameId: String) {
+        gameService.deleteGameInDatabase(gameId)
     }
 }

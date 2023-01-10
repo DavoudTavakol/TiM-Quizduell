@@ -36,9 +36,10 @@ class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
             game.player2 = player2
             game.gameStatus = GameStatus.IN_PROGRESS
             gamesRepo.save(game)
+            return game
         }
 
-        return game
+        return null
     }
 
     fun submitAnswers(gameId : String , nickname : String ,answers : List<Answer>, time : Float ) : Game? {

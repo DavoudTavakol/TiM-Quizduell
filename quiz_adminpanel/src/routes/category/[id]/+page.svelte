@@ -78,7 +78,7 @@
 							</thead>
 							<tbody>
 								{#each questions as question, i}
-									<tr class="border-b bg-gray-100" class:bg-white={i % 2 === 0}>
+									<tr class="border-b bg-gray-100" class:bg-gray-50={i % 2 === 0}>
 										<td class="font-mono table-data">{question.id}</td>
 										<td class="table-data">{question.question}</td>
 
@@ -94,13 +94,13 @@
 										{/each}
 										<td class="table-data">
 											<button
-												class="bg-gray-700 text-lg transition-all duration-250 i-ri-settings-4-line hover:(i-ri-settings-4-fill bg-gray-900) "
+												class="bg-gray-700 text-lg transition-all duration-250 i-ri-settings-4-line hover:(i-ri-settings-4-fill bg-gray-900 rotate-90) "
 												on:click={handleEdit(question.id)}
 											/>
 										</td>
 										<td class="table-data">
 											<button
-												class="bg-red-500 text-lg transition-all duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500) "
+												class="bg-red-500 text-lg transition-all duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500 rotate-6) "
 												on:click={() => {}}
 											/>
 										</td>

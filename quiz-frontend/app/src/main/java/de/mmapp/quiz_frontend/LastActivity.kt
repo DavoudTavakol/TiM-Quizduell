@@ -4,6 +4,7 @@ package de.mmapp.quiz_frontend
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -24,17 +25,15 @@ class LastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.end_screen)
 
-        // display winner
-        // val nameOfWinner = intent.getExtra(x)
-        val winner = findViewById<TextView>(R.id.whoWon)
-        // winner.setText(nameOfWinner + " hat gewonnen")
-        // TODO show REAL winners nickname
+        // display nickname of player
+        val nameOfPlayer = intent.getStringExtra("nickname")
+        val player = findViewById<TextView>(R.id.whoAreYou)
+        player.setText("Danke fuers spielen " + nameOfPlayer + "!")
 
         // display nr of right questions answered
-        // val nrQ = intent.getExtra(y)
+        val nrQ = intent.getStringExtra("nrOfRightQuestions")
         val rightQ = findViewById<TextView>(R.id.nrRightQ)
-        // rightQ.setText("Insgesamt " + nrQ.toString() + " von 10 Fragen rightig")
-        // TODO show REAL nr of right questions player got
+        rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen rightig")
 
         // display your achieved points
         // val totalP = intent.getExtra(z)
@@ -45,6 +44,11 @@ class LastActivity : AppCompatActivity() {
         // display question list
         // val answeredQ = intent.putExtra(w)
         val list = findViewById<TextView>(R.id.qList)
+        // make TextView scrollable
+        list.movementMethod = ScrollingMovementMethod()
+        // example text for testing of scrollbar
+        list.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." +
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
         // list.setText(answeredQ.toString())
         // TODO show REAL full list of answered questions
 

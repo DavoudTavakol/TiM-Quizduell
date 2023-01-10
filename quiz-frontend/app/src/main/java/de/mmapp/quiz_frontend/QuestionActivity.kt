@@ -200,8 +200,11 @@ class QuestionActivity : AppCompatActivity() {
     private fun loadLastActivity() {
         val intent = Intent(this@QuestionActivity, LastActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        intent.putExtra("nrOfRightQuestions", numberOfRightQuestions)
+        val nrOfRightQuestions = numberOfRightQuestions.toString()
+        intent.putExtra("nrOfRightQuestions", nrOfRightQuestions)
         intent.putExtra("nickname", nickname)
+        // TODO send points of players
+        // TODO send all questions and answers
         startActivity(intent)
     }
 

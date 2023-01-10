@@ -63,7 +63,11 @@ class GameController @Autowired constructor(
             highscoreService.updateHighscore(game.player1.score, game.player1.nickname)
         } else if (game!!.player2.nickname == request.nickname) {
             highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
-            gameService.deleteGame(game.gameId)
+        }
+
+        if(game.gameStatus == GameStatus.FINISHED){
+            gameService.saveGameInDatabase(game)
+            gameService.deleteGameFromLocalRepo(game.gameId)
         }
 
         return ResponseEntity.ok(game)
@@ -84,6 +88,6 @@ class GameController @Autowired constructor(
     // for debugging
     @GetMapping("/deletegame")
     fun deleteGame(gameId: String) {
-        gameService.deleteGame(gameId)
+        gameService.deleteGameInDatabase(gameId)
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface GamesRepo : MongoRepository<Game, String>{
+interface GamesMongoRepo : MongoRepository<Game, String>{
     fun findGameByGameId(gameId : String) : Game
     fun removeGameByGameId(uid: String)
 }

@@ -1,7 +1,6 @@
 package com.tim.quiz_api.service
 
 import com.tim.quiz_api.data.Score
-import com.tim.quiz_api.repository.GamesRepo
 import com.tim.quiz_api.repository.HighscoreRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Sort

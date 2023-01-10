@@ -1,7 +1,8 @@
 package com.tim.quiz_api.service
 
 import com.tim.quiz_api.data.*
-import com.tim.quiz_api.repository.GamesRepo
+import com.tim.quiz_api.repository.GamesLocalRepo
+import com.tim.quiz_api.repository.GamesMongoRepo
 import lombok.AllArgsConstructor
 import org.springframework.stereotype.Service
 import org.apache.commons.lang3.RandomStringUtils
@@ -9,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 @Service
 @AllArgsConstructor
-class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
+class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoRepo){
 
     fun createGame(player: Player): Game {
 
@@ -21,30 +22,26 @@ class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
             questionList =mutableListOf<Question>(),
             gameStatus= GameStatus.NEW,
             )
-        gamesRepo.save(game)
-
+        GamesLocalRepo.games[game.gameId] = game
         return game
 
     }
 
-
-
     fun connectToGame(gameId : String, player2 : Player): Game? {
 
-        var game : Game? = gamesRepo.findGameByGameId(gameId)
+        var game: Game? = GamesLocalRepo.getGame(gameId)
         if (game != null) {
             game.player2 = player2
             game.gameStatus = GameStatus.IN_PROGRESS
-            gamesRepo.save(game)
             return game
         }
 
         return null
     }
 
-    fun submitAnswers(gameId : String , nickname : String ,answers : List<Answer>, time : Float ) : Game? {
+    fun submitAnswers(gameId : String , nickname : String, answers : List<Answer>, time : Float ) : Game? {
 
-        var game : Game? = gamesRepo.findGameByGameId(gameId)
+        var game: Game? = GamesLocalRepo.getGame(gameId)
         if (game != null) {
 
             var score = getScore(answers, time)
@@ -53,21 +50,23 @@ class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
                 game.player1.answers = answers
                 game.player1.score = score
                 game.player1.time = time
-                game.gameStatus = GameStatus.FINISHED
             } else if (nickname == game.player2.nickname){
                 game.player2.answers = answers
                 game.player2.score = score
                 game.player2.time = time
-                game.gameStatus = GameStatus.FINISHED
             }
-            gamesRepo.save(game)
+
+            if(game.gameStatus == GameStatus.IN_PROGRESS)
+                game.gameStatus = GameStatus.HALFFINISHED
+            else if(game.gameStatus == GameStatus.HALFFINISHED)
+                game.gameStatus = GameStatus.FINISHED
 
         }
-        return  game
+        return game
     }
 
     fun isPlayerReady(gameId: String, nickname: String): Boolean {
-        var game : Game? = gamesRepo.findGameByGameId(gameId)
+        var game: Game? = GamesLocalRepo.getGame(gameId)
 
         if(game!!.player1.nickname == nickname){
             return game!!.player2.isReady
@@ -79,7 +78,7 @@ class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
     }
 
     fun setReady(nickname : String, gameId: String, categories : List<String>, questionList : List<Question>): Game {
-        var game : Game? = gamesRepo.findGameByGameId(gameId)
+        var game: Game? = GamesLocalRepo.getGame(gameId)
 
         if (game!!.player1.nickname == nickname){
             game.player1.isReady = true
@@ -88,8 +87,6 @@ class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
         } else if (game!!.player2.nickname == nickname){
             game.player2.isReady = true
         }
-
-        gamesRepo.save(game)
 
         return game
     }
@@ -117,8 +114,16 @@ class GameService @Autowired constructor(private val gamesRepo: GamesRepo){
         return ((60 - timeNeeded) / (10 - correctAnswers) * 10 + correctAnswers * 10).toInt()
     }
 
-    fun deleteGame(gameId: String){
-        gamesRepo.removeGameByGameId(gameId)
+    fun saveGameInDatabase(game : Game){
+        gamesMongoRepo.save(game)
+    }
+
+    fun deleteGameInDatabase(gameId: String){
+        gamesMongoRepo.removeGameByGameId(gameId)
+    }
+
+    fun deleteGameFromLocalRepo(gameId: String){
+        GamesLocalRepo.games.remove(gameId)
     }
 
 }

@@ -62,8 +62,9 @@ class GameController @Autowired constructor(
 
         var game = gameService?.submitAnswers(request.gameId, request.nickname, request.answers, request.time)
 
-        if(game != null && game.gameStatus === GameStatus.FINISHED){
+        if(game!!.player1.nickname == request.nickname) {
             highscoreService.updateHighscore(game.player1.score, game.player1.nickname)
+        } else if (game!!.player2.nickname == request.nickname) {
             highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
         }
 

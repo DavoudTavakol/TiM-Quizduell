@@ -57,6 +57,7 @@ class GameService {
                 game.player1.answers = answers
                 game.player1.score = score
                 game.player1.time = time
+                game.gameStatus = GameStatus.FINISHED
             } else if (nickname == game.player2.nickname){
                 game.player2.answers = answers
                 game.player2.score = score

@@ -28,7 +28,7 @@ class QuestionActivity : AppCompatActivity() {
     override fun onBackPressed() {
         println("Huhu")
     }
-    
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -198,9 +198,10 @@ class QuestionActivity : AppCompatActivity() {
 
 
 
+
     private fun loadHighScores() {
         // ToDo change to Highscore-Activity
-        val intent = Intent(this@QuestionActivity, MainActivity::class.java)
+        val intent = Intent(this@QuestionActivity, LastActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         //intent.putExtra("points", points)
         startActivity(intent)

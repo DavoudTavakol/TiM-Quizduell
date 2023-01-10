@@ -3,9 +3,8 @@
 	import Navbar from '../../../lib/Navbar.svelte'
 	export let data
 
-	let { questions } = data
-
 	$: id = $page.params.id
+	$: ({questions} = data)
 </script>
 
 <main class="flex flex-col h-screen w-full overflow-scroll overflow-x-hidden">
@@ -49,7 +48,7 @@
 
 									{#each question.answer as answer}
 										<td class="table-data">
-											{answer}
+											{answer.answer}
 										</td>
 									{/each}
 								</tr>

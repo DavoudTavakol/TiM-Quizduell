@@ -137,7 +137,7 @@
 
 												{#key checkboxValues[i]}
 													<button
-														class="deleteBtn group hidden "
+														class="deleteBtn group hidden hover:scale-102"
 														class:flex={checkboxValues[i]}
 														transition:fly={{ x: 10, y: 0, duration: 250 }}
 														on:click={handleDelete(question.id, i)}
@@ -166,7 +166,15 @@
 		@apply font-light text-sm py-4 px-6 text-gray-900 whitespace-nowrap;
 	}
 	.checkBoxChecked {
-		@apply bg-red-500 text-red-500 i-ri-delete-bin-6-fill;
+		@apply bg-red-500 text-red-500;
+		--un-icon: url('https://api.iconify.design/ri:delete-bin-6-fill.svg?color=%23ef4444');
+		mask: var(--un-icon) no-repeat;
+		mask-size: 100%;
+		-webkit-mask: var(--un-icon) no-repeat;
+		-webkit-mask-size: 100% 100%;
+		background-color: currentColor;
+		width: 1em;
+		height: 1em;
 	}
 	.deleteBtn {
 		@apply rounded font-semibold bg-red-500 text-xs text-white py-[3px] px-3 transition-all gap-2 duration-250 items-center;

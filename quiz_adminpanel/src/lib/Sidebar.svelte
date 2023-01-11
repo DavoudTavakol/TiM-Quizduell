@@ -38,10 +38,14 @@
 
 			<div class="rounded-xl flex gap-2" class:bg-gray-100={open}>
 				<button
-					class="border-black rounded-xl cursor-pointer flex min-h-11 w-11"
+					class="rounded-xl cursor-pointer flex min-h-[48px] w-full group hover:bg-gray-200"
 					on:click={handleClick}
 				>
-					<div class="m-auto text-2xl i-carbon-search" />
+					<div
+						class="m-auto transition-all text-2xl duration-250 i-carbon-search group-hover:rotate-6"
+						class:group-hover:i-ri-arrow-drop-left-line={open}
+						class:group-hover:scale-110={open}
+					/>
 				</button>
 				{#if open}
 					<!-- svelte-ignore a11y-autofocus -->

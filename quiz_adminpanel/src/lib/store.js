@@ -15,3 +15,9 @@ export const overlayEditQuestionOpen = writable(false)
 export const editQuestionID = writable(null)
 
 export const loading = writable(false)
+
+export const deleteModalOpen = writable(false)
+
+
+
+

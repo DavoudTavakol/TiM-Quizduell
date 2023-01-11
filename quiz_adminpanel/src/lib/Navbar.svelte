@@ -1,21 +1,12 @@
 <script>
-	import { overlayQuestionOpen, overlayEditCategoryOpen, loading } from '$lib/store.js'
+	import { overlayQuestionOpen, overlayEditCategoryOpen, loading, deleteModalOpen } from '$lib/store.js'
 	import { goto, invalidateAll } from '$app/navigation'
 	import tippy from 'svelte-tippy'
+	import DeleteCategory from './DeleteCategory.svelte'
 
 	export let title
 	export let id
 	export let desc
-
-	async function handleDelete() {
-		await fetch(`http://localhost:8085/api/category/${id}`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		})
-		goto('/')
-	}
 
 	function refetch() {
 		$loading = true
@@ -24,6 +15,7 @@
 		setTimeout(() => ($loading = false), 500)
 	}
 </script>
+
 
 <main class="flex bg-gray-100 min-h-32 w-full p-6 z-20 items-center justify-between">
 	<section class="flex">
@@ -63,7 +55,7 @@
 	</section>
 
 	<section class="flex gap-8 items-center">
-		<button class="deleteBtn group" on:click={() => {}}>
+		<button class="deleteBtn group" on:click={() => {$deleteModalOpen = true}}>
 			<div
 				class="transition-all duration-50 i-ri-delete-bin-6-line group-hover:(i-ri-delete-bin-6-fill scale-110) "
 			/>
@@ -80,6 +72,7 @@
 		</button>
 	</section>
 </main>
+
 
 <style>
 	.deleteBtn {

@@ -13,8 +13,6 @@
 		invalidLink = true
 	}
 
-	$: console.log('SidebarElement', title + ' ' + invalidLink)
-
 	$: link = id ? `/category/${id}` : '/'
 	$: active = $page.url.pathname === link
 </script>

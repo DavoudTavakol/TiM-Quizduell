@@ -7,17 +7,32 @@
 	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
 
+	let formerQuestion = ''
 	let question = ''
+	let formerA = ''
 	let answerA = ''
+	let formerB = ''
 	let answerB = ''
+	let formerC = ''
 	let answerC = ''
+	let formerD = ''
 	let answerD = ''
+	let formerCorrect = ''
 	let playShake = false
 	let showHint = false
 	let options = ['a', 'b', 'c', 'd']
 	let selected = options[1]
 
 	$: categoryId = $page.params.id
+
+	$: hasChanged =
+		question !== formerQuestion ||
+		answerA !== formerA ||
+		answerB !== formerB ||
+		answerC !== formerC ||
+		answerD !== formerD ||
+		selected !== formerCorrect
+
 	$: hasData =
 		question.length > 0 ||
 		answerA.length > 0 ||
@@ -60,7 +75,17 @@
 					break
 			}
 		}
+		initFormer()
 	})
+
+	function initFormer() {
+		formerQuestion = question
+		formerA = answerA
+		formerB = answerB
+		formerC = answerC
+		formerD = answerD
+		formerCorrect = selected
+	}
 
 	function resetData() {
 		question = ''
@@ -72,7 +97,7 @@
 	}
 
 	function handleClose() {
-		if (hasData) {
+		if (hasData && hasChanged) {
 			confirmModalOpen.set(true)
 		} else {
 			overlayEditQuestionOpen.set(false)

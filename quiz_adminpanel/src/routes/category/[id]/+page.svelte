@@ -16,8 +16,16 @@
 	$: categoryId = $page.params.id
 	$: hasQuestions = questions.length > 0
 
+	$: categoryId, resetCheckboxValues()
 	let checkboxValues = []
 	let copied = ''
+
+	function resetCheckboxValues() {
+		checkboxValues = []
+		for (let i = 0; i < questions.length; i++) {
+			checkboxValues.push(false)
+		}
+	}
 
 	function handleEdit(questionId) {
 		overlayEditQuestionOpen.set(true)

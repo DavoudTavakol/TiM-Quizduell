@@ -9,10 +9,16 @@
 
 	$: id = $page.params.id
 	$: hasData = title.length > 0 || desc.length > 0 || iconURL.length > 0
+	$: hasChanged = title !== formerTitle || desc !== formerDesc || iconURL !== formerUrl
+
+	$: console.log(hasChanged)
 
 	let title = ''
+	let formerTitle = ''
 	let desc = ''
+	let formerDesc = ''
 	let iconURL = ''
+	let formerUrl = ''
 	let playShake = false
 	let showHint = false
 
@@ -24,14 +30,21 @@
 		title = data.categoryName
 		desc = data.desc
 		iconURL = data.iconURL
+		initFormer()
 	})
 
 	function handleClose() {
-		if (hasData) {
+		if (hasData && hasChanged) {
 			confirmModalOpen.set(true)
 		} else {
 			overlayEditCategoryOpen.set(false)
 		}
+	}
+
+	function initFormer() {
+		formerTitle = title
+		formerDesc = desc
+		formerUrl = iconURL
 	}
 
 	async function editCategory() {

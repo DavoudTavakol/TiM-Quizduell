@@ -73,15 +73,14 @@
 			{/each}
 		</div>
 
-		<div class="border-t flex w-full justify-center">
+		<div class="border-t flex w-full py-5 justify-center">
 			<button
 				on:click={addCategory}
-				class="flex py-6 w-12"
+				class="flex py-1 w-12"
 				use:tippy={{
 					theme: 'own',
 					content: 'Add category',
-					placement: 'right',
-					trigger: open ? 'manual' : 'mouseenter focus',
+					placement: open ? 'top' : 'right',
 					duration: 0
 				}}
 			>

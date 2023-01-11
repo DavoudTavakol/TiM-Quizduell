@@ -6,6 +6,7 @@
 		overlayEditCategoryOpen,
 		overlayEditQuestionOpen
 	} from '$lib/store.js'
+	import { clickOutside } from '$lib/clickOutside.js'
 
 	function backToMenu() {
 		confirmModalOpen.set(false)
@@ -21,7 +22,11 @@
 </script>
 
 <div class="flex h-screen bg-gray-400/50 w-screen z-110 absolute items-center justify-center">
-	<div class="bg-white rounded-xl flex flex-col h-60 w-150 ">
+	<div
+		class="bg-white rounded-xl flex flex-col h-60 w-150"
+		use:clickOutside
+		on:click_outside={backToEdit}
+	>
 		<div class="border-b flex font-semibold h-15 text-lg pl-5 items-center">Are you sure?</div>
 		<div class="border-b flex h-30 p-5">If you leave now, all your entries will be deleted.</div>
 		<div class="flex flex-row-reverse h-15 pr-5 gap-2 items-center">

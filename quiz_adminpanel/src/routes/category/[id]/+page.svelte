@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores'
 	import { invalidateAll } from '$app/navigation'
-	import { fly } from 'svelte/transition'
+	import { fly, fade } from 'svelte/transition'
 	import {
 		overlayQuestionOpen,
 		loading,
@@ -145,9 +145,8 @@
 
 												{#key checkboxValues[i]}
 													<button
-														class="deleteBtn group hidden hover:scale-102"
+														class="deleteBtn group hidden"
 														class:flex={checkboxValues[i]}
-														transition:fly={{ x: 10, y: 0, duration: 250 }}
 														on:click={handleDelete(question.id, i)}
 													>
 														DELETE
@@ -185,10 +184,9 @@
 		height: 1em;
 	}
 	.deleteBtn {
-		@apply rounded font-semibold bg-red-500 text-xs text-white py-[3px] px-3 transition-all gap-2 duration-250 items-center;
+		@apply rounded font-semibold bg-red-500 text-xs text-white py-[3px] px-3 transition-all ring-2 ring-red-500 gap-2 duration-250 items-center;
 	}
 	.deleteBtn:hover {
-		@apply text-white;
-		@apply bg-red-500;
+		@apply bg-red-600 ring-red-600;
 	}
 </style>

@@ -113,29 +113,55 @@
 				<form class="" action="POST">
 					<InputText label={'Question'} class="i-ri-text" bind:value={question} required={true} />
 
+					<div class="border-t flex h-6 w-full" />
+
 					<div class="flex w-full relative">
-						<InputText label={'Answer A'} class="i-ri-text" bind:value={answerA} required={true} />
+						<InputText
+							label={'Answer A'}
+							class="i-ri-text"
+							bind:value={answerA}
+							required={true}
+							selected={selected === 'a' ? true : false}
+						/>
 						<div class="top-5 right-5 absolute">
 							<input type="radio" bind:group={selected} name="answers" value={options[0]} />
 						</div>
 					</div>
 
 					<div class="flex w-full relative">
-						<InputText label={'Answer B'} class="i-ri-text" bind:value={answerB} required={true} />
+						<InputText
+							label={'Answer B'}
+							class="i-ri-text"
+							bind:value={answerB}
+							required={true}
+							selected={selected === 'b' ? true : false}
+						/>
 						<div class="top-5 right-5 absolute">
 							<input type="radio" bind:group={selected} name="answers" value={options[1]} />
 						</div>
 					</div>
 
 					<div class="flex w-full relative">
-						<InputText label={'Answer C'} class="i-ri-text" bind:value={answerC} required={true} />
+						<InputText
+							label={'Answer C'}
+							class="i-ri-text"
+							bind:value={answerC}
+							required={true}
+							selected={selected === 'c' ? true : false}
+						/>
 						<div class="top-5 right-5 absolute">
 							<input type="radio" bind:group={selected} name="answers" value={options[2]} />
 						</div>
 					</div>
 
 					<div class="flex w-full relative">
-						<InputText label={'Answer D'} class="i-ri-text" bind:value={answerD} required={true} />
+						<InputText
+							label={'Answer D'}
+							class="i-ri-text"
+							bind:value={answerD}
+							required={true}
+							selected={selected === 'd' ? true : false}
+						/>
 						<div class="top-5 right-5 absolute">
 							<input type="radio" bind:group={selected} name="answers" value={options[3]} />
 						</div>

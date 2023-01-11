@@ -4,9 +4,13 @@
 	export let type = 'text'
 	export let placeholder = ''
 	export let required = false
+	export let selected = false
 </script>
 
-<div class="rounded flex flex-col bg-gray-200 mb-6 w-full py-2 px-4 gap-2">
+<div
+	class="rounded flex flex-col bg-gray-200 mb-6 w-full py-2 px-4 ring-blue-400 gap-2"
+	class:ring-2={selected}
+>
 	<label class="flex text-sm text-gray-500 gap-1 items-center" for="username">
 		<div class={$$props.class} />
 		<span>{label}</span>

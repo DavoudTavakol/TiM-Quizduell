@@ -43,6 +43,7 @@
 	{#if $logedIn}
 		<section class="flex relative overflow-x-hidden">
 			<Sidebar {categories} />
+			<slot />
 			{#if $overlayQuestionOpen}
 				<AddOverlayQuestion />
 			{/if}
@@ -61,7 +62,6 @@
 			{#if $deleteModalOpen}
 				<DeleteCategory />
 			{/if}
-			<slot />
 		</section>
 	{:else}
 		<Login />

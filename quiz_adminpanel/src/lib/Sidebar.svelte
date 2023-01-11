@@ -1,6 +1,7 @@
 <script>
 	import SidebarElement from '$lib/SidebarElement.svelte'
 	import { overlayCategoryOpen } from '$lib/store.js'
+	import { goto } from '$app/navigation'
 
 	export let categories
 
@@ -32,7 +33,9 @@
 		class:items-center={!open}
 		class:px-4={open}
 	>
-		<img src="/logo.svg" alt="logo" class="h-11 mb-8 w-11" />
+		<button class="cursor-pointer h-11 mb-8 w-11" on:click={() => goto('/')}>
+			<img src="/logo.svg" alt="logo" />
+		</button>
 		<div class="flex flex-col flex-1 gap-4 overflow-scroll scrollbar-hide">
 			<SidebarElement title="Home" {open} />
 

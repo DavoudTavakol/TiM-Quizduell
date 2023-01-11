@@ -2,6 +2,7 @@
 	import SidebarElement from '$lib/SidebarElement.svelte'
 	import { overlayCategoryOpen } from '$lib/store.js'
 	import { goto } from '$app/navigation'
+	import tippy from 'svelte-tippy'
 
 	export let categories
 
@@ -28,7 +29,7 @@
 
 <main class="select-none">
 	<div
-		class="border-r flex flex-col h-screen py-6 px-2 w-19 "
+		class="border-r flex flex-col h-screen px-2 pt-6 w-19 "
 		class:w-62={open}
 		class:items-center={!open}
 		class:px-4={open}
@@ -72,9 +73,21 @@
 			{/each}
 		</div>
 
-		<button on:click={addCategory} class="border-t flex w-full pt-5">
-			<div class="m-auto text-2xl i-twemoji-plus" />
-		</button>
+		<div class="border-t flex w-full justify-center">
+			<button
+				on:click={addCategory}
+				class="flex py-6 w-12"
+				use:tippy={{
+					theme: 'own',
+					content: 'Add category',
+					placement: 'right',
+					trigger: open ? 'manual' : 'mouseenter focus',
+					duration: 0
+				}}
+			>
+				<div class="m-auto text-2xl i-twemoji-plus" />
+			</button>
+		</div>
 	</div>
 </main>
 

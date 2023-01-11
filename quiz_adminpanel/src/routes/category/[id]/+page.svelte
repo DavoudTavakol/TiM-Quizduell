@@ -23,6 +23,11 @@
 		overlayEditQuestionOpen.set(true)
 		$editQuestionID = questionId
 	}
+
+	function copyToClipboard(text) {
+		navigator.clipboard.writeText(text)
+	}
+
 	async function handleDelete(questionId, i) {
 		let url = 'http://localhost:8085/api/questions/delete'
 		await fetch(url, {
@@ -79,7 +84,7 @@
 						<table class="min-w-full">
 							<thead class="border-b bg-gray-100">
 								<tr>
-									<th class="w-42 table-header">
+									<th class="w-20 table-header">
 										<div class="flex gap-2 items-center">
 											<div class="text-lg i-ri-key-line" />
 											<span>ID</span>
@@ -103,9 +108,12 @@
 								{#each questions as question, i}
 									<tr class="border-b bg-gray-100 hover:bg-gray-200" class:bg-gray-50={i % 2 === 0}>
 										<td class="table-data">
-											<span class="rounded-full font-mono bg-gray-300 py-1 px-3">
-												{question.id}
-											</span>
+											<button
+												class="rounded-full flex font-mono bg-gray-300 py-1 px-3"
+												on:click={copyToClipboard(question.id)}
+											>
+												{question.id.slice(0, 6)}...
+											</button>
 										</td>
 										<td class="table-data">{question.question}</td>
 

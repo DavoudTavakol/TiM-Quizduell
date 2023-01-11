@@ -148,6 +148,7 @@
 														class="deleteBtn group hidden"
 														class:flex={checkboxValues[i]}
 														on:click={handleDelete(question.id, i)}
+														transition:fly|local={{ x: 50, y: 0, delay: 100 }}
 													>
 														DELETE
 													</button>

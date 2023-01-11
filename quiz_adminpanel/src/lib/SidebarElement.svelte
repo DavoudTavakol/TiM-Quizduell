@@ -7,6 +7,14 @@
 	export let id = null
 	export let open
 
+	let invalidLink = false
+
+	function handleLoadError() {
+		invalidLink = true
+	}
+
+	$: console.log('SidebarElement', title + ' ' + invalidLink)
+
 	$: link = id ? `/category/${id}` : '/'
 	$: active = $page.url.pathname === link
 </script>
@@ -33,11 +41,12 @@
 	>
 		{#if title === 'Home'}
 			<div class="m-auto transition-all text-2xl duration-250 i-carbon-home group-hover:rotate-6" />
-		{:else if iconURL}
+		{:else if iconURL && !invalidLink}
 			<img
 				src={iconURL}
+				on:error={handleLoadError}
 				class="m-auto h-[32px] transition-all w-[24px] duration-250 group-hover:rotate-6"
-				alt=""
+				alt="Sidebar Element Icon"
 			/>
 		{:else}
 			<div

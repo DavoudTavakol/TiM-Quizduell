@@ -13,11 +13,11 @@
 	export let data
 
 	$: ({ categoryName, questions, desc } = data)
-
 	$: categoryId = $page.params.id
 	$: hasQuestions = questions.length > 0
 
 	let checkboxValues = []
+	let copied = ''
 
 	function handleEdit(questionId) {
 		overlayEditQuestionOpen.set(true)
@@ -26,6 +26,10 @@
 
 	function copyToClipboard(text) {
 		navigator.clipboard.writeText(text)
+		copied = text
+		setTimeout(() => {
+			copied = ''
+		}, 1000)
 	}
 
 	async function handleDelete(questionId, i) {
@@ -109,10 +113,14 @@
 									<tr class="border-b bg-gray-100 hover:bg-gray-200" class:bg-gray-50={i % 2 === 0}>
 										<td class="table-data">
 											<button
-												class="rounded-full flex font-mono bg-gray-300 py-1 px-3"
+												class="rounded-full flex font-mono bg-gray-300 h-7 py-1 px-3 transition-all w-24 duration-250 items-center justify-center"
 												on:click={copyToClipboard(question.id)}
 											>
-												{question.id.slice(0, 6)}...
+												{#if copied === question.id}
+													<span class="text-lg text-gray-500 i-ri-clipboard-fill" />
+												{:else}
+													<span>{question.id.slice(0, 6)}...</span>
+												{/if}
 											</button>
 										</td>
 										<td class="table-data">{question.question}</td>

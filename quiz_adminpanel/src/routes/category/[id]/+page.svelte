@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/stores'
-	import { fade } from 'svelte/transition'
+	import { invalidateAll } from '$app/navigation'
+	import { fade, fly } from 'svelte/transition'
 	import {
 		overlayQuestionOpen,
 		loading,
@@ -8,20 +9,38 @@
 		editQuestionID
 	} from '$lib/store.js'
 	import Navbar from '$lib/Navbar.svelte'
-	export let data
 
-	$: id = $page.params.id
+	export let data
 	$: ({ categoryName, questions } = data)
+
+	$: categoryId = $page.params.id
 	$: hasQuestions = questions.length > 0
 
-	function handleEdit(id) {
+	let checkboxValues = []
+
+	function handleEdit(questionId) {
 		overlayEditQuestionOpen.set(true)
-		$editQuestionID = id
+		$editQuestionID = questionId
+	}
+	async function handleDelete(questionId, i) {
+		let url = 'http://localhost:8085/api/questions/delete'
+		await fetch(url, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				categoryId: categoryId,
+				id: questionId
+			})
+		})
+		checkboxValues[i] = false
+		invalidateAll()
 	}
 </script>
 
 <main class="flex flex-col h-screen bg-gray-50 w-full overflow-scroll overflow-x-hidden">
-	<Navbar {id} title={categoryName} />
+	<Navbar id={categoryId} title={categoryName} />
 
 	{#if $loading}
 		<div class="flex bg-gray-100 flex-1 w-full items-center justify-center" in:fade>
@@ -73,12 +92,12 @@
 									<th class="table-header"> C </th>
 									<th class="table-header"> D </th>
 									<th class="table-header"> Edit </th>
-									<th class="table-header"> Delete </th>
+									<th class="w-40 table-header"> Delete </th>
 								</tr>
 							</thead>
 							<tbody>
 								{#each questions as question, i}
-									<tr class="border-b bg-gray-100" class:bg-gray-50={i % 2 === 0}>
+									<tr class="border-b bg-gray-100 hover:bg-gray-200" class:bg-gray-50={i % 2 === 0}>
 										<td class="font-mono table-data">{question.id}</td>
 										<td class="table-data">{question.question}</td>
 
@@ -93,16 +112,40 @@
 											</td>
 										{/each}
 										<td class="table-data">
-											<button
-												class="bg-gray-700 text-lg transition-all duration-250 i-ri-settings-4-line hover:(i-ri-settings-4-fill bg-gray-900 rotate-90) "
-												on:click={handleEdit(question.id)}
-											/>
+											<div class="flex items-center">
+												<button
+													class="bg-gray-700 text-lg transition-all duration-250 i-ri-settings-4-line hover:(i-ri-settings-4-fill bg-gray-900 rotate-90) "
+													on:click={handleEdit(question.id)}
+												/>
+											</div>
 										</td>
 										<td class="table-data">
-											<button
-												class="bg-red-500 text-lg transition-all duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500 rotate-6) "
-												on:click={() => {}}
-											/>
+											<div class="flex gap-4 items-center relative select-none">
+												<label
+													class="cursor-pointer bg-red-500 text-lg transition-all text-red-500 duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500 rotate-6 text-red-500) "
+													class:checkBoxChecked={checkboxValues[i]}
+													for={'checkbox' + i}
+													>Tff
+												</label>
+												<input
+													class="hidden"
+													type="checkbox"
+													name={'checkbox' + i}
+													id={'checkbox' + i}
+													bind:checked={checkboxValues[i]}
+												/>
+
+												{#key checkboxValues[i]}
+													<button
+														class="deleteBtn group hidden "
+														class:flex={checkboxValues[i]}
+														transition:fly={{ x: 10, y: 0, duration: 250 }}
+														on:click={handleDelete(question.id, i)}
+													>
+														DELETE
+													</button>
+												{/key}
+											</div>
 										</td>
 									</tr>
 								{/each}
@@ -117,9 +160,19 @@
 
 <style>
 	.table-header {
-		@apply font-medium text-sm text-left py-4 px-6 text-gray-900;
+		@apply font-medium text-sm text-left py-4 px-6 text-gray-600;
 	}
 	.table-data {
 		@apply font-light text-sm py-4 px-6 text-gray-900 whitespace-nowrap;
+	}
+	.checkBoxChecked {
+		@apply bg-red-500 text-red-500 i-ri-delete-bin-6-fill;
+	}
+	.deleteBtn {
+		@apply rounded font-semibold bg-red-500 text-xs text-white py-[3px] px-3 transition-all gap-2 duration-250 items-center;
+	}
+	.deleteBtn:hover {
+		@apply text-white;
+		@apply bg-red-500;
 	}
 </style>

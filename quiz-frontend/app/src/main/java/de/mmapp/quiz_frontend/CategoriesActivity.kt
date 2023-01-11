@@ -112,11 +112,11 @@ class CategoriesActivity : AppCompatActivity() {
 
             GlobalScope.launch() {
 
-                val game = MainActivity.setReady(nickname!!, id!!,clickedCategoriesArray)
+                val game = MainActivity.setReady(nickname!!, id!!,clickedCategoriesArray,getString(R.string.set_ready_url))
 
                 // Check is the Player2 is Ready
                 (1..30).asFlow() // a flow of requests
-                    .map { request -> checkIfReady(id!!, nickname!!) }
+                    .map { request -> checkIfReady(id!!, nickname!!, getString(R.string.is_ready_url)) }
                     .collect { response ->
 
                         println(response)
@@ -135,7 +135,7 @@ class CategoriesActivity : AppCompatActivity() {
     }
 
     companion object {
-        suspend fun checkIfReady(gameId: String, nickname: String): String =
+        suspend fun checkIfReady(gameId: String, nickname: String, url : String): String =
             GlobalScope.async(Dispatchers.IO) {
 
                 delay(1000)
@@ -149,7 +149,7 @@ class CategoriesActivity : AppCompatActivity() {
 
                 val client = OkHttpClient()
                 val request = Request.Builder()
-                    .url("http://10.0.2.2:8085/game/check")
+                    .url(url)
                     .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
                     .build()
 

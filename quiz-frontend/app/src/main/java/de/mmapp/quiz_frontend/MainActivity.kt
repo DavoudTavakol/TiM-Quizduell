@@ -23,6 +23,7 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     @OptIn(DelicateCoroutinesApi::class)
@@ -54,6 +55,8 @@ class MainActivity : AppCompatActivity() {
                         GlobalScope.launch(Dispatchers.Main) {
 
                             try {
+                                println(resources.getString(R.string.create_url))
+
                                 gameid = createGameRequest(inputPlayerOne.text.toString())
                                 println(gameid)
 
@@ -70,9 +73,10 @@ class MainActivity : AppCompatActivity() {
                                 println(categories)
                                 startActivity(intent)
                             } catch (e: IOException) {
+                                println(e.message)
                                 Toast.makeText(
                                     this@MainActivity,
-                                    "Keine Verbindung",
+                                    e.message,
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -107,10 +111,10 @@ class MainActivity : AppCompatActivity() {
             var newGame: Game
             GlobalScope.launch() {
 
-                newGame = setReady(game.player2.nickname, game.gameId, mutableListOf())
+                newGame = setReady(game.player2.nickname, game.gameId, mutableListOf(),getString(R.string.set_ready_url))
 
                 (1..30).asFlow() // a flow of requests
-                    .map { request -> checkIfReady(game.gameId, game.player2.nickname) }
+                    .map { request -> checkIfReady(game.gameId, game.player2.nickname, getString(R.string.is_ready_url)) }
                     .collect { response ->
 
                         println(response)
@@ -233,7 +237,7 @@ class MainActivity : AppCompatActivity() {
 
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://10.0.2.2:8085/game/create")
+            .url(resources.getString(R.string.create_url))
             .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
             .build()
 
@@ -268,7 +272,7 @@ class MainActivity : AppCompatActivity() {
 
             val client = OkHttpClient()
             val request = Request.Builder()
-                .url("http://10.0.2.2:8085/game/connect")
+                .url(getString(R.string.connect_url))
                 .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
                 .build()
 
@@ -284,7 +288,7 @@ class MainActivity : AppCompatActivity() {
 
 
     companion object {
-        suspend fun setReady(nickname: String, gameId: String, categories: MutableList<String>): Game =
+        suspend fun setReady(nickname: String, gameId: String, categories: MutableList<String>, url : String): Game =
             GlobalScope.async(Dispatchers.IO) {
 
                 val jsonBody = object  {
@@ -298,7 +302,7 @@ class MainActivity : AppCompatActivity() {
 
                 val client = OkHttpClient()
                 val request = Request.Builder()
-                    .url("http://10.0.2.2:8085/game/ready")
+                    .url(url)
                     .post(body.toRequestBody("application/json; charset=utf-8".toMediaType()))
                     .build()
 
@@ -319,7 +323,7 @@ class MainActivity : AppCompatActivity() {
         var categories: List<String> = listOf()
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://10.0.2.2:8085/game/categories")
+            .url(getString(R.string.categories_url))
             .build()
 
         client.newCall(request).execute().use { response ->

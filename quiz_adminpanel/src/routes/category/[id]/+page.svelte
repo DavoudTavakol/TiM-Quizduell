@@ -16,11 +16,17 @@
 	$: categoryId = $page.params.id
 	$: hasQuestions = questions.length > 0
 
-	$: categoryId, resetCheckboxValues()
+	$: categoryId, resetValues()
 	let checkboxValues = []
 	let copied = ''
+	let searchTerm = ''
 
-	function resetCheckboxValues() {
+	$: filteredQuestions = questions.filter((question) => {
+		return question.question.toLowerCase().includes(searchTerm.toLowerCase())
+	})
+
+	function resetValues() {
+		searchTerm = ''
 		checkboxValues = []
 		for (let i = 0; i < questions.length; i++) {
 			checkboxValues.push(false)
@@ -58,7 +64,7 @@
 </script>
 
 <main class="flex flex-col h-screen bg-gray-50 w-full overflow-scroll overflow-x-hidden relative">
-	<Navbar id={categoryId} title={categoryName} {desc} />
+	<Navbar id={categoryId} title={categoryName} {desc} bind:value={searchTerm} />
 
 	{#if $loading}
 		<div
@@ -113,11 +119,11 @@
 									<th class="table-header"> Answer C </th>
 									<th class="table-header"> Answer D </th>
 									<th class="table-header"> Edit </th>
-									<th class="w-40 table-header" />
+									<th class="w-40 table-header"> DELETE </th>
 								</tr>
 							</thead>
 							<tbody>
-								{#each questions as question, i}
+								{#each filteredQuestions as question, i}
 									<tr class="border-b bg-gray-100 hover:bg-gray-200" class:bg-gray-50={i % 2 === 0}>
 										<td class="table-data">
 											<button
@@ -152,7 +158,7 @@
 											</div>
 										</td>
 										<td class="table-data">
-											<div class="flex gap-4 items-center relative select-none">
+											<div class="flex w-27 gap-4 items-center relative select-none">
 												<label
 													class="cursor-pointer bg-red-500 text-lg transition-all text-red-500 duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500 rotate-6 text-red-500) "
 													class:checkBoxChecked={checkboxValues[i]}

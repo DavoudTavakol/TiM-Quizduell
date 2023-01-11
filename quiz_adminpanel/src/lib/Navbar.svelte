@@ -5,13 +5,13 @@
 		loading,
 		deleteModalOpen
 	} from '$lib/store.js'
-	import { goto, invalidateAll } from '$app/navigation'
+	import { invalidateAll } from '$app/navigation'
 	import tippy from 'svelte-tippy'
-	import DeleteCategory from './DeleteCategory.svelte'
 
 	export let title
 	export let id
 	export let desc
+	export let value
 
 	function refetch() {
 		$loading = true
@@ -21,7 +21,7 @@
 	}
 </script>
 
-<main class="flex bg-gray-100 min-h-32 w-full p-6 z-20 items-center justify-between">
+<main class="flex bg-gray-100 min-h-30 w-full px-6 pt-6 z-20 items-center justify-between">
 	<section class="flex">
 		<div class="flex flex-col gap-2">
 			<div class="flex gap-5 items-center">
@@ -81,6 +81,15 @@
 		</button>
 	</section>
 </main>
+<div class="flex bg-gray-100 w-full px-6 pb-6 relative">
+	<div class="bg-gray-600 text-lg top-[9px] left-9 i-carbon-search absolute" />
+	<input
+		type="text"
+		bind:value
+		class="rounded-full font-mono outline-none bg-gray-200 text-sm w-full py-2 px-12"
+		placeholder="Search for a question..."
+	/>
+</div>
 
 <style>
 	.deleteBtn {

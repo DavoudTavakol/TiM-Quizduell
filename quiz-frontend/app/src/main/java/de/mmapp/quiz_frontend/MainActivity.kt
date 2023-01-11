@@ -14,6 +14,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.CategoriesActivity.Companion.checkIfReady
 import de.mmapp.quiz_frontend.models.Game
+import de.mmapp.quiz_frontend.models.GameStatus
+import de.mmapp.quiz_frontend.models.Player
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
@@ -130,28 +132,41 @@ class MainActivity : AppCompatActivity() {
                 buttonJoinGame.isEnabled = true
                 buttonJoinGame.setOnClickListener {
 
-                    var game: Game
+                    var game: Game?
 
                     GlobalScope.launch(Dispatchers.Main) {
 
+                        848846
                         try {
                             game = connectToGameRequest(
                                 inputPlayerTwo.text.toString(),
                                 inputId.text.toString()
                             )
-                            println(game)
-                            waitingScreen(game)
+                            //println(game)
+                            if (game!!.gameId == "0"){
+                                println("Nickname Used By Player1")
+                                var obligatory = findViewById<TextView>(R.id.obligatoryNicknameTwo)
+                                obligatory.text = "Nickname bereits vom Gegner benutzt."
+                                obligatory.visibility = View.VISIBLE
+                            } else {
+                                println(game)
+                                waitingScreen(game!!)
+                            }
+                            //
+                            //081188
                         } catch (e: IOException) {
 
+
+                            println(e)
                                 Toast.makeText(
                                     this@MainActivity,
-                                    e.message.toString(),
+                                    e.localizedMessage.toString(),
                                     Toast.LENGTH_LONG
                                 ).show()
+
+
                             //TextView wird eingeblendet, wenn Nickname1 = Nickname 2 //funktioniert noch nicht
-                            var obligatory = findViewById<TextView>(R.id.obligatoryNicknameTwo)
-                            obligatory.text = "Dieser Nickname ist bereits vergeben."
-                            obligatory.visibility = View.INVISIBLE
+
                             }
 
                     }
@@ -238,7 +253,7 @@ class MainActivity : AppCompatActivity() {
         return@async gameId
     }.await()
 
-    private suspend fun connectToGameRequest(nickname: String, gameId: String): Game =
+    private suspend fun connectToGameRequest(nickname: String, gameId: String): Game? =
         GlobalScope.async(Dispatchers.IO) {
 
             val jsonBody: String = """
@@ -258,12 +273,11 @@ class MainActivity : AppCompatActivity() {
                 .build()
 
             var game: Game
-
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
                 val mapper = jacksonObjectMapper()
-
                 game = mapper.readValue(response.body.string())
+
             }
             return@async game
         }.await()
@@ -287,6 +301,7 @@ class MainActivity : AppCompatActivity() {
                     .url("http://10.0.2.2:8085/game/ready")
                     .post(body.toRequestBody("application/json; charset=utf-8".toMediaType()))
                     .build()
+
 
                 var game: Game
                 client.newCall(request).execute().use { response ->

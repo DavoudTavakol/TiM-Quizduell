@@ -30,13 +30,11 @@ class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoR
     fun connectToGame(gameId : String, player2 : Player): Game? {
 
         var game: Game? = GamesLocalRepo.getGame(gameId)
-        if (game != null) {
-            game.player2 = player2
-            game.gameStatus = GameStatus.IN_PROGRESS
-            return game
-        }
 
-        return null
+            game!!.player2 = player2
+            game.gameStatus = GameStatus.IN_PROGRESS
+
+        return game
     }
 
     fun submitAnswers(gameId : String , nickname : String, answers : List<Answer>, time : Float ) : Game? {

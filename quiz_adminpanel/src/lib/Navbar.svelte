@@ -29,10 +29,10 @@
 	<section class="flex">
 		<div class="flex flex-col gap-2">
 			<div class="flex gap-5 items-center">
-				<h1 class="space-x-2 text-lg text-gray-400">
+				<h1 class="font-semibold space-x-2 text-lg text-gray-400">
 					<span> Category </span>
 					<span> / </span>
-					<span class="text-gray-900">
+					<span class="text-gray-800">
 						{title}
 					</span>
 				</h1>
@@ -58,7 +58,7 @@
 				/>
 			</div>
 
-			<span class="text-sm text-gray-400">Description: &emsp {desc}</span>
+			<span class="text-xs text-gray-400">Description: &ensp {desc}</span>
 		</div>
 	</section>
 
@@ -70,10 +70,12 @@
 			Delete Category
 		</button>
 		<button
-			class="bg-white border-black rounded flex font-semibold border-2 text-sm py-2 px-6 gap-2 items-center group"
+			class="rounded flex font-semibold bg-gray-900 border-2 border-gray-900 text-white  text-sm py-2 px-6 gap-2 items-center group"
 			on:click={() => ($overlayQuestionOpen = true)}
 		>
-			<div class="transition-all duration-250 i-ri-add-line group-hover:(rotate-180 scale-110) " />
+			<div
+				class="text-lg transition-all duration-250 i-ri-add-line group-hover:(rotate-180 scale-110) "
+			/>
 			New Question
 		</button>
 	</section>

@@ -28,14 +28,14 @@
 		on:click_outside={backToEdit}
 	>
 		<div class="border-b flex font-semibold h-15 text-lg pl-5 items-center">Are you sure?</div>
-		<div class="border-b flex h-30 p-5">If you leave now, all your entries will be deleted.</div>
+		<div class="border-b flex h-30 p-5">If you leave now, all your entries will be lost.</div>
 		<div class="flex flex-row-reverse h-15 pr-5 gap-2 items-center">
 			<button
-				class=" rounded font-bold bg-red-500 h-9 text-sm text-white  w-35 justify-center items-center hover:bg-red-600"
-				on:click={backToMenu}><span>Continue</span></button
+				class="rounded font-bold bg-red-500 h-9 text-sm text-white w-35 duration-250  ransition-all justify-center items-center hover:bg-red-600"
+				on:click={backToMenu}><span>Exit</span></button
 			>
 			<button
-				class=" rounded font-bold bg-gray-500 h-9 text-sm text-white w-25 justify-center items-center hover:bg-gray-600"
+				class="rounded font-bold bg-gray-900 h-9 text-sm text-white w-25 duration-250 ransition-all justify-center items-center hover:bg-gray-800"
 				on:click={backToEdit}><span>Cancel</span></button
 			>
 		</div>

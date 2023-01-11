@@ -93,7 +93,7 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">
+<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute">
 	<div
 		use:clickOutside
 		on:click_outside={handleClose}

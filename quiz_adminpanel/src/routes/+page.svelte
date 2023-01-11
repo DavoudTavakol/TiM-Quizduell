@@ -22,7 +22,10 @@
 <main class="flex flex-col  bg-gray-50 flex-1 w-full text-gray-700">
 	<section class="border-b flex bg-gray-100 min-h-32 p-6 items-center justify-between">
 		<h1 class="font-semibold text-lg">TiM Adminboard</h1>
-		<button class="text-2xl i-ri-login-box-line" on:click={handleLogout} />
+		<button
+			class="transition-all text-2xl duration-250 i-ri-login-box-line hover:i-ri-login-box-fill"
+			on:click={handleLogout}
+		/>
 	</section>
 
 	<section class="border-b flex text-xl w-full">

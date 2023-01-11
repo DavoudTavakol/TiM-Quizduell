@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores'
 	import { invalidateAll } from '$app/navigation'
-	import { fade, fly } from 'svelte/transition'
+	import { fly } from 'svelte/transition'
 	import {
 		overlayQuestionOpen,
 		loading,
@@ -11,7 +11,8 @@
 	import Navbar from '$lib/Navbar.svelte'
 
 	export let data
-	$: ({ categoryName, questions } = data)
+
+	$: ({ categoryName, questions, desc } = data)
 
 	$: categoryId = $page.params.id
 	$: hasQuestions = questions.length > 0
@@ -39,11 +40,14 @@
 	}
 </script>
 
-<main class="flex flex-col h-screen bg-gray-50 w-full overflow-scroll overflow-x-hidden">
-	<Navbar id={categoryId} title={categoryName} />
+<main class="flex flex-col h-screen bg-gray-50 w-full overflow-scroll overflow-x-hidden relative">
+	<Navbar id={categoryId} title={categoryName} {desc} />
 
 	{#if $loading}
-		<div class="flex bg-gray-100 flex-1 w-full items-center justify-center" in:fade>
+		<div
+			class="flex h-screen bg-gray-100 flex-1 w-full z-10 items-center justify-center absolute"
+			transition:fly
+		>
 			<div
 				class="border-gray rounded-full border-4 border-t-4 border-t-gray-600 h-20 mr-3 animate-spin w-20"
 			/>
@@ -75,30 +79,34 @@
 						<table class="min-w-full">
 							<thead class="border-b bg-gray-100">
 								<tr>
-									<th class="table-header">
+									<th class="w-42 table-header">
 										<div class="flex gap-2 items-center">
-											<div class="i-ri-key-line" />
+											<div class="text-lg i-ri-key-line" />
 											<span>ID</span>
 										</div>
 									</th>
 									<th class="table-header">
 										<div class="flex gap-2 items-center">
-											<div class="i-ri-question-line" />
+											<div class="text-lg i-ri-question-line" />
 											<span>Question</span>
 										</div>
 									</th>
-									<th class="table-header"> A </th>
-									<th class="table-header"> B </th>
-									<th class="table-header"> C </th>
-									<th class="table-header"> D </th>
+									<th class="table-header"> Answer A </th>
+									<th class="table-header"> Answer B </th>
+									<th class="table-header"> Answer C </th>
+									<th class="table-header"> Answer D </th>
 									<th class="table-header"> Edit </th>
-									<th class="w-40 table-header"> Delete </th>
+									<th class="w-40 table-header" />
 								</tr>
 							</thead>
 							<tbody>
 								{#each questions as question, i}
 									<tr class="border-b bg-gray-100 hover:bg-gray-200" class:bg-gray-50={i % 2 === 0}>
-										<td class="font-mono table-data">{question.id}</td>
+										<td class="table-data">
+											<span class="rounded-full font-mono bg-gray-300 py-1 px-3">
+												{question.id}
+											</span>
+										</td>
 										<td class="table-data">{question.question}</td>
 
 										{#each question.answer as answer}

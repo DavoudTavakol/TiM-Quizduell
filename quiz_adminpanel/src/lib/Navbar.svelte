@@ -5,6 +5,7 @@
 
 	export let title
 	export let id
+	export let desc
 
 	async function handleDelete() {
 		await fetch(`http://localhost:8085/api/category/${id}`, {
@@ -24,35 +25,41 @@
 	}
 </script>
 
-<main class="flex bg-gray-100 min-h-32 w-full p-6 items-center justify-between">
-	<section class="flex gap-5 items-center">
-		<h1 class="space-x-2 text-lg text-gray-400">
-			<span> Category </span>
-			<span> / </span>
-			<span class="text-black">
-				{title}
-			</span>
-		</h1>
-		<button
-			class="h-5 text-lg transition-all w-5 duration-250 i-ri-pencil-line hover:(i-ri-pencil-fill w-5 h-5 scale-110) "
-			use:tippy={{
-				theme: 'own',
-				content: 'Edit',
-				placement: 'top',
-				duration: 0
-			}}
-			on:click={() => ($overlayEditCategoryOpen = true)}
-		/>
-		<button
-			class="h-5 text-lg transition w-5 duration-250 i-ri-refresh-line hover:(rotate-180 scale-110) "
-			use:tippy={{
-				theme: 'own',
-				content: 'Refresh',
-				placement: 'top',
-				duration: 0
-			}}
-			on:click={refetch}
-		/>
+<main class="flex bg-gray-100 min-h-32 w-full p-6 z-20 items-center justify-between">
+	<section class="flex">
+		<div class="flex flex-col gap-2">
+			<div class="flex gap-5 items-center">
+				<h1 class="space-x-2 text-lg text-gray-400">
+					<span> Category </span>
+					<span> / </span>
+					<span class="text-gray-900">
+						{title}
+					</span>
+				</h1>
+				<button
+					class="h-5 text-lg transition-all w-5 duration-250 i-ri-pencil-line hover:(i-ri-pencil-fill w-5 h-5 scale-110) "
+					use:tippy={{
+						theme: 'own',
+						content: 'Edit',
+						placement: 'top',
+						duration: 0
+					}}
+					on:click={() => ($overlayEditCategoryOpen = true)}
+				/>
+				<button
+					class="h-5 text-lg transition w-5 duration-250 i-ri-refresh-line hover:(rotate-180 scale-110) "
+					use:tippy={{
+						theme: 'own',
+						content: 'Refresh',
+						placement: 'top',
+						duration: 0
+					}}
+					on:click={refetch}
+				/>
+			</div>
+
+			<span class="text-sm text-gray-400">Description: &emsp {desc}</span>
+		</div>
 	</section>
 
 	<section class="flex gap-8 items-center">

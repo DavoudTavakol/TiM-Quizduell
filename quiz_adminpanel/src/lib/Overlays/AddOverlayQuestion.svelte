@@ -111,7 +111,13 @@
 			<h1 class="text-lg py-6 px-8">Add new <span class="font-semibold">Question</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Question'} class="i-ri-text" bind:value={question} required={true} />
+					<InputText
+						label={'Question'}
+						class="i-ri-text"
+						bind:value={question}
+						required={true}
+						autofocus={true}
+					/>
 
 					<div class="border-t flex h-6 w-full" />
 

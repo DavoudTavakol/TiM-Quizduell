@@ -5,6 +5,7 @@
 	export let placeholder = ''
 	export let required = false
 	export let selected = false
+	export let autofocus = false
 </script>
 
 <div
@@ -20,16 +21,20 @@
 	</label>
 
 	{#if type === 'password'}
+		<!-- svelte-ignore a11y-autofocus -->
 		<input
 			class="bg-transparent focus:outline-none"
+			{autofocus}
 			type="password"
 			name="username"
 			{placeholder}
 			bind:value
 		/>
 	{:else}
+		<!-- svelte-ignore a11y-autofocus -->
 		<input
 			class="bg-transparent focus:outline-none"
+			{autofocus}
 			type="text"
 			name="username"
 			autocomplete="off"

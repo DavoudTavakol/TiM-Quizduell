@@ -3,6 +3,7 @@ package com.tim.quiz_api.controller
 
 import com.mongodb.client.MongoDatabase
 import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryIdListDTO
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.ReadQuestionMinDto
 import com.tim.quiz_api.data.Question
 import com.tim.quiz_api.service.QuestionService
@@ -27,6 +28,11 @@ class QuestionController @Autowired constructor(val questionService: QuestionSer
     fun getQuestionsByCategory(@PathVariable categoryId: String): QuestionListDto? {
         return questionService.getQuestionsByCategoryId(categoryId)
     }
+
+    /*@PostMapping("/test")
+    fun getRandomQuestions(@RequestBody categoryIds:CategoryIdListDTO): List<Question> {
+        return questionService.getRandomQuestionsLimit(categoryIds,5)
+    }*/
 
     @PostMapping("/create")
     fun createQuestionInCategory(@RequestBody question: Question): ResponseEntity<Nothing> {

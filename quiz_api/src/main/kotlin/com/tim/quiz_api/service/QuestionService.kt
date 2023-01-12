@@ -1,6 +1,8 @@
 package com.tim.quiz_api.service
 
 import com.tim.quiz_api.controller.dto.CategoryAPI.QuestionListDto
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryIdListDTO
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryListMinDto
 import com.tim.quiz_api.controller.dto.CategoryAPI.min.ReadQuestionMinDto
 import com.tim.quiz_api.data.Category
 import com.tim.quiz_api.data.Question
@@ -12,8 +14,11 @@ import org.springframework.stereotype.Service
 @Service
 class QuestionService @Autowired constructor(val categoryRepo: CategoryRepo, val categoryService: CategoryService) {
 
-    fun getQuestionsByCategories(categoryIds:List<String>): List<Question>{
-        return listOf<Question>()
+    private fun getQuestionsByCategories(categories:CategoryIdListDTO): List<Question>{
+        val q = categories.categoryIds.map{categoryService.getCategoryById(it)?.questions}
+        val questions = q.flatMap { it?.toList() ?: listOf() }
+        questions.forEach { println(it) }
+        return questions
     }
 
     fun getQuestionsByCategoryId(categoryId:String): QuestionListDto?{
@@ -82,8 +87,19 @@ class QuestionService @Autowired constructor(val categoryRepo: CategoryRepo, val
         return null
     }
 
-    fun getRandomQuestionsLimit(categoryIds:List<String>, limit:Int): List<Question>{
-        return listOf<Question>()
+    fun getRandomQuestionsLimit(categories:CategoryIdListDTO, amount:Int): List<Question>{
+        var questions = getQuestionsByCategories(categories)
+        var randomQuestions = mutableListOf<Question>()
+        if(questions.size >= amount){
+            for(i in 0 until amount){
+                val randomQ = questions.random()
+                questions = questions.filter { it.id != randomQ.id }
+                randomQuestions.add(randomQ)
+            }
+        }else{
+            randomQuestions = questions.toMutableList()
+        }
+        return randomQuestions
     }
 
 

@@ -118,17 +118,20 @@
 									<th class="table-header"> Answer B </th>
 									<th class="table-header"> Answer C </th>
 									<th class="table-header"> Answer D </th>
-									<th class="table-header"> Edit </th>
 									<th class="w-40 table-header"> DELETE </th>
 								</tr>
 							</thead>
 							<tbody>
 								{#each filteredQuestions as question, i}
-									<tr class="border-b bg-gray-100 hover:bg-gray-200" class:bg-gray-50={i % 2 === 0}>
+									<tr
+										class="border-b cursor-pointer bg-gray-100 hover:bg-gray-200"
+										class:bg-gray-50={i % 2 === 0}
+										on:click={handleEdit(question.id)}
+									>
 										<td class="table-data">
 											<button
-												class="rounded-full flex font-mono bg-gray-300 h-7 py-1 px-3 transition-all w-24 duration-250 items-center justify-center"
-												on:click={copyToClipboard(question.id)}
+												class="rounded-full flex font-mono bg-gray-300 h-7 py-1 px-3 transition-all w-24 duration-250 items-center justify-center hover:bg-gray-400"
+												on:click|stopPropagation={copyToClipboard(question.id)}
 											>
 												{#if copied === question.id}
 													<span class="text-lg text-gray-500 i-ri-clipboard-fill" />
@@ -149,35 +152,20 @@
 												</span>
 											</td>
 										{/each}
-										<td class="table-data">
-											<div class="flex items-center">
-												<button
-													class="bg-gray-700 text-lg transition-all duration-250 i-ri-settings-4-line hover:(i-ri-settings-4-fill bg-gray-900 rotate-90) "
-													on:click={handleEdit(question.id)}
-												/>
-											</div>
-										</td>
+
 										<td class="table-data">
 											<div class="flex w-27 gap-4 items-center relative select-none">
-												<label
+												<button
 													class="cursor-pointer bg-red-500 text-lg transition-all text-red-500 duration-250 i-ri-delete-bin-6-line hover:(i-ri-delete-bin-6-fill bg-red-500 rotate-6 text-red-500) "
 													class:checkBoxChecked={checkboxValues[i]}
-													for={'checkbox' + i}
-													>Tff
-												</label>
-												<input
-													class="hidden"
-													type="checkbox"
-													name={'checkbox' + i}
-													id={'checkbox' + i}
-													bind:checked={checkboxValues[i]}
+													on:click|stopPropagation={() => (checkboxValues[i] = !checkboxValues[i])}
 												/>
 
 												{#key checkboxValues[i]}
 													<button
 														class="deleteBtn group hidden"
 														class:flex={checkboxValues[i]}
-														on:click={handleDelete(question.id, i)}
+														on:click|stopPropagation={handleDelete(question.id, i)}
 														transition:fly|local={{ x: 50, y: 0, delay: 100 }}
 													>
 														DELETE

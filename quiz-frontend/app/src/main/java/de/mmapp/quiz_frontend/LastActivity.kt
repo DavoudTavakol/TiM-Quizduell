@@ -101,7 +101,7 @@ class LastActivity : AppCompatActivity() {
         var topTen : ArrayList<Score> = arrayListOf()
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://10.0.2.2:8085/highscore/getTopTen")
+            .url(getString(R.string.highscore_url))
             .build()
 
         client.newCall(request).execute().use { response ->
@@ -114,3 +114,4 @@ class LastActivity : AppCompatActivity() {
     }.await()
 
 }
+

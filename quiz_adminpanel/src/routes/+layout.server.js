@@ -1,6 +1,6 @@
-import { get } from 'svelte/store'
+import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
-let url = 'http://localhost:8085/api/category'
+let url = PUBLIC_BACKEND_URL + '/api/category'
 
 let DummyRes = {
 	categories: [

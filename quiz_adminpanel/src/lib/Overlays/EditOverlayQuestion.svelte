@@ -6,18 +6,34 @@
 	import { invalidateAll } from '$app/navigation'
 	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
+	let formerQuestion = ''
 	let question = ''
+	let formerA = ''
 	let answerA = ''
+	let formerB = ''
 	let answerB = ''
+	let formerC = ''
 	let answerC = ''
+	let formerD = ''
 	let answerD = ''
+	let formerCorrect = ''
 	let playShake = false
 	let showHint = false
 	let options = ['a', 'b', 'c', 'd']
 	let selected = options[1]
 
 	$: categoryId = $page.params.id
+
+	$: hasChanged =
+		question !== formerQuestion ||
+		answerA !== formerA ||
+		answerB !== formerB ||
+		answerC !== formerC ||
+		answerD !== formerD ||
+		selected !== formerCorrect
+
 	$: hasData =
 		question.length > 0 ||
 		answerA.length > 0 ||
@@ -26,7 +42,7 @@
 		answerD.length > 0
 
 	onMount(async () => {
-		let url = 'http://localhost:8085/api/questions/read'
+		let url = `${PUBLIC_BACKEND_URL}/api/questions/read`
 		let res = await fetch(url, {
 			method: 'POST',
 			headers: {
@@ -60,7 +76,17 @@
 					break
 			}
 		}
+		initFormer()
 	})
+
+	function initFormer() {
+		formerQuestion = question
+		formerA = answerA
+		formerB = answerB
+		formerC = answerC
+		formerD = answerD
+		formerCorrect = selected
+	}
 
 	function resetData() {
 		question = ''
@@ -71,8 +97,17 @@
 		selected = options[0]
 	}
 
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			editQuestion()
+		}
+		if (e.key === 'Escape') {
+			handleClose()
+		}
+	}
+
 	function handleClose() {
-		if (hasData) {
+		if (hasData && hasChanged) {
 			confirmModalOpen.set(true)
 		} else {
 			overlayEditQuestionOpen.set(false)
@@ -91,7 +126,7 @@
 
 	async function editQuestion() {
 		if (checkIfFilled()) {
-			await fetch('http://localhost:8085/api/questions/update', {
+			await fetch(PUBLIC_BACKEND_URL + '/api/questions/update', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
@@ -132,7 +167,7 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">
+<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute" on:keydown={handleKeyDown}>
 	<div
 		use:clickOutside
 		on:click_outside={handleClose}
@@ -150,31 +185,63 @@
 			<h1 class="text-lg py-6 px-8">Edit <span class="font-semibold">Question</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Question'} class="i-ri-text" bind:value={question} required={true} />
+					<InputText
+						label={'Question'}
+						class="i-ri-text"
+						bind:value={question}
+						required={true}
+						autofocus={true}
+					/>
+
+					<div class="border-t flex h-6 w-full" />
 
 					<div class="flex w-full relative">
-						<InputText label={'Answer A'} class="i-ri-text" bind:value={answerA} required={true} />
+						<InputText
+							label={'Answer A'}
+							class="i-ri-text"
+							bind:value={answerA}
+							required={true}
+							selected={selected === 'a' ? true : false}
+						/>
 						<div class="top-5 right-5 absolute">
 							<input type="radio" bind:group={selected} name="answers" value={options[0]} />
 						</div>
 					</div>
 
 					<div class="flex w-full relative">
-						<InputText label={'Answer B'} class="i-ri-text" bind:value={answerB} required={true} />
+						<InputText
+							label={'Answer B'}
+							class="i-ri-text"
+							bind:value={answerB}
+							required={true}
+							selected={selected === 'b' ? true : false}
+						/>
 						<div class="top-5 right-5 absolute">
 							<input type="radio" bind:group={selected} name="answers" value={options[1]} />
 						</div>
 					</div>
 
 					<div class="flex w-full relative">
-						<InputText label={'Answer C'} class="i-ri-text" bind:value={answerC} required={true} />
+						<InputText
+							label={'Answer C'}
+							class="i-ri-text"
+							bind:value={answerC}
+							required={true}
+							selected={selected === 'c' ? true : false}
+						/>
 						<div class="top-5 right-5 absolute">
 							<input type="radio" bind:group={selected} name="answers" value={options[2]} />
 						</div>
 					</div>
 
 					<div class="flex w-full relative">
-						<InputText label={'Answer D'} class="i-ri-text" bind:value={answerD} required={true} />
+						<InputText
+							label={'Answer D'}
+							class="i-ri-text"
+							bind:value={answerD}
+							required={true}
+							selected={selected === 'd' ? true : false}
+						/>
 						<div class="top-5 right-5 absolute">
 							<input type="radio" bind:group={selected} name="answers" value={options[3]} />
 						</div>

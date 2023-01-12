@@ -6,37 +6,60 @@
 	import { fly, fade } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
 	$: id = $page.params.id
 	$: hasData = title.length > 0 || desc.length > 0 || iconURL.length > 0
+	$: hasChanged = title !== formerTitle || desc !== formerDesc || iconURL !== formerUrl
+
+	$: console.log(hasChanged)
 
 	let title = ''
+	let formerTitle = ''
 	let desc = ''
+	let formerDesc = ''
 	let iconURL = ''
+	let formerUrl = ''
 	let playShake = false
 	let showHint = false
 
 	onMount(async () => {
-		let url = `http://localhost:8085/api/category/${id}`
+		let url = `${PUBLIC_BACKEND_URL}/api/category/${id}`
 		let res = await fetch(url)
 		let data = await res.json()
 
 		title = data.categoryName
 		desc = data.desc
 		iconURL = data.iconURL
+		initFormer()
 	})
 
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			editCategory()
+		}
+		if (e.key === 'Escape') {
+			handleClose()
+		}
+	}
+
 	function handleClose() {
-		if (hasData) {
+		if (hasData && hasChanged) {
 			confirmModalOpen.set(true)
 		} else {
 			overlayEditCategoryOpen.set(false)
 		}
 	}
 
+	function initFormer() {
+		formerTitle = title
+		formerDesc = desc
+		formerUrl = iconURL
+	}
+
 	async function editCategory() {
 		if (title.length > 0) {
-			await fetch(`http://localhost:8085/api/category/update`, {
+			await fetch(`${PUBLIC_BACKEND_URL}/api/category/update`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
@@ -59,7 +82,7 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">
+<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute" on:keydown={handleKeyDown}>
 	<div
 		use:clickOutside
 		on:click_outside={handleClose}
@@ -77,7 +100,14 @@
 			<h1 class="text-lg py-6 px-8">Edit <span class="font-semibold">Category</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Name'} bind:value={title} class="i-ri-text" required={true} />
+					<InputText
+						label={'Name'}
+						bind:value={title}
+						class="i-ri-text"
+						required={true}
+						autofocus={true}
+					/>
+					<div class="border-t flex h-6 w-full" />
 					<InputText label={'Description'} bind:value={desc} class="i-ri-text" />
 					<InputText label={'Icon Url'} bind:value={iconURL} class="i-ri-link" />
 				</form>

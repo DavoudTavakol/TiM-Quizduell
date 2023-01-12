@@ -3,6 +3,7 @@ package com.tim.quiz_api.controller
 import com.tim.quiz_api.controller.dto.*
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.CategoryRepo
+import com.tim.quiz_api.repository.GamesLocalRepo
 import com.tim.quiz_api.service.GameService
 import com.tim.quiz_api.service.HighscoreService
 import com.tim.quiz_api.service.QuestionService
@@ -22,7 +23,7 @@ class GameController @Autowired constructor(
     val categoryRepo: CategoryRepo,
     val highscoreService : HighscoreService,
     private val gameService: GameService,
-    private val questionService: QuestionService
+    private val questionService: QuestionService,
 
     ) {
 
@@ -37,7 +38,12 @@ class GameController @Autowired constructor(
     @PostMapping("/connect")
     fun connectToGame(@RequestBody request : ConnectRequest) :
             ResponseEntity<Game> {
-        return ResponseEntity.ok(gameService?.connectToGame(request.gameId, request.player2))
+
+        if (request.player2.nickname == GamesLocalRepo.getGame(request.gameId)!!.player1.nickname){
+            return ResponseEntity.ok(Game("","0", Player(""), Player(""), listOf(), listOf(),GameStatus.FINISHED))
+        } else {
+            return ResponseEntity.ok(gameService?.connectToGame(request.gameId, request.player2))
+        }
     }
 
     @PostMapping("/ready")

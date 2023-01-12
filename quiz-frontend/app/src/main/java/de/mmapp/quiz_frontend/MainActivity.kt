@@ -14,6 +14,8 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.CategoriesActivity.Companion.checkIfReady
 import de.mmapp.quiz_frontend.models.Game
+import de.mmapp.quiz_frontend.models.GameStatus
+import de.mmapp.quiz_frontend.models.Player
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
@@ -21,6 +23,7 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     @OptIn(DelicateCoroutinesApi::class)
@@ -52,6 +55,8 @@ class MainActivity : AppCompatActivity() {
                         GlobalScope.launch(Dispatchers.Main) {
 
                             try {
+                                println(resources.getString(R.string.create_url))
+
                                 gameid = createGameRequest(inputPlayerOne.text.toString())
                                 println(gameid)
 
@@ -68,9 +73,10 @@ class MainActivity : AppCompatActivity() {
                                 println(categories)
                                 startActivity(intent)
                             } catch (e: IOException) {
+                                println(e.message)
                                 Toast.makeText(
                                     this@MainActivity,
-                                    "Keine Verbindung",
+                                    e.message,
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
@@ -105,10 +111,10 @@ class MainActivity : AppCompatActivity() {
             var newGame: Game
             GlobalScope.launch() {
 
-                newGame = setReady(game.player2.nickname, game.gameId, mutableListOf())
+                newGame = setReady(game.player2.nickname, game.gameId, mutableListOf(),getString(R.string.set_ready_url))
 
                 (1..30).asFlow() // a flow of requests
-                    .map { request -> checkIfReady(game.gameId, game.player2.nickname) }
+                    .map { request -> checkIfReady(game.gameId, game.player2.nickname, getString(R.string.is_ready_url)) }
                     .collect { response ->
 
                         println(response)
@@ -130,28 +136,41 @@ class MainActivity : AppCompatActivity() {
                 buttonJoinGame.isEnabled = true
                 buttonJoinGame.setOnClickListener {
 
-                    var game: Game
+                    var game: Game?
 
                     GlobalScope.launch(Dispatchers.Main) {
 
+                        848846
                         try {
                             game = connectToGameRequest(
                                 inputPlayerTwo.text.toString(),
                                 inputId.text.toString()
                             )
-                            println(game)
-                            waitingScreen(game)
+                            //println(game)
+                            if (game!!.gameId == "0"){
+                                println("Nickname Used By Player1")
+                                var obligatory = findViewById<TextView>(R.id.obligatoryNicknameTwo)
+                                obligatory.text = "Nickname bereits vom Gegner benutzt."
+                                obligatory.visibility = View.VISIBLE
+                            } else {
+                                println(game)
+                                waitingScreen(game!!)
+                            }
+                            //
+                            //081188
                         } catch (e: IOException) {
 
+
+                            println(e)
                                 Toast.makeText(
                                     this@MainActivity,
-                                    e.message.toString(),
+                                    e.localizedMessage.toString(),
                                     Toast.LENGTH_LONG
                                 ).show()
+
+
                             //TextView wird eingeblendet, wenn Nickname1 = Nickname 2 //funktioniert noch nicht
-                            var obligatory = findViewById<TextView>(R.id.obligatoryNicknameTwo)
-                            obligatory.text = "Dieser Nickname ist bereits vergeben."
-                            obligatory.visibility = View.INVISIBLE
+
                             }
 
                     }
@@ -218,7 +237,7 @@ class MainActivity : AppCompatActivity() {
 
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://10.0.2.2:8085/game/create")
+            .url(resources.getString(R.string.create_url))
             .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
             .build()
 
@@ -238,7 +257,7 @@ class MainActivity : AppCompatActivity() {
         return@async gameId
     }.await()
 
-    private suspend fun connectToGameRequest(nickname: String, gameId: String): Game =
+    private suspend fun connectToGameRequest(nickname: String, gameId: String): Game? =
         GlobalScope.async(Dispatchers.IO) {
 
             val jsonBody: String = """
@@ -253,24 +272,23 @@ class MainActivity : AppCompatActivity() {
 
             val client = OkHttpClient()
             val request = Request.Builder()
-                .url("http://10.0.2.2:8085/game/connect")
+                .url(getString(R.string.connect_url))
                 .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
                 .build()
 
             var game: Game
-
             client.newCall(request).execute().use { response ->
                 if (!response.isSuccessful) throw IOException("Unexpected code $response")
                 val mapper = jacksonObjectMapper()
-
                 game = mapper.readValue(response.body.string())
+
             }
             return@async game
         }.await()
 
 
     companion object {
-        suspend fun setReady(nickname: String, gameId: String, categories: MutableList<String>): Game =
+        suspend fun setReady(nickname: String, gameId: String, categories: MutableList<String>, url : String): Game =
             GlobalScope.async(Dispatchers.IO) {
 
                 val jsonBody = object  {
@@ -284,9 +302,10 @@ class MainActivity : AppCompatActivity() {
 
                 val client = OkHttpClient()
                 val request = Request.Builder()
-                    .url("http://10.0.2.2:8085/game/ready")
+                    .url(url)
                     .post(body.toRequestBody("application/json; charset=utf-8".toMediaType()))
                     .build()
+
 
                 var game: Game
                 client.newCall(request).execute().use { response ->
@@ -304,7 +323,7 @@ class MainActivity : AppCompatActivity() {
         var categories: List<String> = listOf()
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://10.0.2.2:8085/game/categories")
+            .url(getString(R.string.categories_url))
             .build()
 
         client.newCall(request).execute().use { response ->

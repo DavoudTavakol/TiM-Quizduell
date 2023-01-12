@@ -1,4 +1,5 @@
-let url = 'http://localhost:8085/api/category'
+import { PUBLIC_BACKEND_URL } from '$env/static/public'
+let url = PUBLIC_BACKEND_URL + '/api/category'
 
 let DummyRes = {
 	categoryCount: 3,

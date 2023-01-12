@@ -7,7 +7,7 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".CategoriesActivity">
 
-<com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBarLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -30,14 +30,45 @@ tools:context=".CategoriesActivity">
 
 </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/requestProgress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="47dp"
+            android:layout_height="38dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/startButton" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="599dp"
+            android:layout_marginBottom="84dp"
+            android:text="Start"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/ll_game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
         android:paddingTop="60dp"
+        android:paddingRight="16dp"
+        app:layout_anchor="@+id/constraintLayout"
+        app:layout_anchorGravity="center"
         tools:context=".MainActivity">
 
         <TextView
@@ -45,32 +76,32 @@ tools:context=".CategoriesActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="22dp"
             android:textColor="@android:color/white"
+            android:textSize="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textColor="@color/gold"
-            android:id ="@+id/gameId"
+            android:id="@+id/gameId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="40dp"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
+            android:textColor="@color/gold"
+            android:textSize="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wähle aus folgenden Kategorien aus:"
+            android:textColor="@color/white"
             android:textSize="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -81,28 +112,16 @@ tools:context=".CategoriesActivity">
         <LinearLayout
             android:id="@+id/ll_game_layout"
             android:layout_width="match_parent"
-            android:layout_height="441dp"
+            android:layout_height="344dp"
             android:orientation="vertical"
             android:paddingLeft="16dp"
             android:paddingTop="20dp"
             android:paddingRight="16dp"
-            tools:context=".MainActivity"></LinearLayout>
+            tools:context=".MainActivity">
+
+        </LinearLayout>
 
     </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/startButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Start"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

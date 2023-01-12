@@ -7,13 +7,19 @@
 	export let id = null
 	export let open
 
+	let invalidLink = false
+
+	function handleLoadError() {
+		invalidLink = true
+	}
+
 	$: link = id ? `/category/${id}` : '/'
 	$: active = $page.url.pathname === link
 </script>
 
 <a
 	href={link}
-	class="rounded-xl flex border-2 gap-4 items-center whitespace-nowrap"
+	class="rounded-xl flex border-2 gap-4 items-center whitespace-nowrap group"
 	class:hover-bg-gray-200={open}
 	class:border-transparent={!active}
 	class:border-black={active}
@@ -32,11 +38,18 @@
 		}}
 	>
 		{#if title === 'Home'}
-			<div class="m-auto text-2xl i-carbon-home" />
-		{:else if iconURL}
-			<img src={iconURL} class="m-auto h-[32px] w-[24px]" alt="" />
+			<div class="m-auto transition-all text-2xl duration-250 i-carbon-home group-hover:rotate-6" />
+		{:else if iconURL && !invalidLink}
+			<img
+				src={iconURL}
+				on:error={handleLoadError}
+				class="m-auto h-[32px] transition-all w-[24px] duration-250 group-hover:rotate-6"
+				alt="Sidebar Element Icon"
+			/>
 		{:else}
-			<div class="m-auto text-2xl i-carbon-folder" />
+			<div
+				class="m-auto transition-all text-2xl duration-250 i-carbon-folder group-hover:rotate-6"
+			/>
 		{/if}
 	</div>
 

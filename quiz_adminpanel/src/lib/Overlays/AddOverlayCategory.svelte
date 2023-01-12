@@ -1,9 +1,10 @@
 <script>
-	import { invalidateAll } from '$app/navigation'
+	import { goto } from '$app/navigation'
 	import { confirmModalOpen, overlayCategoryOpen } from '$lib/store.js'
 	import { fly, fade } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
 	let title = ''
 	let desc = ''
@@ -12,6 +13,15 @@
 	let playShake = false
 
 	$: hasData = title.length > 0 || desc.length > 0 || iconURL.length > 0
+
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			addCategory()
+		}
+		if (e.key === 'Escape') {
+			handleClose()
+		}
+	}
 
 	function handleClose() {
 		if (hasData) {
@@ -29,7 +39,7 @@
 
 	async function addCategory() {
 		if (title.length > 0) {
-			await fetch('http://localhost:8085/api/category/create', {
+			let res = await fetch(PUBLIC_BACKEND_URL + '/api/category/create', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -40,10 +50,12 @@
 					iconURL: iconURL
 				})
 			})
+			let data = await res.json()
+			let newId = data.id
 			console.log('Category added: ' + title)
 			resetData()
 			$overlayCategoryOpen = false
-			invalidateAll()
+			goto('/category/' + newId)
 		} else {
 			showHint = true
 			playShake = true
@@ -52,7 +64,7 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-10 absolute">
+<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute" on:keydown={handleKeyDown}>
 	<div
 		use:clickOutside
 		on:click_outside={handleClose}
@@ -70,7 +82,14 @@
 			<h1 class="text-lg py-6 px-8">Add new <span class="font-semibold">Category</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Name'} bind:value={title} class="i-ri-text" required={true} />
+					<InputText
+						label={'Name'}
+						bind:value={title}
+						class="i-ri-text"
+						required={true}
+						autofocus={true}
+					/>
+					<div class="border-t flex h-6 w-full" />
 					<InputText label={'Description'} bind:value={desc} class="i-ri-text" />
 					<InputText label={'Icon Url'} bind:value={iconURL} class="i-ri-link" />
 				</form>

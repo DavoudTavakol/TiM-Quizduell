@@ -5,6 +5,7 @@
 	import AddOverlayCategory from '$lib/Overlays/AddOverlayCategory.svelte'
 	import EditOverlayCategory from '$lib/Overlays/EditOverlayCategory.svelte'
 	import EditOverlayQuestion from '$lib/Overlays/EditOverlayQuestion.svelte'
+	import DeleteCategory from '$lib/DeleteCategory.svelte'
 	import Confirm from '$lib/Confirm.svelte'
 
 	import {
@@ -13,8 +14,10 @@
 		overlayCategoryOpen,
 		confirmModalOpen,
 		overlayEditCategoryOpen,
-		overlayEditQuestionOpen
+		overlayEditQuestionOpen,
+		deleteModalOpen
 	} from '$lib/store.js'
+
 	import Sidebar from '$lib/Sidebar.svelte'
 	import '../app.css'
 	import { onMount } from 'svelte'
@@ -40,6 +43,7 @@
 	{#if $logedIn}
 		<section class="flex relative overflow-x-hidden">
 			<Sidebar {categories} />
+			<slot />
 			{#if $overlayQuestionOpen}
 				<AddOverlayQuestion />
 			{/if}
@@ -55,7 +59,9 @@
 			{#if $confirmModalOpen}
 				<Confirm />
 			{/if}
-			<slot />
+			{#if $deleteModalOpen}
+				<DeleteCategory />
+			{/if}
 		</section>
 	{:else}
 		<Login />

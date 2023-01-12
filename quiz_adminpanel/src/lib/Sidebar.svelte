@@ -15,7 +15,6 @@
 
 	function addCategory() {
 		$overlayCategoryOpen = true
-		console.log('add category')
 	}
 
 	function handleClick() {

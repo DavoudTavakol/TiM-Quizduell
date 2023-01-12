@@ -20,6 +20,7 @@
 			}
 		})
 		goto('/')
+
 		deleteModalOpen.set(false)
 	}
 

@@ -1,5 +1,5 @@
 <script>
-	import { invalidateAll } from '$app/navigation'
+	import { goto } from '$app/navigation'
 	import { confirmModalOpen, overlayCategoryOpen } from '$lib/store.js'
 	import { fly, fade } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
@@ -30,7 +30,7 @@
 
 	async function addCategory() {
 		if (title.length > 0) {
-			await fetch(PUBLIC_BACKEND_URL + '/api/category/create', {
+			let res = await fetch(PUBLIC_BACKEND_URL + '/api/category/create', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -41,10 +41,12 @@
 					iconURL: iconURL
 				})
 			})
+			let data = await res.json()
+			let newId = data.id
 			console.log('Category added: ' + title)
 			resetData()
 			$overlayCategoryOpen = false
-			invalidateAll()
+			goto('/category/' + newId)
 		} else {
 			showHint = true
 			playShake = true

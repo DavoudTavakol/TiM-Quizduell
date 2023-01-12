@@ -1,13 +1,14 @@
 <script>
 	import { page } from '$app/stores'
 	import { invalidateAll } from '$app/navigation'
-	import { fly, fade } from 'svelte/transition'
+	import { fly } from 'svelte/transition'
 	import {
 		overlayQuestionOpen,
 		loading,
 		overlayEditQuestionOpen,
 		editQuestionID
 	} from '$lib/store.js'
+	import { onMount } from 'svelte'
 	import Navbar from '$lib/Navbar.svelte'
 
 	export let data
@@ -23,6 +24,10 @@
 
 	$: filteredQuestions = questions.filter((question) => {
 		return question.question.toLowerCase().includes(searchTerm.toLowerCase())
+	})
+
+	onMount(() => {
+		invalidateAll()
 	})
 
 	function resetValues() {

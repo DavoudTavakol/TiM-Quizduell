@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte'
 	import { invalidateAll } from '$app/navigation'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
 	export let data
 
@@ -36,7 +37,7 @@
 					<span class="font-semibold text-green-300" class:text-red-300={!connected}>
 						{connected ? 'Online' : 'Offline'}
 					</span>
-					<span>: https://localhost:8080</span>
+					<span>: {PUBLIC_BACKEND_URL}</span>
 				</span>
 			</section>
 

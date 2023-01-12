@@ -1,6 +1,7 @@
 package com.tim.quiz_api.controller
 
 import com.tim.quiz_api.controller.dto.*
+import com.tim.quiz_api.controller.dto.CategoryAPI.min.CategoryIdListDTO
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.CategoryRepo
 import com.tim.quiz_api.repository.GamesLocalRepo
@@ -49,9 +50,14 @@ class GameController @Autowired constructor(
     @PostMapping("/ready")
     fun setReady(@RequestBody request : ReadyRequest) :
             ResponseEntity<Game> {
-        val questions = questionService.getQuestionsByCategoryId("c13be76d-ffce-4a91-b3df-9c66fe7d3fa9")
-        println(questions!!.questions)
-        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories, questions!!.questions))
+        val categories = categoryRepo.findAll() as List<Category>
+        var categoryIdList : MutableList<String> = mutableListOf()
+        for (cat in categories) {
+            categoryIdList.add(cat.id)
+        }
+        val questions = questionService.getRandomQuestionsLimit(CategoryIdListDTO(categoryIdList),10)
+        println(questions)
+        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories, questions))
     }
 
     @PostMapping("/check")

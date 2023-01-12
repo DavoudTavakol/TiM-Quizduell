@@ -38,7 +38,7 @@ class LastActivity : AppCompatActivity() {
         // display your achieved points
         // val totalP = intent.getExtra(z)
         val points = findViewById<TextView>(R.id.myPoints)
-        // points.setText("Punkte: " + totalP.toString())
+        // points.setText("Punkte: " + totalP.toString() + "\n")
         // TODO show REAL achieved points
 
         // display question list

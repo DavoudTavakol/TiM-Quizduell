@@ -34,6 +34,15 @@
 		initFormer()
 	})
 
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			editCategory()
+		}
+		if (e.key === 'Escape') {
+			handleClose()
+		}
+	}
+
 	function handleClose() {
 		if (hasData && hasChanged) {
 			confirmModalOpen.set(true)
@@ -73,7 +82,7 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute">
+<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute" on:keydown={handleKeyDown}>
 	<div
 		use:clickOutside
 		on:click_outside={handleClose}
@@ -91,7 +100,13 @@
 			<h1 class="text-lg py-6 px-8">Edit <span class="font-semibold">Category</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Name'} bind:value={title} class="i-ri-text" required={true} />
+					<InputText
+						label={'Name'}
+						bind:value={title}
+						class="i-ri-text"
+						required={true}
+						autofocus={true}
+					/>
 					<div class="border-t flex h-6 w-full" />
 					<InputText label={'Description'} bind:value={desc} class="i-ri-text" />
 					<InputText label={'Icon Url'} bind:value={iconURL} class="i-ri-link" />

@@ -97,6 +97,15 @@
 		selected = options[0]
 	}
 
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			editQuestion()
+		}
+		if (e.key === 'Escape') {
+			handleClose()
+		}
+	}
+
 	function handleClose() {
 		if (hasData && hasChanged) {
 			confirmModalOpen.set(true)
@@ -158,7 +167,7 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute">
+<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute" on:keydown={handleKeyDown}>
 	<div
 		use:clickOutside
 		on:click_outside={handleClose}
@@ -176,7 +185,13 @@
 			<h1 class="text-lg py-6 px-8">Edit <span class="font-semibold">Question</span></h1>
 			<div class="py-4 px-8">
 				<form class="" action="POST">
-					<InputText label={'Question'} class="i-ri-text" bind:value={question} required={true} />
+					<InputText
+						label={'Question'}
+						class="i-ri-text"
+						bind:value={question}
+						required={true}
+						autofocus={true}
+					/>
 
 					<div class="border-t flex h-6 w-full" />
 

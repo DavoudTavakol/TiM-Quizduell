@@ -31,6 +31,7 @@
 	})
 
 	function resetValues() {
+		invalidateAll()
 		searchTerm = ''
 		checkboxValues = []
 		for (let i = 0; i < questions.length; i++) {

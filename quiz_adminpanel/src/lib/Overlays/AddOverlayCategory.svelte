@@ -14,6 +14,15 @@
 
 	$: hasData = title.length > 0 || desc.length > 0 || iconURL.length > 0
 
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			addCategory()
+		}
+		if (e.key === 'Escape') {
+			handleClose()
+		}
+	}
+
 	function handleClose() {
 		if (hasData) {
 			confirmModalOpen.set(true)
@@ -55,7 +64,7 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute">
+<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute" on:keydown={handleKeyDown}>
 	<div
 		use:clickOutside
 		on:click_outside={handleClose}

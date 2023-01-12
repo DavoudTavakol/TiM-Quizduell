@@ -42,6 +42,15 @@
 		}
 	}
 
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			addQuestion()
+		}
+		if (e.key === 'Escape') {
+			handleClose()
+		}
+	}
+
 	function checkIfFilled() {
 		return (
 			question.length > 0 &&
@@ -94,7 +103,7 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute">
+<div class="flex h-screen bg-gray-400/50 w-screen z-100 absolute" on:keydown={handleKeyDown}>
 	<div
 		use:clickOutside
 		on:click_outside={handleClose}

@@ -27,6 +27,16 @@
 	function backToMenu() {
 		deleteModalOpen.set(false)
 	}
+	function handleKeyDown(e) {
+		if (e.key === 'Enter') {
+			if (deletable) {
+				handleDelete()
+			}
+		}
+		if (e.key === 'Escape') {
+			backToMenu()
+		}
+	}
 
 	onMount(() => getCategoryName())
 
@@ -38,7 +48,10 @@
 	}
 </script>
 
-<div class="flex h-screen bg-gray-400/50 w-screen z-110 absolute items-center justify-center">
+<div
+	class="flex h-screen bg-gray-400/50 w-screen z-110 absolute items-center justify-center"
+	on:keydown={handleKeyDown}
+>
 	<div
 		class="bg-white rounded-xl flex flex-col h-130 p-10 w-150  items-center justify-around"
 		use:clickOutside

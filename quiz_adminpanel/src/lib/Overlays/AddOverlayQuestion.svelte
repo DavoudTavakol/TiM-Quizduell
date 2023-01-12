@@ -5,6 +5,7 @@
 	import { clickOutside } from '$lib/clickOutside.js'
 	import { page } from '$app/stores'
 	import { invalidateAll } from '$app/navigation'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
 	let question = ''
 	let answerA = ''
@@ -53,7 +54,7 @@
 
 	async function addQuestion() {
 		if (checkIfFilled()) {
-			await fetch('http://localhost:8085/api/questions/create', {
+			await fetch(PUBLIC_BACKEND_URL + '/api/questions/create', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

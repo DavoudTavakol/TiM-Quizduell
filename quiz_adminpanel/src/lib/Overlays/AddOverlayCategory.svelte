@@ -4,6 +4,7 @@
 	import { fly, fade } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
 	let title = ''
 	let desc = ''
@@ -29,7 +30,7 @@
 
 	async function addCategory() {
 		if (title.length > 0) {
-			await fetch('http://localhost:8085/api/category/create', {
+			await fetch(PUBLIC_BACKEND_URL + '/api/category/create', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

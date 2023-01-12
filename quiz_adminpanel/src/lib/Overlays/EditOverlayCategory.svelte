@@ -6,6 +6,7 @@
 	import { fly, fade } from 'svelte/transition'
 	import InputText from '$lib/InputText.svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
 	$: id = $page.params.id
 	$: hasData = title.length > 0 || desc.length > 0 || iconURL.length > 0
@@ -23,7 +24,7 @@
 	let showHint = false
 
 	onMount(async () => {
-		let url = `http://localhost:8085/api/category/${id}`
+		let url = `${PUBLIC_BACKEND_URL}/api/category/${id}`
 		let res = await fetch(url)
 		let data = await res.json()
 
@@ -49,7 +50,7 @@
 
 	async function editCategory() {
 		if (title.length > 0) {
-			await fetch(`http://localhost:8085/api/category/update`, {
+			await fetch(`${PUBLIC_BACKEND_URL}/api/category/update`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'

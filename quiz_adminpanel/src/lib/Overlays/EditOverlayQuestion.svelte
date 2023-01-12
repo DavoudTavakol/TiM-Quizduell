@@ -6,6 +6,7 @@
 	import { invalidateAll } from '$app/navigation'
 	import { onMount } from 'svelte'
 	import { page } from '$app/stores'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
 	let formerQuestion = ''
 	let question = ''
@@ -41,7 +42,7 @@
 		answerD.length > 0
 
 	onMount(async () => {
-		let url = 'http://localhost:8085/api/questions/read'
+		let url = `${PUBLIC_BACKEND_URL}/api/questions/read`
 		let res = await fetch(url, {
 			method: 'POST',
 			headers: {
@@ -116,7 +117,7 @@
 
 	async function editQuestion() {
 		if (checkIfFilled()) {
-			await fetch('http://localhost:8085/api/questions/update', {
+			await fetch(PUBLIC_BACKEND_URL + '/api/questions/update', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'

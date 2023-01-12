@@ -1,3 +1,5 @@
+import { PUBLIC_BACKEND_URL } from '$env/static/public'
+
 let DummyRes = {
 	categoryName: 'Fragen zum Thema Programmieren in Kotlin',
 	questions: [
@@ -25,7 +27,7 @@ let DummyRes = {
 }
 
 async function getData(id) {
-	let url = `http://localhost:8085/api/category/${id}`
+	let url = PUBLIC_BACKEND_URL + `/api/category/${id}`
 	let res = await fetch(url)
 	let data = await res.json()
 	return data

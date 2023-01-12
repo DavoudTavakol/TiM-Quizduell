@@ -4,14 +4,16 @@
 	import { goto } from '$app/navigation'
 	import { onMount } from 'svelte'
 	import { clickOutside } from '$lib/clickOutside.js'
+	import { PUBLIC_BACKEND_URL } from '$env/static/public'
 
-	$: categoryId = $page.params.id
 	let categoryName = ''
 	let input
+
 	$: deletable = categoryName === input
+	$: categoryId = $page.params.id
 
 	async function handleDelete() {
-		await fetch(`http://localhost:8085/api/category/${categoryId}`, {
+		await fetch(`${PUBLIC_BACKEND_URL}/api/category/${categoryId}`, {
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json'
@@ -28,7 +30,7 @@
 	onMount(() => getCategoryName())
 
 	async function getCategoryName() {
-		let url = `http://localhost:8085/api/category/${categoryId}`
+		let url = `${PUBLIC_BACKEND_URL}/api/category/${categoryId}`
 		let res = await fetch(url)
 		let data = await res.json()
 		categoryName = data.categoryName

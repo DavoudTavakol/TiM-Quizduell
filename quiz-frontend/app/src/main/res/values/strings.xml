@@ -6,8 +6,11 @@
     <string name="connect_url">"http://10.0.2.2:8085/game/connect"</string>
     <string name="is_ready_url">"http://10.0.2.2:8085/game/check"</string>
     <string name="set_ready_url">"http://10.0.2.2:8085/game/ready"</string>
-    <string name="submit_url">"http://10.0.2.2:8085/game/submit"</string>
+    <string name="submit_url">"http://10.0.2.2:8085/game/submitanswers"</string>
     <string name="categories_url">"http://10.0.2.2:8085/game/categories"</string>
+    <string name="get_game_url">"http://10.0.2.2:8085/game/getgame"</string>
+
 
     <string name="highscore_url">"http://10.0.2.2:8085/highscore/getTopTen"</string>
 </resources>
+

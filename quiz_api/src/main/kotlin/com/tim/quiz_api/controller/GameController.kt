@@ -9,6 +9,7 @@ import com.tim.quiz_api.service.GameService
 import com.tim.quiz_api.service.HighscoreService
 import com.tim.quiz_api.service.QuestionService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -31,15 +32,12 @@ class GameController @Autowired constructor(
     @PostMapping("/create")
     fun createGame(@RequestBody player: Player ) :
             ResponseEntity<Game> {
-
-
         return ResponseEntity.ok(gameService?.createGame(player))
     }
 
     @PostMapping("/connect")
     fun connectToGame(@RequestBody request : ConnectRequest) :
             ResponseEntity<Game> {
-
         if (request.player2.nickname == GamesLocalRepo.getGame(request.gameId)!!.player1.nickname){
             return ResponseEntity.ok(Game("","0", Player(""), Player(""), listOf(), listOf(),GameStatus.FINISHED))
         } else {
@@ -79,7 +77,7 @@ class GameController @Autowired constructor(
 
         if(game.gameStatus == GameStatus.FINISHED){
             gameService.saveGameInDatabase(game)
-            gameService.deleteGameFromLocalRepo(game.gameId)
+            //gameService.deleteGameFromLocalRepo(game.gameId)
         }
 
         return ResponseEntity.ok(game)
@@ -101,5 +99,12 @@ class GameController @Autowired constructor(
     @GetMapping("/deletegame")
     fun deleteGame(gameId: String) {
         gameService.deleteGameInDatabase(gameId)
+    }
+
+    @PostMapping("/getgame")
+    fun getHighscoreList(@RequestBody gameId: String): ResponseEntity<Game> {
+        val game = GamesLocalRepo.getGame(gameId)
+        println(game)
+        return ResponseEntity<Game>(game, HttpStatus.OK)
     }
 }

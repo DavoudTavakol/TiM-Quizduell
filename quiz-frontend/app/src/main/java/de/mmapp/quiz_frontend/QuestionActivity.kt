@@ -6,13 +6,21 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.models.Answer
 import de.mmapp.quiz_frontend.models.Game
 import de.mmapp.quiz_frontend.models.Question
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okio.IOException
 
 class QuestionActivity : AppCompatActivity() {
 
@@ -49,8 +57,9 @@ class QuestionActivity : AppCompatActivity() {
         // Init Question and answers
         setQuestionNumber()
         setQuestion(game.questionList[0].question)
-        setAnswers(game.questionList)
+        setAnswers(game.questionList,game.gameId)
 
+        373431
 
         val myProgressBar: MaterialProgressBar = findViewById<MaterialProgressBar>(R.id.progressbar)
         val timeView = findViewById<TextView>(R.id.gameTimer)
@@ -66,8 +75,22 @@ class QuestionActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                // ToDo submit all answers -> API
-                submitRequest()
+                GlobalScope.launch(Dispatchers.Main) {
+
+                    try {
+
+                        val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        loadLastActivity(finishedGame)
+
+                    } catch (e: IOException) {
+                        println(e.message)
+                        Toast.makeText(
+                            this@QuestionActivity,
+                            e.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             }
         }
 
@@ -83,7 +106,7 @@ class QuestionActivity : AppCompatActivity() {
         questionView.text = question
     }
 
-    private fun setAnswers(questionList: List<Question>) {
+    private fun setAnswers(questionList: List<Question>, gameId: String) {
 
         val answer1 = findViewById<Button>(R.id.answer1)
         answer1.text = questionList[questionCount].answer[0].answer
@@ -114,10 +137,28 @@ class QuestionActivity : AppCompatActivity() {
                 setQuestion(questionList[questionCount].question)
 
                 // Load next answers
-                setAnswers(questionList)
+                setAnswers(questionList,gameId)
             } else {
-                submitRequest()
-                loadLastActivity()
+                400832
+
+                GlobalScope.launch(Dispatchers.Main) {
+
+                    try {
+
+                        val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        loadLastActivity(finishedGame)
+
+                    } catch (e: IOException) {
+                        println(e.message)
+                        Toast.makeText(
+                            this@QuestionActivity,
+                            e.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+
+
             }
         }
 
@@ -136,10 +177,24 @@ class QuestionActivity : AppCompatActivity() {
                 setQuestion(questionList[questionCount].question)
 
                 // Load next answers
-                setAnswers(questionList)
+                setAnswers(questionList,gameId)
             } else {
-                submitRequest()
-                loadLastActivity()
+                GlobalScope.launch(Dispatchers.Main) {
+
+                    try {
+
+                        val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        loadLastActivity(finishedGame)
+
+                    } catch (e: IOException) {
+                        println(e.message)
+                        Toast.makeText(
+                            this@QuestionActivity,
+                            e.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             }
         }
 
@@ -158,10 +213,25 @@ class QuestionActivity : AppCompatActivity() {
                 setQuestion(questionList[questionCount].question)
 
                 // Load next answers
-                setAnswers(questionList)
+                setAnswers(questionList,gameId)
             } else {
-                submitRequest()
-                loadLastActivity()
+                GlobalScope.launch(Dispatchers.Main) {
+
+
+                    try {
+                        val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+
+                        loadLastActivity(finishedGame)
+
+                    } catch (e: IOException) {
+                        println(e.message)
+                        Toast.makeText(
+                            this@QuestionActivity,
+                            e.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             }
         }
 
@@ -180,29 +250,70 @@ class QuestionActivity : AppCompatActivity() {
                 setQuestion(questionList[questionCount].question)
 
                 // Load next answers
-                setAnswers(questionList)
+                setAnswers(questionList,gameId)
             } else {
-                submitRequest()
-                loadLastActivity()
+                GlobalScope.launch(Dispatchers.Main) {
+
+                    try {
+
+                        val game = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+
+                        val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+
+                        loadLastActivity(finishedGame)
+
+                    } catch (e: IOException) {
+                        println(e.message)
+                        Toast.makeText(
+                            this@QuestionActivity,
+                            e.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
             }
         }
     }
 
-    private fun submitRequest() {
-        // ToDo send request -> send following parameters
-        var timeLeftForReq = timeLeftInSeconds
-        var listForReq = answerList
-        //var idForReq = gameId
-        //var nicknameForReq = nickname
-    }
+    suspend fun submitRequest(gameId: String, nickname: String, answers: List<Answer>, time : Float): Game =
+        GlobalScope.async(Dispatchers.IO) {
+
+            220763
+            val jsonBody = object  {
+                var gameId = gameId
+                var nickname = nickname
+                var answers = answers
+                var time = time
+            }
+
+            val mapper = jacksonObjectMapper()
+            val body = mapper.writeValueAsString(jsonBody)
+
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url(getString(R.string.submit_url))
+                .post(body.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
 
 
-    private fun loadLastActivity() {
+            var game: Game
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                val mapper = jacksonObjectMapper()
+
+                game = mapper.readValue(response.body.string())
+            }
+            return@async game
+        }.await()
+
+
+    private fun loadLastActivity(game:Game) {
         val intent = Intent(this@QuestionActivity, LastActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val nrOfRightQuestions = numberOfRightQuestions.toString()
         intent.putExtra("nrOfRightQuestions", nrOfRightQuestions)
         intent.putExtra("nickname", nickname)
+        intent.putExtra("game",game)
         // TODO send points of players
         // TODO send all questions and answers
         startActivity(intent)

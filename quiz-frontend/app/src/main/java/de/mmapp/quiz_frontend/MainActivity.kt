@@ -54,8 +54,8 @@ class MainActivity : AppCompatActivity() {
 
                         GlobalScope.launch(Dispatchers.Main) {
 
+
                             try {
-                                println(resources.getString(R.string.create_url))
 
                                 gameid = createGameRequest(inputPlayerOne.text.toString())
                                 println(gameid)

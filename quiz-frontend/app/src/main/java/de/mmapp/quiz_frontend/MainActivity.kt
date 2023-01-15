@@ -335,7 +335,3 @@ class MainActivity : AppCompatActivity() {
         return@async categories
     }.await()
 }
-
-
-
-

@@ -26,13 +26,9 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
 
 class LastActivity : AppCompatActivity() {
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.end_screen)
-
 
         // display nickname of player
         val nameOfPlayer = intent.getStringExtra("nickname")
@@ -43,8 +39,6 @@ class LastActivity : AppCompatActivity() {
         val nrQ = intent.getStringExtra("nrOfRightQuestions")
         val rightQ = findViewById<TextView>(R.id.nrRightQ)
         rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen rightig")
-
-
 
         //"Erneut spielen" button on screen
         val btnNewGame = findViewById<Button>(R.id.btn1)
@@ -88,7 +82,6 @@ class LastActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onPostCreate(savedInstanceState, persistentState)
 
@@ -129,9 +122,6 @@ class LastActivity : AppCompatActivity() {
             }
 
         }
-
-
-
 
         // display your achieved points
         // val totalP = intent.getExtra(z)
@@ -196,4 +186,3 @@ class LastActivity : AppCompatActivity() {
 
 
 }
-

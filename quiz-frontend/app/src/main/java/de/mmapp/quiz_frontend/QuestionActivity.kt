@@ -111,6 +111,7 @@ class QuestionActivity : AppCompatActivity() {
         questionView.text = question
     }
 
+
     private fun setAnswers(questionList: List<Question>, gameId: String) {
 
         val answer1 = findViewById<Button>(R.id.answer1)
@@ -324,46 +325,53 @@ class QuestionActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
     private fun showDefaultDialog(game: Game) {
+        /*
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.apply {
             setCancelable(false)
-            setFinishOnTouchOutside(false)
             setTitle("Sehe Fragen")
             setMessage(answerList.toString())
             setPositiveButton("Zum Ergebniss") { _,_->
-                GlobalScope.launch {
-
-                    try {
-                            var finishedGame: Game
-
-                        (1..20).asFlow() // a flow of requests
-                            .map { request ->
-                                getGame(game!!.gameId)
-                            }
-                            .collect { response ->
-
-                                println("======================")
-                                println(response.player1.answers)
-                                println("======================")
-
-                                if (response.player1.answers.isNotEmpty() && response.player2.answers.isNotEmpty()) {
-                                    //progressbar.visibility = View.INVISIBLE
-                                    finishedGame = response
-                                    loadLastActivity(finishedGame)
-
-                                    // ToDo Am Besten Hier das UI Updaten
-                                    this.cancel()
-                                }
-                            }
-
-                    } catch (e :IOException){
-                        Toast.makeText(this@QuestionActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
-                    }
-
-                }
             }
         }.create().show()
+
+
+         */
+
+        GlobalScope.launch {
+
+            try {
+                var finishedGame: Game
+
+                (1..20).asFlow() // a flow of requests
+                    .map { request ->
+                        getGame(game!!.gameId)
+                    }
+                    .collect { response ->
+
+                        println("======================")
+                        println(response.player1.answers)
+                        println("======================")
+
+                        if (response.player1.answers.isNotEmpty() && response.player2.answers.isNotEmpty()) {
+                            //progressbar.visibility = View.INVISIBLE
+                            finishedGame = response
+
+                            loadLastActivity(finishedGame)
+
+                            // ToDo Am Besten Hier das UI Updaten
+                            this.cancel()
+                        }
+                    }
+
+            } catch (e :IOException){
+                Toast.makeText(this@QuestionActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
     }
 
     private fun updatePoints(numberOfAnswer: Int, questionList: List<Question>) {

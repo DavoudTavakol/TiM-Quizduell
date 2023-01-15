@@ -30,15 +30,33 @@ class LastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.end_screen)
 
+        var game = intent.getParcelableExtra<Game>("game")
+
         // display nickname of player
         val nameOfPlayer = intent.getStringExtra("nickname")
         val player = findViewById<TextView>(R.id.whoAreYou)
-        player.setText("Danke fuers spielen " + nameOfPlayer + "!")
+        // display on screen
+        player.setText("Danke fürs spielen " + nameOfPlayer)
 
         // display nr of right questions answered
         val nrQ = intent.getStringExtra("nrOfRightQuestions")
         val rightQ = findViewById<TextView>(R.id.nrRightQ)
-        rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen rightig")
+        rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen richtig")
+
+        // display your achieved points
+        val totalP = intent.getStringExtra("p2".toString())
+        val myPoints = findViewById<TextView>(R.id.myPoints)
+        // myPoints.setText("Punkte: " + game!!.player2.score)
+        myPoints.setText("Punkte: " + totalP)
+        // TODO show REAL achieved pointsç
+
+        // display question list
+        val answeredQ = intent.getStringExtra("answers")
+        val list = findViewById<TextView>(R.id.qList)
+        // make TextView scrollable
+        list.movementMethod = ScrollingMovementMethod()
+        // display in screen
+        list.setText(answeredQ)
 
         // "Hauptmenue" button on screen
         val btnMenu = findViewById<Button>(R.id.btn1)
@@ -59,10 +77,10 @@ class LastActivity : AppCompatActivity() {
                     val intent = Intent(this@LastActivity, HighscoreActivity::class.java)
 
                     // send values to "HighscoreActivity"
-                    intent.putExtra("topTen",topTen)
+                    intent.putExtra("topTen", topTen)
 
                     startActivity(intent)
-                } catch (e : IOException)  {
+                } catch (e: IOException) {
                     Toast.makeText(this@LastActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -71,9 +89,9 @@ class LastActivity : AppCompatActivity() {
 
     // get highscores from DB
     // request
-    suspend fun getHighscoreTable() : ArrayList<Score> = GlobalScope.async(Dispatchers.IO) {
+    suspend fun getHighscoreTable(): ArrayList<Score> = GlobalScope.async(Dispatchers.IO) {
 
-        var topTen : ArrayList<Score> = arrayListOf()
+        var topTen: ArrayList<Score> = arrayListOf()
         val client = OkHttpClient()
         val request = Request.Builder()
             .url(getString(R.string.highscore_url))
@@ -87,30 +105,5 @@ class LastActivity : AppCompatActivity() {
         }
         return@async topTen
     }.await()
-
-    // ...
-    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onPostCreate(savedInstanceState, persistentState)
-
-        var game = intent.getParcelableExtra<Game>("game")
-
-        // display your achieved points
-        // val totalP = intent.getExtra(z)
-        val points = findViewById<TextView>(R.id.myPoints)
-        points.setText("Punkte: ${game!!.player2.score}.\n")
-        // TODO show REAL achieved points
-
-        // display question list
-        // val answeredQ = intent.getExtra(w)
-        val list = findViewById<TextView>(R.id.qList)
-        // make TextView scrollable
-        list.movementMethod = ScrollingMovementMethod()
-        // example text for testing of scrollbar
-        list.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." +
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
-        // list.setText(answeredQ.toString())
-        // TODO show REAL full list of answered questions
-
-    }
 
 }

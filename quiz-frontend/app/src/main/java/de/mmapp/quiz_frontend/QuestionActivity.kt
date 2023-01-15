@@ -1,11 +1,9 @@
 package de.mmapp.quiz_frontend
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -30,11 +28,12 @@ import okio.IOException
 
 class QuestionActivity : AppCompatActivity() {
 
+    // ...
     private var questionCount: Int = 0
     private var answerList: MutableList<Answer> = mutableListOf()
     private var numberOfRightQuestions: Int = 0
     private var nickname: String = ""
-    private var status : GameStatus = GameStatus.IN_PROGRESS
+    private var status: GameStatus = GameStatus.IN_PROGRESS
 
     // start of timer
     private var timeLeftInSeconds: Int = 60
@@ -42,7 +41,6 @@ class QuestionActivity : AppCompatActivity() {
     override fun onBackPressed() {
         println("Huhu")
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +52,6 @@ class QuestionActivity : AppCompatActivity() {
 
     }
 
-
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
@@ -64,9 +61,7 @@ class QuestionActivity : AppCompatActivity() {
         // Init Question and answers
         setQuestionNumber()
         setQuestion(game.questionList[0].question)
-        setAnswers(game.questionList,game.gameId)
-
-
+        setAnswers(game.questionList, game.gameId)
 
         val myProgressBar: MaterialProgressBar = findViewById<MaterialProgressBar>(R.id.progressbar)
         val timeView = findViewById<TextView>(R.id.gameTimer)
@@ -80,7 +75,7 @@ class QuestionActivity : AppCompatActivity() {
                 timeView.text = timeLeftInSeconds.toString()
                 myProgressBar.progress = (timeLeftInSeconds * (5.0 / 3.0)).toInt()
 
-                if (status == GameStatus.FINISHED){
+                if (status == GameStatus.FINISHED) {
                     cancel()
 
                 }
@@ -88,21 +83,20 @@ class QuestionActivity : AppCompatActivity() {
 
             override fun onFinish() {
 
-
                 GlobalScope.launch(Dispatchers.Main) {
-
-
-
-
 
                     try {
 
                         val fgame = getGame(game.gameId)
-                        if (fgame.gameStatus != GameStatus.FINISHED){
-                            val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        if (fgame.gameStatus != GameStatus.FINISHED) {
+                            val finishedGame = submitRequest(
+                                game.gameId,
+                                nickname,
+                                answerList,
+                                timeLeftInSeconds.toFloat()
+                            )
                             showDefaultDialog(finishedGame)
                         }
-
 
                     } catch (e: IOException) {
                         println(e.message)
@@ -122,13 +116,13 @@ class QuestionActivity : AppCompatActivity() {
 
     }
 
-
+    // ...
     private fun setQuestion(question: String) {
         val questionView = findViewById<TextView>(R.id.question)
         questionView.text = question
     }
 
-
+    // ...
     private fun setAnswers(questionList: List<Question>, gameId: String) {
 
         val answer1 = findViewById<Button>(R.id.answer1)
@@ -160,15 +154,15 @@ class QuestionActivity : AppCompatActivity() {
                 setQuestion(questionList[questionCount].question)
 
                 // Load next answers
-                setAnswers(questionList,gameId)
+                setAnswers(questionList, gameId)
             } else {
 
                 GlobalScope.launch(Dispatchers.Main) {
 
                     try {
 
-
-                        val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        val finishedGame =
+                            submitRequest(gameId, nickname, answerList, timeLeftInSeconds.toFloat())
 
                         showDefaultDialog(finishedGame)
 
@@ -181,8 +175,6 @@ class QuestionActivity : AppCompatActivity() {
                         ).show()
                     }
                 }
-
-
             }
         }
 
@@ -201,13 +193,14 @@ class QuestionActivity : AppCompatActivity() {
                 setQuestion(questionList[questionCount].question)
 
                 // Load next answers
-                setAnswers(questionList,gameId)
+                setAnswers(questionList, gameId)
             } else {
                 GlobalScope.launch(Dispatchers.Main) {
 
                     try {
 
-                        val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        val finishedGame =
+                            submitRequest(gameId, nickname, answerList, timeLeftInSeconds.toFloat())
                         showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
@@ -237,13 +230,14 @@ class QuestionActivity : AppCompatActivity() {
                 setQuestion(questionList[questionCount].question)
 
                 // Load next answers
-                setAnswers(questionList,gameId)
+                setAnswers(questionList, gameId)
             } else {
                 GlobalScope.launch(Dispatchers.Main) {
 
 
                     try {
-                        val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        val finishedGame =
+                            submitRequest(gameId, nickname, answerList, timeLeftInSeconds.toFloat())
 
                         showDefaultDialog(finishedGame)
 
@@ -274,15 +268,21 @@ class QuestionActivity : AppCompatActivity() {
                 setQuestion(questionList[questionCount].question)
 
                 // Load next answers
-                setAnswers(questionList,gameId)
+                setAnswers(questionList, gameId)
             } else {
                 GlobalScope.launch(Dispatchers.Main) {
 
                     try {
 
-                        val game = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        val game =
+                            submitRequest(gameId, nickname, answerList, timeLeftInSeconds.toFloat())
 
-                        val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        val finishedGame = submitRequest(
+                            game.gameId,
+                            nickname,
+                            answerList,
+                            timeLeftInSeconds.toFloat()
+                        )
 
                         showDefaultDialog(finishedGame)
 
@@ -299,11 +299,17 @@ class QuestionActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun submitRequest(gameId: String, nickname: String, answers: List<Answer>, time : Float): Game =
+    // ...
+    suspend fun submitRequest(
+        gameId: String,
+        nickname: String,
+        answers: List<Answer>,
+        time: Float
+    ): Game =
         GlobalScope.async(Dispatchers.IO) {
 
             220763
-            val jsonBody = object  {
+            val jsonBody = object {
                 var gameId = gameId
                 var nickname = nickname
                 var answers = answers
@@ -330,37 +336,37 @@ class QuestionActivity : AppCompatActivity() {
             return@async game
         }.await()
 
-
-    private fun loadLastActivity(game:Game) {
+    // ...
+    private fun loadLastActivity(game: Game) {
 
         val intent = Intent(this@QuestionActivity, LastActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
         val nrOfRightQuestions = numberOfRightQuestions.toString()
+        val answers = answerList.toString()
+
         intent.putExtra("nrOfRightQuestions", nrOfRightQuestions)
         intent.putExtra("nickname", nickname)
-        intent.putExtra("game",game)
-        // TODO send points of players
-        // TODO send all questions and answers
+        intent.putExtra("game", game)
+        intent.putExtra("answers", answers)
+
         startActivity(intent)
     }
 
-
+    // ...
     private fun showDefaultDialog(game: Game) {
-
 
         println(game.player2.score)
         println("=========SCORE============")
         status = GameStatus.FINISHED
         var alertDialog = AlertDialog.Builder(this)
         val al = alertDialog.apply {
-            setTitle("Sehe Fragen")
+            setTitle("Loading...")
             setCancelable(false)
-            setMessage(answerList.toString())
+            setMessage("anderer Spieler spielt noch")
         }.create()
 
         al.show()
-
-
 
         GlobalScope.launch {
             try {
@@ -389,14 +395,13 @@ class QuestionActivity : AppCompatActivity() {
                         }
                     }
 
-            } catch (e :IOException){
+            } catch (e: IOException) {
                 Toast.makeText(this@QuestionActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
             }
-
         }
-
     }
 
+    // ...
     private fun updatePoints(numberOfAnswer: Int, questionList: List<Question>) {
         val isAnswerCorrect = questionList[questionCount].answer[numberOfAnswer].isAnswerCorrect
         if (isAnswerCorrect) {
@@ -405,17 +410,19 @@ class QuestionActivity : AppCompatActivity() {
         }
     }
 
+    // ...
     private fun setQuestionNumber() {
         val numberView = findViewById<TextView>(R.id.number)
         val questionNumber: Int = questionCount + 1
         numberView.text = "Frage Nummer: $questionNumber "
     }
 
-    private suspend fun getGame(gameId : String) : Game = GlobalScope.async(Dispatchers.IO) {
+    // ...
+    private suspend fun getGame(gameId: String): Game = GlobalScope.async(Dispatchers.IO) {
 
         delay(1000)
 
-        var game : Game
+        var game: Game
         val client = OkHttpClient()
         val request = Request.Builder()
             .url(getString(R.string.get_game_url))
@@ -430,6 +437,4 @@ class QuestionActivity : AppCompatActivity() {
         }
         return@async game
     }.await()
-
-
 }

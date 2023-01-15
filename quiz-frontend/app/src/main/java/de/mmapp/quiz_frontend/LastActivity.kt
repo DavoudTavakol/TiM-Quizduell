@@ -4,11 +4,8 @@ package de.mmapp.quiz_frontend
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.method.ScrollingMovementMethod
-import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,12 +14,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.models.Game
 import de.mmapp.quiz_frontend.models.Score
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
 
 class LastActivity : AppCompatActivity() {
@@ -44,11 +37,11 @@ class LastActivity : AppCompatActivity() {
         rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen richtig")
 
         // display your achieved points
-        val totalP = intent.getStringExtra("p2".toString())
+        // val totalP = intent.getExtra()
         val myPoints = findViewById<TextView>(R.id.myPoints)
-        // myPoints.setText("Punkte: " + game!!.player2.score)
-        myPoints.setText("Punkte: " + totalP)
-        // TODO show REAL achieved pointsç
+        myPoints.setText("Punkte: " + game!!.player2.score)
+        // myPoints.setText("Punkte: " + totalP)
+        // TODO show REAL achieved points
 
         // display question list
         val answeredQ = intent.getStringExtra("answers")

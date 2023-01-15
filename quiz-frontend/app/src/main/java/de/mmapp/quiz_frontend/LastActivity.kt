@@ -47,7 +47,7 @@ class LastActivity : AppCompatActivity() {
             val intent = Intent(this, CategoriesActivity::class.java)
             startActivity(intent)
         }
-        // DISABLED AT THE MOMENT
+        // btn disable
         btnNewGame.isEnabled = false
         // TODO both players must press "Erneut spielen" to confirm that they are ready.
         //  (Player 1 presses Play again -> wait circle appears until player 2 also presses Play again (the other way round too)).
@@ -76,11 +76,29 @@ class LastActivity : AppCompatActivity() {
                     startActivity(intent)
                 } catch (e : IOException)  {
                     Toast.makeText(this@LastActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
-
                 }
             }
         }
     }
+
+    // get highscores from DB
+    // request
+    suspend fun getHighscoreTable() : ArrayList<Score> = GlobalScope.async(Dispatchers.IO) {
+
+        var topTen : ArrayList<Score> = arrayListOf()
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(getString(R.string.highscore_url))
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val mapper = jacksonObjectMapper()
+
+            topTen = mapper.readValue(response.body.string())
+        }
+        return@async topTen
+    }.await()
 
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onPostCreate(savedInstanceState, persistentState)
@@ -91,8 +109,6 @@ class LastActivity : AppCompatActivity() {
         progressbar.visibility = View.VISIBLE
         var game = intent.getParcelableExtra<Game>("game")
 
-
-
         GlobalScope.launch {
 
             try {
@@ -102,7 +118,6 @@ class LastActivity : AppCompatActivity() {
                         getGame(game!!.gameId)
                     }
                     .collect { response ->
-
 
                         println("======================")
                         println(response.player1.answers)
@@ -118,7 +133,7 @@ class LastActivity : AppCompatActivity() {
                     }
 
             } catch (e :IOException){
-
+                Toast.makeText(this@LastActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -138,36 +153,14 @@ class LastActivity : AppCompatActivity() {
         list.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." +
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
         // list.setText(answeredQ.toString())
-
-
         // TODO show REAL full list of answered questions
 
-
     }
-
-    // get highscores from DB
-    // request
-
-    suspend fun getHighscoreTable() : ArrayList<Score> = GlobalScope.async(Dispatchers.IO) {
-
-        var topTen : ArrayList<Score> = arrayListOf()
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url(getString(R.string.highscore_url))
-            .build()
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val mapper = jacksonObjectMapper()
-
-            topTen = mapper.readValue(response.body.string())
-        }
-        return@async topTen
-    }.await()
 
     private suspend fun getGame(gameId : String) : Game = GlobalScope.async(Dispatchers.IO) {
 
         delay(1000)
+
         var game : Game
         val client = OkHttpClient()
         val request = Request.Builder()
@@ -183,6 +176,5 @@ class LastActivity : AppCompatActivity() {
         }
         return@async game
     }.await()
-
 
 }

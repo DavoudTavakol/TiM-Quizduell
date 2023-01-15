@@ -16,6 +16,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.models.Answer
 import de.mmapp.quiz_frontend.models.Game
+import de.mmapp.quiz_frontend.models.GameStatus
 import de.mmapp.quiz_frontend.models.Question
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
@@ -33,6 +34,7 @@ class QuestionActivity : AppCompatActivity() {
     private var answerList: MutableList<Answer> = mutableListOf()
     private var numberOfRightQuestions: Int = 0
     private var nickname: String = ""
+    private var status : GameStatus = GameStatus.IN_PROGRESS
 
     // start of timer
     private var timeLeftInSeconds: Int = 60
@@ -64,7 +66,7 @@ class QuestionActivity : AppCompatActivity() {
         setQuestion(game.questionList[0].question)
         setAnswers(game.questionList,game.gameId)
 
-        373431
+
 
         val myProgressBar: MaterialProgressBar = findViewById<MaterialProgressBar>(R.id.progressbar)
         val timeView = findViewById<TextView>(R.id.gameTimer)
@@ -77,15 +79,30 @@ class QuestionActivity : AppCompatActivity() {
                 timeLeftInSeconds--
                 timeView.text = timeLeftInSeconds.toString()
                 myProgressBar.progress = (timeLeftInSeconds * (5.0 / 3.0)).toInt()
+
+                if (status == GameStatus.FINISHED){
+                    cancel()
+
+                }
             }
 
             override fun onFinish() {
+
+
                 GlobalScope.launch(Dispatchers.Main) {
+
+
+
+
 
                     try {
 
-                        val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
-                        showDefaultDialog(finishedGame)
+                        val fgame = getGame(game.gameId)
+                        if (fgame.gameStatus != GameStatus.FINISHED){
+                            val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                            showDefaultDialog(finishedGame)
+                        }
+
 
                     } catch (e: IOException) {
                         println(e.message)
@@ -150,7 +167,9 @@ class QuestionActivity : AppCompatActivity() {
 
                     try {
 
+
                         val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+
                         showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
@@ -327,21 +346,23 @@ class QuestionActivity : AppCompatActivity() {
 
 
     private fun showDefaultDialog(game: Game) {
-        /*
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.apply {
-            setCancelable(false)
+
+
+        println(game.player2.score)
+        println("=========SCORE============")
+        status = GameStatus.FINISHED
+        var alertDialog = AlertDialog.Builder(this)
+        val al = alertDialog.apply {
             setTitle("Sehe Fragen")
+            setCancelable(false)
             setMessage(answerList.toString())
-            setPositiveButton("Zum Ergebniss") { _,_->
-            }
-        }.create().show()
+        }.create()
+
+        al.show()
 
 
-         */
 
         GlobalScope.launch {
-
             try {
                 var finishedGame: Game
 
@@ -359,6 +380,8 @@ class QuestionActivity : AppCompatActivity() {
                             //progressbar.visibility = View.INVISIBLE
                             finishedGame = response
 
+                            alertDialog.setCancelable(true)
+                            al.dismiss()
                             loadLastActivity(finishedGame)
 
                             // ToDo Am Besten Hier das UI Updaten

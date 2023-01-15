@@ -15,25 +15,9 @@ class HighscoreActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.highscore_screen)
 
+        // highscore table
         val topTen = intent.getParcelableArrayListExtra<Score>("topTen")
 
-        // highscore view
-        val table = findViewById<TextView>(R.id.top10)
-        // create String to save the values
-        var text = "\nPosition : Nickname : Score\n"
-        // create int to give nr of position
-        var x: Int = 1
-        // get the top ten scores one after the other on separate rows
-        // where [position: nickname: score]
-        for (i in topTen!!) {
-            text += "$x." + " : " + i.nickname + " : " + i.score + "\n"
-            x+=1
-        }
-        // display in screen
-        table.setText(text)
-
-
-        // highscore table
         var positionInTop = findViewById<TextView>(R.id.pos)
         var nicknameOfPlayer = findViewById<TextView>(R.id.nick)
         var totalScore = findViewById<TextView>(R.id.sco)
@@ -44,7 +28,7 @@ class HighscoreActivity : AppCompatActivity() {
         // create int to give nr of position
         var n: Int = 1
         // add position one after the other in column 1
-        for (i in topTen!!) {
+        for (i in topTen!!.subList(0,10)) {
             tmpPos += "$n." + "\n"
             n+=1
         }
@@ -55,7 +39,7 @@ class HighscoreActivity : AppCompatActivity() {
         // create String to save the values of nicknames
         var tmpNick = ""
         // add nicknames one after the other in column 2
-        for (i in topTen!!) {
+        for (i in topTen!!.subList(0,10)) {
             tmpNick += i.nickname + "\n"
         }
         // display in screen
@@ -65,7 +49,7 @@ class HighscoreActivity : AppCompatActivity() {
         // create String to save the values of scores
         var tmpSco = ""
         // add scores one after the other in column 3
-        for (i in topTen!!) {
+        for (i in topTen!!.subList(0,10)) {
             tmpSco += i.score.toString() + "\n"
         }
         // display in screen

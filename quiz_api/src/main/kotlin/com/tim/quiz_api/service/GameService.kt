@@ -54,9 +54,9 @@ class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoR
                 game.player2.time = time
             }
 
-            if(game.gameStatus == GameStatus.IN_PROGRESS)
+            if(game.player1.answers.isNotEmpty() xor game.player2.answers.isNotEmpty())
                 game.gameStatus = GameStatus.HALFFINISHED
-            else if(game.gameStatus == GameStatus.HALFFINISHED)
+            else if(game.player1.answers.isNotEmpty() and game.player2.answers.isNotEmpty())
                 game.gameStatus = GameStatus.FINISHED
 
         }

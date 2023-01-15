@@ -75,7 +75,7 @@ class GameController @Autowired constructor(
             highscoreService.updateHighscore(game.player2.score, game.player2.nickname)
         }
 
-        if(game.gameStatus == GameStatus.FINISHED){
+        if(game.gameStatus == GameStatus.HALFFINISHED || game.gameStatus == GameStatus.FINISHED){
             gameService.saveGameInDatabase(game)
             //gameService.deleteGameFromLocalRepo(game.gameId)
         }

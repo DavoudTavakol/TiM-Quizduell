@@ -1,12 +1,15 @@
 package de.mmapp.quiz_frontend
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -15,6 +18,8 @@ import de.mmapp.quiz_frontend.models.Answer
 import de.mmapp.quiz_frontend.models.Game
 import de.mmapp.quiz_frontend.models.Question
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -80,7 +85,7 @@ class QuestionActivity : AppCompatActivity() {
                     try {
 
                         val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
-                        loadLastActivity(finishedGame)
+                        showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
                         println(e.message)
@@ -139,14 +144,13 @@ class QuestionActivity : AppCompatActivity() {
                 // Load next answers
                 setAnswers(questionList,gameId)
             } else {
-                400832
 
                 GlobalScope.launch(Dispatchers.Main) {
 
                     try {
 
                         val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
-                        loadLastActivity(finishedGame)
+                        showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
                         println(e.message)
@@ -184,7 +188,7 @@ class QuestionActivity : AppCompatActivity() {
                     try {
 
                         val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
-                        loadLastActivity(finishedGame)
+                        showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
                         println(e.message)
@@ -221,7 +225,7 @@ class QuestionActivity : AppCompatActivity() {
                     try {
                         val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
 
-                        loadLastActivity(finishedGame)
+                        showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
                         println(e.message)
@@ -260,7 +264,7 @@ class QuestionActivity : AppCompatActivity() {
 
                         val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
 
-                        loadLastActivity(finishedGame)
+                        showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
                         println(e.message)
@@ -308,6 +312,7 @@ class QuestionActivity : AppCompatActivity() {
 
 
     private fun loadLastActivity(game:Game) {
+
         val intent = Intent(this@QuestionActivity, LastActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val nrOfRightQuestions = numberOfRightQuestions.toString()
@@ -317,6 +322,48 @@ class QuestionActivity : AppCompatActivity() {
         // TODO send points of players
         // TODO send all questions and answers
         startActivity(intent)
+    }
+
+    private fun showDefaultDialog(game: Game) {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.apply {
+            setCancelable(false)
+            setFinishOnTouchOutside(false)
+            setTitle("Sehe Fragen")
+            setMessage(answerList.toString())
+            setPositiveButton("Zum Ergebniss") { _,_->
+                GlobalScope.launch {
+
+                    try {
+                            var finishedGame: Game
+
+                        (1..20).asFlow() // a flow of requests
+                            .map { request ->
+                                getGame(game!!.gameId)
+                            }
+                            .collect { response ->
+
+                                println("======================")
+                                println(response.player1.answers)
+                                println("======================")
+
+                                if (response.player1.answers.isNotEmpty() && response.player2.answers.isNotEmpty()) {
+                                    //progressbar.visibility = View.INVISIBLE
+                                    finishedGame = response
+                                    loadLastActivity(finishedGame)
+
+                                    // ToDo Am Besten Hier das UI Updaten
+                                    this.cancel()
+                                }
+                            }
+
+                    } catch (e :IOException){
+                        Toast.makeText(this@QuestionActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            }
+        }.create().show()
     }
 
     private fun updatePoints(numberOfAnswer: Int, questionList: List<Question>) {
@@ -332,6 +379,26 @@ class QuestionActivity : AppCompatActivity() {
         val questionNumber: Int = questionCount + 1
         numberView.text = "Frage Nummer: $questionNumber "
     }
+
+    private suspend fun getGame(gameId : String) : Game = GlobalScope.async(Dispatchers.IO) {
+
+        delay(1000)
+
+        var game : Game
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(getString(R.string.get_game_url))
+            .post(gameId.toRequestBody("application/json; charset=utf-8".toMediaType()))
+            .build()
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val mapper = jacksonObjectMapper()
+
+            game = mapper.readValue(response.body.string())
+        }
+        return@async game
+    }.await()
 
 
 }

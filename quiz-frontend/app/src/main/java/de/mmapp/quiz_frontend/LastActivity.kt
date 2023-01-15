@@ -40,20 +40,8 @@ class LastActivity : AppCompatActivity() {
         val rightQ = findViewById<TextView>(R.id.nrRightQ)
         rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen rightig")
 
-        //"Erneut spielen" button on screen
-        val btnNewGame = findViewById<Button>(R.id.btn1)
-        btnNewGame.setOnClickListener {
-            // redirect to category screen
-            val intent = Intent(this, CategoriesActivity::class.java)
-            startActivity(intent)
-        }
-        // btn disable
-        btnNewGame.isEnabled = false
-        // TODO both players must press "Erneut spielen" to confirm that they are ready.
-        //  (Player 1 presses Play again -> wait circle appears until player 2 also presses Play again (the other way round too)).
-
         // "Hauptmenue" button on screen
-        val btnMenu = findViewById<Button>(R.id.btn2)
+        val btnMenu = findViewById<Button>(R.id.btn1)
         btnMenu.setOnClickListener {
             // redirect to main screen
             val intent = Intent(this, MainActivity::class.java)
@@ -61,7 +49,7 @@ class LastActivity : AppCompatActivity() {
         }
 
         // "Highscore Tabelle anzeigen" button on screen
-        val btnHighscore = findViewById<Button>(R.id.btn3)
+        val btnHighscore = findViewById<Button>(R.id.btn2)
         btnHighscore.setOnClickListener {
             GlobalScope.launch(Dispatchers.Main) {
                 try {
@@ -100,43 +88,11 @@ class LastActivity : AppCompatActivity() {
         return@async topTen
     }.await()
 
+    // ...
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onPostCreate(savedInstanceState, persistentState)
 
-        val progressbar  = findViewById<ProgressBar>(R.id.requestProgress2)
-
-        progressbar.isIndeterminate = true
-        progressbar.visibility = View.VISIBLE
         var game = intent.getParcelableExtra<Game>("game")
-
-        GlobalScope.launch {
-
-            try {
-
-                (1..20).asFlow() // a flow of requests
-                    .map { request ->
-                        getGame(game!!.gameId)
-                    }
-                    .collect { response ->
-
-                        println("======================")
-                        println(response.player1.answers)
-                        println("======================")
-
-                        if (response.player1.answers.isNotEmpty() && response.player2.answers.isNotEmpty()) {
-                            progressbar.visibility = View.INVISIBLE
-                            game = response
-
-                            // ToDo Am Besten Hier das UI Updaten
-                            this.cancel()
-                        }
-                    }
-
-            } catch (e :IOException){
-                Toast.makeText(this@LastActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
-            }
-
-        }
 
         // display your achieved points
         // val totalP = intent.getExtra(z)
@@ -145,7 +101,7 @@ class LastActivity : AppCompatActivity() {
         // TODO show REAL achieved points
 
         // display question list
-        // val answeredQ = intent.putExtra(w)
+        // val answeredQ = intent.getExtra(w)
         val list = findViewById<TextView>(R.id.qList)
         // make TextView scrollable
         list.movementMethod = ScrollingMovementMethod()
@@ -156,25 +112,5 @@ class LastActivity : AppCompatActivity() {
         // TODO show REAL full list of answered questions
 
     }
-
-    private suspend fun getGame(gameId : String) : Game = GlobalScope.async(Dispatchers.IO) {
-
-        delay(1000)
-
-        var game : Game
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url(getString(R.string.get_game_url))
-            .post(gameId.toRequestBody("application/json; charset=utf-8".toMediaType()))
-            .build()
-
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val mapper = jacksonObjectMapper()
-
-            game = mapper.readValue(response.body.string())
-        }
-        return@async game
-    }.await()
 
 }

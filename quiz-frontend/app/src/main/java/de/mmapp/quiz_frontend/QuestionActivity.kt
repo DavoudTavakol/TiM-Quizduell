@@ -302,7 +302,7 @@ class QuestionActivity : AppCompatActivity() {
     suspend fun submitRequest(gameId: String, nickname: String, answers: List<Answer>, time : Float): Game =
         GlobalScope.async(Dispatchers.IO) {
 
-            220763
+
             val jsonBody = object  {
                 var gameId = gameId
                 var nickname = nickname
@@ -334,11 +334,13 @@ class QuestionActivity : AppCompatActivity() {
     private fun loadLastActivity(game:Game) {
 
         val intent = Intent(this@QuestionActivity, LastActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        //intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val nrOfRightQuestions = numberOfRightQuestions.toString()
         intent.putExtra("nrOfRightQuestions", nrOfRightQuestions)
         intent.putExtra("nickname", nickname)
-        intent.putExtra("game",game)
+        intent.putExtra("score1",game.player1.score)
+        intent.putExtra("score2",game.player2.score)
+
         // TODO send points of players
         // TODO send all questions and answers
         startActivity(intent)
@@ -382,7 +384,13 @@ class QuestionActivity : AppCompatActivity() {
 
                             alertDialog.setCancelable(true)
                             al.dismiss()
+
+
+                            println(finishedGame.player1.score)
+                            println(finishedGame.player2.score)
+
                             loadLastActivity(finishedGame)
+
 
                             // ToDo Am Besten Hier das UI Updaten
                             this.cancel()

@@ -60,6 +60,8 @@ class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoR
                 game.gameStatus = GameStatus.FINISHED
 
         }
+
+        GamesLocalRepo.games[game!!.gameId] = game
         return game
     }
 

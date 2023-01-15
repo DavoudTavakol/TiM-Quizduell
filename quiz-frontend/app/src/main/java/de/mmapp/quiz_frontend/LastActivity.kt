@@ -40,6 +40,18 @@ class LastActivity : AppCompatActivity() {
         val rightQ = findViewById<TextView>(R.id.nrRightQ)
         rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen rightig")
 
+
+        var score1 = intent.getIntExtra("score1", 0)
+        var score2 = intent.getIntExtra("score2", 0)
+
+
+        
+        // display your achieved points
+        // val totalP = intent.getExtra(z)
+        val points = findViewById<TextView>(R.id.myPoints)
+        points.setText("Punkte: $score1 : $score2")
+
+
         // "Hauptmenue" button on screen
         val btnMenu = findViewById<Button>(R.id.btn1)
         btnMenu.setOnClickListener {
@@ -92,12 +104,6 @@ class LastActivity : AppCompatActivity() {
     override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onPostCreate(savedInstanceState, persistentState)
 
-        var game = intent.getParcelableExtra<Game>("game")
-
-        // display your achieved points
-        // val totalP = intent.getExtra(z)
-        val points = findViewById<TextView>(R.id.myPoints)
-        points.setText("Punkte: ${game!!.player2.score}.\n")
         // TODO show REAL achieved points
 
         // display question list

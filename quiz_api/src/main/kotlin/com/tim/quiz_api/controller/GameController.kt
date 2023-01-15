@@ -54,7 +54,6 @@ class GameController @Autowired constructor(
             categoryIdList.add(cat.id)
         }
         val questions = questionService.getRandomQuestionsLimit(CategoryIdListDTO(categoryIdList),10)
-        println(questions)
         return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories, questions))
     }
 

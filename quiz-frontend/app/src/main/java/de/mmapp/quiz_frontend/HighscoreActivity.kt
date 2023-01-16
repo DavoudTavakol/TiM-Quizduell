@@ -1,14 +1,11 @@
 package de.mmapp.quiz_frontend
 
-// by Irene Santana Martin
-
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import de.mmapp.quiz_frontend.models.Score
-import org.w3c.dom.Text
 
 class HighscoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +58,9 @@ class HighscoreActivity : AppCompatActivity() {
             // redirect to main screen
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            // ensure to close the previous activity before starting the new one
+            // all variables will be reset when the activity is restarted
+            finish()
         }
     }
 }

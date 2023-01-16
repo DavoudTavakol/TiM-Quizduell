@@ -60,7 +60,8 @@
                 app:lottie_autoPlay="true"
                 app:lottie_loop="true"
                 app:lottie_rawRes="@raw/wait"
-                tools:visibility="invisible" />
+                tools:visibility="invisible"
+                tools:ignore="MissingClass" />
 
             <Button
                 android:id="@+id/answer4"

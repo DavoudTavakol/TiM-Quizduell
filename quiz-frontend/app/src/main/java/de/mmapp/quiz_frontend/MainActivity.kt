@@ -147,7 +147,6 @@ class MainActivity : AppCompatActivity() {
 
                     GlobalScope.launch(Dispatchers.Main) {
 
-                        848846
                         try {
                             game = connectToGameRequest(
                                 inputPlayerTwo.text.toString(),

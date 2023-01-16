@@ -53,7 +53,16 @@ class LastActivity : AppCompatActivity() {
 
         // display your achieved points
         val points = findViewById<TextView>(R.id.myPoints)
-        points.setText("Punkte: " + score2)
+        // create Int to save the values
+        var pPoints: Int = 0
+        // show points of right player
+        if (nameOfPlayer == game.player2.nickname){
+            pPoints = score2
+        } else if (nameOfPlayer == game.player1.nickname) {
+            pPoints = score1
+        }
+        // display on screen
+        points.setText("Punkte: " + pPoints)
 
         // display question list
         val listView = findViewById<TextView>(R.id.qList)

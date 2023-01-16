@@ -25,6 +25,7 @@ class HighscoreActivity : AppCompatActivity() {
         // create int to give nr of position
         var n: Int = 1
         // add position one after the other in column 1
+        // .subList(min, max): just a secure measure
         for (i in topTen!!.subList(0,10)) {
             tmpPos += "$n." + "\n"
             n+=1
@@ -36,6 +37,7 @@ class HighscoreActivity : AppCompatActivity() {
         // create String to save the values of nicknames
         var tmpNick = ""
         // add nicknames one after the other in column 2
+        // .subList(min, max): just a secure measure
         for (i in topTen!!.subList(0,10)) {
             tmpNick += i.nickname + "\n"
         }
@@ -46,6 +48,7 @@ class HighscoreActivity : AppCompatActivity() {
         // create String to save the values of scores
         var tmpSco = ""
         // add scores one after the other in column 3
+        // .subList(min, max): just a secure measure
         for (i in topTen!!.subList(0,10)) {
             tmpSco += i.score.toString() + "\n"
         }

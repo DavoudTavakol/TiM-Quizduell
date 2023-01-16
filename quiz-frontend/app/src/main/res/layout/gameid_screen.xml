@@ -35,6 +35,36 @@ tools:context=".CategoriesActivity">
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/passGameId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="22dp"
+            app:layout_constraintBottom_toTopOf="@+id/gameId"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.784" />
+
+        <LinearLayout
+            android:id="@+id/ll_game_layout"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="20dp"
+            android:paddingRight="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/startButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            tools:context=".MainActivity"
+            tools:layout_editor_absoluteX="16dp">
+
+        </LinearLayout>
+
         <ProgressBar
             android:id="@+id/requestProgress"
             style="?android:attr/progressBarStyle"
@@ -57,31 +87,6 @@ tools:context=".CategoriesActivity">
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_game"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="60dp"
-        android:paddingRight="16dp"
-        app:layout_anchor="@+id/constraintLayout"
-        app:layout_anchorGravity="center"
-        tools:context=".MainActivity">
-
-        <TextView
-            android:id="@+id/passGameId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@android:color/white"
-            android:textSize="22dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/gameId"
@@ -89,39 +94,28 @@ tools:context=".CategoriesActivity">
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
             android:textColor="@color/gold"
             android:textSize="40dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.907" />
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wähle aus folgenden Kategorien aus:"
             android:textColor="@color/white"
             android:textSize="22dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/ll_game_layout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <LinearLayout
-            android:id="@+id/ll_game_layout"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingTop="20dp"
-            android:paddingRight="16dp"
-            tools:context=".MainActivity">
-
-        </LinearLayout>
-
-    </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.895" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

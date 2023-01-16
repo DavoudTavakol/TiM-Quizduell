@@ -1,6 +1,5 @@
 package de.mmapp.quiz_frontend
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -9,9 +8,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.airbnb.lottie.LottieAnimationView
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.models.Answer
@@ -52,6 +51,11 @@ class QuestionActivity : AppCompatActivity() {
         card.setCardBackgroundColor(Color.rgb(240, 240, 240))
         card.cardElevation = 10.0F
 
+        val anim = findViewById<LottieAnimationView>(R.id.animationView2)
+        anim.visibility = View.INVISIBLE
+        anim.setMinAndMaxFrame(137,280)
+
+
     }
 
 
@@ -90,19 +94,15 @@ class QuestionActivity : AppCompatActivity() {
 
 
                 GlobalScope.launch(Dispatchers.Main) {
-
-
-
-
-
                     try {
 
                         val fgame = getGame(game.gameId)
-                        if (fgame.gameStatus != GameStatus.FINISHED){
+                        if (status != GameStatus.FINISHED ){
                             val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+
+
                             showDefaultDialog(finishedGame)
                         }
-
 
                     } catch (e: IOException) {
                         println(e.message)
@@ -341,6 +341,16 @@ class QuestionActivity : AppCompatActivity() {
         intent.putExtra("score1",game.player1.score)
         intent.putExtra("score2",game.player2.score)
 
+        var questions : ArrayList<String> = arrayListOf()
+
+        println(game.questionList)
+
+        for (i in game.questionList) {
+            questions.add(i.question)
+        }
+
+        intent.putExtra("questions",questions)
+
         // TODO send points of players
         // TODO send all questions and answers
         startActivity(intent)
@@ -353,14 +363,34 @@ class QuestionActivity : AppCompatActivity() {
         println(game.player2.score)
         println("=========SCORE============")
         status = GameStatus.FINISHED
-        var alertDialog = AlertDialog.Builder(this)
+        /*
+        var alertDialog = MaterialAlertDialogBuilder(ContextThemeWrapper(this,R.style.MaterialAlertDialogRoundedStyle))
         val al = alertDialog.apply {
-            setTitle("Sehe Fragen")
             setCancelable(false)
+            setTitle("Fragen und Antworten")
             setMessage(answerList.toString())
         }.create()
 
         al.show()
+
+         */
+
+        val anim = findViewById<LottieAnimationView>(R.id.animationView2)
+        val button1 = findViewById<Button>(R.id.answer1)
+        val button2 = findViewById<Button>(R.id.answer2)
+        val button3 = findViewById<Button>(R.id.answer3)
+        val button4 = findViewById<Button>(R.id.answer4)
+
+
+        button1.visibility = View.INVISIBLE
+        button2.visibility = View.INVISIBLE
+        button3.visibility = View.INVISIBLE
+        button4.visibility = View.INVISIBLE
+
+        anim.visibility = View.VISIBLE
+
+
+
 
 
 
@@ -382,8 +412,10 @@ class QuestionActivity : AppCompatActivity() {
                             //progressbar.visibility = View.INVISIBLE
                             finishedGame = response
 
-                            alertDialog.setCancelable(true)
-                            al.dismiss()
+                            //alertDialog.setCancelable(true)
+                            //al.dismiss()
+                            //anim.visibility = View.INVISIBLE
+
 
 
                             println(finishedGame.player1.score)

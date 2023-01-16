@@ -45,7 +45,9 @@ class LastActivity : AppCompatActivity() {
         var score2 = intent.getIntExtra("score2", 0)
 
 
-        
+        val questions = intent.getStringArrayListExtra("questions")
+        val fragenview = findViewById<TextView>(R.id.qList)
+        fragenview.text = questions.toString()
         // display your achieved points
         // val totalP = intent.getExtra(z)
         val points = findViewById<TextView>(R.id.myPoints)

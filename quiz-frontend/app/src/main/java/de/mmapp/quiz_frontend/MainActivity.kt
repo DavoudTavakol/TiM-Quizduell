@@ -10,12 +10,11 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.airbnb.lottie.LottieAnimationView
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.CategoriesActivity.Companion.checkIfReady
 import de.mmapp.quiz_frontend.models.Game
-import de.mmapp.quiz_frontend.models.GameStatus
-import de.mmapp.quiz_frontend.models.Player
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
@@ -23,9 +22,11 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
+
+
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +107,10 @@ class MainActivity : AppCompatActivity() {
             nicknameTwo.text = "Willkommen " + nicknamePlTwo + "!"
             text.text = game.player1.nickname + " wählt gerade die Kategorien. \nBitte habe noch einen Moment Geduld, es geht gleich los!"
 
+
+            val anim = findViewById<LottieAnimationView>(R.id.animationView2)
+            anim.visibility = View.VISIBLE
+            anim.setMinAndMaxFrame(137,280)
             // Polling : Asking the server every second if the other player is ready.
             // checkIfReady is a static method of the class CategoriesActivity
             var newGame: Game

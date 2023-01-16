@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -39,6 +40,7 @@
         android:paddingTop="60dp"
         android:paddingRight="16dp"
         tools:context=".MainActivity">
+
 
         <TextView
             android:layout_width="wrap_content"

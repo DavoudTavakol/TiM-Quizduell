@@ -127,7 +127,7 @@ class CategoriesActivity : AppCompatActivity() {
                             game.questionList = response.questions
                             intent.putExtra("game", game)
                             intent.putExtra("nickname", nickname)
-                            progressbar.visibility = View.INVISIBLE
+                            //progressbar.visibility = View.INVISIBLE
                             startActivity(intent)
 
                             this.cancel()

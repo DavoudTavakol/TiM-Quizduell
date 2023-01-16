@@ -1,14 +1,9 @@
 package de.mmapp.quiz_frontend
 
-// by Irene Santana Martin
-
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.method.ScrollingMovementMethod
-import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,12 +12,8 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.models.Game
 import de.mmapp.quiz_frontend.models.Score
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.map
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
 
 class LastActivity : AppCompatActivity() {
@@ -30,29 +21,46 @@ class LastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.end_screen)
 
-        // display nickname of player
+        // all vars/vals
+        // from previous activity
+        val game = intent.getParcelableExtra<Game>("game")
         val nameOfPlayer = intent.getStringExtra("nickname")
-        val player = findViewById<TextView>(R.id.whoAreYou)
-        player.setText("Danke fuers spielen " + nameOfPlayer + "!")
-
-        // display nr of right questions answered
         val nrQ = intent.getStringExtra("nrOfRightQuestions")
-        val rightQ = findViewById<TextView>(R.id.nrRightQ)
-        rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen rightig")
-
-
         var score1 = intent.getIntExtra("score1", 0)
         var score2 = intent.getIntExtra("score2", 0)
-
-
         val questions = intent.getStringArrayListExtra("questions")
-        val fragenview = findViewById<TextView>(R.id.qList)
-        fragenview.text = questions.toString()
-        // display your achieved points
-        // val totalP = intent.getExtra(z)
-        val points = findViewById<TextView>(R.id.myPoints)
-        points.setText("Punkte: $score1 : $score2")
 
+        // display winner
+        val winner = findViewById<TextView>(R.id.whoWon)
+        // create String to save the values of nickname of winner
+        var name: String = ""
+        // define winner by comparing scores
+        if (score1 > score2) {
+            name = game!!.player1.nickname
+        } else {
+            name = game!!.player2.nickname
+        }
+        // display on screen
+        winner.setText("[" + name + "] hat gewonnen!")
+
+        // display nickname of current player
+        val player = findViewById<TextView>(R.id.whoAreYou)
+        player.setText("Deine Ergebnisse [" + nameOfPlayer + "]:")
+
+        // display nr of right questions answered
+        val rightQ = findViewById<TextView>(R.id.nrRightQ)
+        rightQ.setText("Insgesamt " + nrQ + " von 10 Fragen richtig")
+
+        // display your achieved points
+        val points = findViewById<TextView>(R.id.myPoints)
+        points.setText("Punkte: " + score2)
+
+        // display question list
+        val listView = findViewById<TextView>(R.id.qList)
+        // make TextView scrollable
+        listView.movementMethod = ScrollingMovementMethod()
+        // display on screen
+        listView.setText("Fragenliste: \n" + questions.toString())
 
         // "Hauptmenue" button on screen
         val btnMenu = findViewById<Button>(R.id.btn1)
@@ -60,6 +68,9 @@ class LastActivity : AppCompatActivity() {
             // redirect to main screen
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            // ensure to close the previous activity before starting the new one
+            // all variables will be reset when the activity is restarted
+            finish()
         }
 
         // "Highscore Tabelle anzeigen" button on screen
@@ -76,6 +87,10 @@ class LastActivity : AppCompatActivity() {
                     intent.putExtra("topTen",topTen)
 
                     startActivity(intent)
+
+                    // ensure to close the previous activity before starting the new one
+                    // all variables will be reset when the activity is restarted
+                    finish()
                 } catch (e : IOException)  {
                     Toast.makeText(this@LastActivity, "Keine Verbindung", Toast.LENGTH_SHORT).show()
                 }
@@ -101,24 +116,5 @@ class LastActivity : AppCompatActivity() {
         }
         return@async topTen
     }.await()
-
-    // ...
-    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onPostCreate(savedInstanceState, persistentState)
-
-        // TODO show REAL achieved points
-
-        // display question list
-        // val answeredQ = intent.getExtra(w)
-        val list = findViewById<TextView>(R.id.qList)
-        // make TextView scrollable
-        list.movementMethod = ScrollingMovementMethod()
-        // example text for testing of scrollbar
-        list.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." +
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
-        // list.setText(answeredQ.toString())
-        // TODO show REAL full list of answered questions
-
-    }
 
 }

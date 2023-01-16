@@ -57,7 +57,7 @@ class CategoriesActivity : AppCompatActivity() {
         //nickname.text = intent.getStringExtra("nickname")
         val name = intent.getStringExtra("nickname")
         var text = findViewById<TextView>(R.id.passGameId)
-        text.text = "Willkommen " + name + "! \nBitte leite die 6-stellige Game-ID an deinen Mitspieler weiter."
+        text.text = "Willkommen " + name + "!  Bitte leite die ID  weiter."
         text.textSize = 25F
         println(categories)
     }

@@ -363,6 +363,8 @@ class QuestionActivity : AppCompatActivity() {
         }
 
         intent.putExtra("questions",questions)
+        intent.putExtra("game",game)
+
 
         // TODO send points of players
         // TODO send all questions and answers

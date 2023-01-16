@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings.Global.getString
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -46,7 +47,9 @@ class QuestionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.questions_activity)
+
         nickname = intent.getStringExtra("nickname").toString()
+        println("This nickname is coming from the intent: $nickname")
         val card = findViewById<CardView>(R.id.card)
         card.setCardBackgroundColor(Color.rgb(240, 240, 240))
         card.cardElevation = 10.0F
@@ -79,6 +82,7 @@ class QuestionActivity : AppCompatActivity() {
 
         mCountDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
+
                 println("this is a tick ${myProgressBar.progress}")
                 timeLeftInSeconds--
                 timeView.text = timeLeftInSeconds.toString()
@@ -96,7 +100,6 @@ class QuestionActivity : AppCompatActivity() {
                 GlobalScope.launch(Dispatchers.Main) {
                     try {
 
-                        val fgame = getGame(game.gameId)
                         if (status != GameStatus.FINISHED ){
                             val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
 
@@ -169,6 +172,8 @@ class QuestionActivity : AppCompatActivity() {
 
 
                         val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        println("&&&&&&&&&&&&&&&&&&&&&&&&&")
+                        println(finishedGame.player2.answers)
 
                         showDefaultDialog(finishedGame)
 
@@ -208,6 +213,10 @@ class QuestionActivity : AppCompatActivity() {
                     try {
 
                         val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+
+                        println(finishedGame.player2.answers)
+                        println("&&&&&&&&&&&&&&&&&&&&&&&&&")
+
                         showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
@@ -245,6 +254,9 @@ class QuestionActivity : AppCompatActivity() {
                     try {
                         val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
 
+                        println(finishedGame.player2.answers)
+                        println("&&&&&&&&&&&&&&&&&&&&&&&&&")
+
                         showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
@@ -280,10 +292,11 @@ class QuestionActivity : AppCompatActivity() {
 
                     try {
 
-                        val game = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        val finishedGame = submitRequest(gameId,nickname,answerList,timeLeftInSeconds.toFloat())
 
-                        val finishedGame = submitRequest(game.gameId,nickname,answerList,timeLeftInSeconds.toFloat())
+                        println(finishedGame.player2.answers)
 
+                        println("&&&&&&&&&&&&&&&&&&&&&&&&&")
                         showDefaultDialog(finishedGame)
 
                     } catch (e: IOException) {
@@ -400,7 +413,7 @@ class QuestionActivity : AppCompatActivity() {
 
                 (1..20).asFlow() // a flow of requests
                     .map { request ->
-                        getGame(game!!.gameId)
+                        getGame(game!!.gameId,getString(R.string.get_game_url))
                     }
                     .collect { response ->
 
@@ -416,10 +429,8 @@ class QuestionActivity : AppCompatActivity() {
                             //al.dismiss()
                             //anim.visibility = View.INVISIBLE
 
-
-
-                            println(finishedGame.player1.score)
-                            println(finishedGame.player2.score)
+                            println(finishedGame.player1.answers)
+                            println(finishedGame.player2.answers)
 
                             loadLastActivity(finishedGame)
 
@@ -450,26 +461,29 @@ class QuestionActivity : AppCompatActivity() {
         val questionNumber: Int = questionCount + 1
         numberView.text = "Frage Nummer: $questionNumber "
     }
+    companion object {
+         suspend fun getGame(gameId : String, url : String) : Game = GlobalScope.async(Dispatchers.IO) {
 
-    private suspend fun getGame(gameId : String) : Game = GlobalScope.async(Dispatchers.IO) {
+             delay(1000)
+            var game : Game
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url(url)
+                .post(gameId.toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .build()
 
-        delay(1000)
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                val mapper = jacksonObjectMapper()
 
-        var game : Game
-        val client = OkHttpClient()
-        val request = Request.Builder()
-            .url(getString(R.string.get_game_url))
-            .post(gameId.toRequestBody("application/json; charset=utf-8".toMediaType()))
-            .build()
+                game = mapper.readValue(response.body.string())
+            }
+            return@async game
 
-        client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            val mapper = jacksonObjectMapper()
+        }.await()
 
-            game = mapper.readValue(response.body.string())
-        }
-        return@async game
-    }.await()
+    }
+
 
 
 }

@@ -29,6 +29,10 @@ class GameController @Autowired constructor(
 
     ) {
 
+    private var questions : List<Question> = listOf()
+
+
+
     @PostMapping("/create")
     fun createGame(@RequestBody player: Player ) :
             ResponseEntity<Game> {
@@ -48,23 +52,26 @@ class GameController @Autowired constructor(
     @PostMapping("/ready")
     fun setReady(@RequestBody request : ReadyRequest) :
             ResponseEntity<Game> {
+
         val categories = categoryRepo.findAll() as List<Category>
         var categoryIdList : MutableList<String> = mutableListOf()
         for (cat in categories) {
             categoryIdList.add(cat.id)
         }
-        val questions = questionService.getRandomQuestionsLimit(CategoryIdListDTO(categoryIdList),10)
-        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories, questions))
+        questions = questionService.getRandomQuestionsLimit(CategoryIdListDTO(categoryIdList),10)
+        return ResponseEntity.ok(gameService?.setReady(request.nickname,request.gameId, request.categories))
     }
 
     @PostMapping("/check")
-    fun checkPlayer(@RequestBody checkRequest: CheckRequest) : ResponseEntity<Boolean> {
-        return ResponseEntity.ok(gameService?.isPlayerReady(checkRequest.gameId, checkRequest.nickname))
+    fun checkPlayer(@RequestBody checkRequest: CheckRequest) : ResponseEntity<CheckResponse> {
+
+        return ResponseEntity.ok(gameService?.isPlayerReady(checkRequest.gameId, checkRequest.nickname, questions))
     }
 
     @PostMapping("/submitanswers")
     fun submitAnswers(@RequestBody request : SubmitRequest ):
             ResponseEntity<Game> {
+
 
         var game = gameService?.submitAnswers(request.gameId, request.nickname, request.answers, request.time)
 
@@ -78,6 +85,8 @@ class GameController @Autowired constructor(
             gameService.saveGameInDatabase(game)
             //gameService.deleteGameFromLocalRepo(game.gameId)
         }
+
+
 
         return ResponseEntity.ok(game)
     }
@@ -103,7 +112,7 @@ class GameController @Autowired constructor(
     @PostMapping("/getgame")
     fun getHighscoreList(@RequestBody gameId: String): ResponseEntity<Game> {
         val game = GamesLocalRepo.getGame(gameId)
-        println(game)
+
         return ResponseEntity<Game>(game, HttpStatus.OK)
     }
 }

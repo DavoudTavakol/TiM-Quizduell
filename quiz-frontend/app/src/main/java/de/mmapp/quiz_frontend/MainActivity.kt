@@ -14,6 +14,7 @@ import com.airbnb.lottie.LottieAnimationView
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import de.mmapp.quiz_frontend.CategoriesActivity.Companion.checkIfReady
+import de.mmapp.quiz_frontend.QuestionActivity.Companion.getGame
 import de.mmapp.quiz_frontend.models.Game
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
@@ -122,15 +123,16 @@ class MainActivity : AppCompatActivity() {
                     .map { request -> checkIfReady(game.gameId, game.player2.nickname, getString(R.string.is_ready_url)) }
                     .collect { response ->
 
-                        println(response)
-                        if (response == "true") {
-                            val intent = Intent(this@MainActivity, QuestionActivity::class.java)
 
-                            intent.putExtra("game", newGame)
+                        if (response.isReady && response.questions.isNotEmpty()) {
+                            val intent =
+                                Intent(this@MainActivity, QuestionActivity::class.java)
+                            game.questionList = response.questions
+                            intent.putExtra("game", game)
                             intent.putExtra("nickname", nicknamePlTwo)
                             startActivity(intent)
-                            this.cancel()
 
+                            this.cancel()
                         }
                     }
             }

@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import de.mmapp.quiz_frontend.models.CheckResponse
+import de.mmapp.quiz_frontend.models.Game
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
@@ -119,11 +121,12 @@ class CategoriesActivity : AppCompatActivity() {
                     .map { request -> checkIfReady(id!!, nickname!!, getString(R.string.is_ready_url)) }
                     .collect { response ->
 
-                        println(response)
-                        if (response == "true") {
+                        if (response.isReady && response.questions.isNotEmpty()) {
                             val intent =
                                 Intent(this@CategoriesActivity, QuestionActivity::class.java)
+                            game.questionList = response.questions
                             intent.putExtra("game", game)
+                            intent.putExtra("nickname", nickname)
                             progressbar.visibility = View.INVISIBLE
                             startActivity(intent)
 
@@ -135,7 +138,7 @@ class CategoriesActivity : AppCompatActivity() {
     }
 
     companion object {
-        suspend fun checkIfReady(gameId: String, nickname: String, url : String): String =
+        suspend fun checkIfReady(gameId: String, nickname: String, url : String): CheckResponse =
             GlobalScope.async(Dispatchers.IO) {
 
                 delay(1000)
@@ -153,15 +156,15 @@ class CategoriesActivity : AppCompatActivity() {
                     .post(jsonBody.toRequestBody("application/json; charset=utf-8".toMediaType()))
                     .build()
 
-                var game: String
+                var checkRespnse: CheckResponse
 
                 client.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
                     val mapper = jacksonObjectMapper()
 
-                    game = mapper.readValue(response.body.string())
+                    checkRespnse = mapper.readValue(response.body.string())
                 }
-                return@async game
+                return@async checkRespnse
             }.await()
     }
 }

@@ -1,5 +1,6 @@
 package com.tim.quiz_api.service
 
+import com.tim.quiz_api.controller.dto.CheckResponse
 import com.tim.quiz_api.data.*
 import com.tim.quiz_api.repository.GamesLocalRepo
 import com.tim.quiz_api.repository.GamesMongoRepo
@@ -30,7 +31,6 @@ class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoR
     fun connectToGame(gameId : String, player2 : Player): Game? {
 
         var game: Game? = GamesLocalRepo.getGame(gameId)
-
             game!!.player2 = player2
             game.gameStatus = GameStatus.IN_PROGRESS
 
@@ -44,11 +44,18 @@ class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoR
 
             var score = getScore(answers, time)
 
+            println(game.player1.nickname)
+            println(nickname)
+            println(nickname == game.player1.nickname)
+
             if (nickname == game.player1.nickname) {
+                println(game.player1.answers)
                 game.player1.answers = answers
                 game.player1.score = score
                 game.player1.time = time
             } else if (nickname == game.player2.nickname){
+                println(game.player2.answers)
+
                 game.player2.answers = answers
                 game.player2.score = score
                 game.player2.time = time
@@ -65,25 +72,32 @@ class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoR
         return game
     }
 
-    fun isPlayerReady(gameId: String, nickname: String): Boolean {
+    fun isPlayerReady(gameId: String, nickname: String, questions : List<Question>): CheckResponse {
         var game: Game? = GamesLocalRepo.getGame(gameId)
+        var response : CheckResponse = CheckResponse(false, listOf())
 
         if(game!!.player1.nickname == nickname){
-            return game!!.player2.isReady
+            if (game!!.player2.isReady){
+                game.questionList = questions
+                response.isReady = true
+                response.questions = questions
+            }
         } else if (game!!.player2.nickname == nickname) {
-            return game!!.player1.isReady
-        } else {
-            return false
+            if (game!!.player1.isReady){
+                game.questionList = questions
+                response.isReady = true
+                response.questions = questions
+            }
         }
+        return response
     }
 
-    fun setReady(nickname : String, gameId: String, categories : List<String>, questionList : List<Question>): Game {
+    fun setReady(nickname : String, gameId: String, categories : List<String>): Game {
         var game: Game? = GamesLocalRepo.getGame(gameId)
 
         if (game!!.player1.nickname == nickname){
             game.player1.isReady = true
             game.categories = categories
-            game.questionList = questionList
         } else if (game!!.player2.nickname == nickname){
             game.player2.isReady = true
         }

@@ -105,9 +105,9 @@ class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoR
         return game
     }
 
-    fun getScore(answers : List<Answer>, timeNeeded : Float): Int{
+    fun getScore(answers : List<Answer>, timeRemaining : Float): Int{
         var correctAnswers = getCorrectAnswerCount(answers)
-        return calculateScore(correctAnswers, timeNeeded)
+        return calculateScore(correctAnswers, timeRemaining)
     }
 
     fun getCorrectAnswerCount(answers : List<Answer>): Int{
@@ -119,13 +119,13 @@ class GameService @Autowired constructor(private val gamesMongoRepo: GamesMongoR
         return correctAnswers
     }
 
-    fun calculateScore(correctAnswers : Int = 0, timeNeeded : Float = 60.0f): Int{
+    fun calculateScore(correctAnswers : Int = 0, timeRemaining : Float = 60.0f): Int{
 
         if(correctAnswers == 0) return 0
 
-        if(correctAnswers == 10) return ((60 - timeNeeded) * 10 + 200).toInt()
+        if(correctAnswers == 10) return (timeRemaining * 10 + 200).toInt()
 
-        return ((60 - timeNeeded) / (10 - correctAnswers) * 10 + correctAnswers * 10).toInt()
+        return (timeRemaining / (10 - correctAnswers) * 10 + correctAnswers * 10).toInt()
     }
 
     fun saveGameInDatabase(game : Game){
